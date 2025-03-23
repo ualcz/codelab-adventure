@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from 'react';
 import { 
   ArrowUp, 
@@ -7,7 +6,8 @@ import {
   X, 
   RotateCw, 
   RotateCcw,
-  GitBranch
+  GitBranch,
+  Repeat
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Command } from '@/engine/types';
@@ -144,6 +144,10 @@ const CommandBlock: React.FC<CommandBlockProps> = ({
           newCommand.params = { condition: 'isGreen' };
           newCommand.children = [];
         }
+        else if (block.id === 'while' ) {
+          newCommand.params = { condition: 'isGreen' };
+          newCommand.children = [];
+        }
         
         // Insert the new command at the drop position
         onMoveCommand([], path, position, newCommand);
@@ -161,6 +165,7 @@ const CommandBlock: React.FC<CommandBlockProps> = ({
       case 'turnRight': return RotateCw;
       case 'turnLeft': return RotateCcw;
       case 'repeat': return RefreshCw;
+      case 'while': return Repeat;
       case 'if': return GitBranch;
       default: return ArrowUp;
     }
@@ -171,11 +176,12 @@ const CommandBlock: React.FC<CommandBlockProps> = ({
     if (command.id === 'moveForward' || command.id === 'moveBackward') return 'control-block';
     if (command.id === 'turnRight' || command.id === 'turnLeft') return 'control-block';
     if (command.id === 'repeat') return 'loop-block';
+    if (command.id === 'while') return 'loop-block while-block';
     if (command.id === 'if') return 'condition-block';
     return 'control-block';
   };
 
-  const canHaveChildren = command.id === 'repeat' || command.id === 'if';
+  const canHaveChildren = command.id === 'repeat' || command.id === 'if' || command.id === 'while';
   const indent = path.length - 1;
   const Icon = getIcon();
   const blockClass = getBlockClass();

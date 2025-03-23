@@ -33,7 +33,7 @@ const LEVELS: Level[] = [
       { id: 'obstacle1', type: 'obstacle', x: 1, y: 1, width: 1, height: 1 },
       { id: 'target1', type: 'target', x: 3, y: 3, width: 1, height: 1 }
     ],
-    availableCommands: ["moveForward", "turnRight", "turnLeft", "stop"],
+    availableCommands: ["moveForward", "turnRight", "turnLeft", "stop","while"],
     objective: "Desvie do obstáculo e alcance o alvo",
     hint: "Planeje sua rota, usando voltas à direita e à esquerda",
     unlocked: true,

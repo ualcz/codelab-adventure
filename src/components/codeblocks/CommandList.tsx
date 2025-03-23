@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Command } from '@/engine/types';
 import CommandBlock from './CommandBlock';
@@ -76,6 +75,9 @@ const CommandList: React.FC<CommandListProps> = ({
         } else if (block.id === 'if') {
           newCommand.params = { condition: 'isGreen' };
           newCommand.children = [];
+        } else if (block.id === 'while') {
+          newCommand.params = { condition: 'untilGreen' };
+          newCommand.children = [];
         }
         
         handleCommandsChange([...commands, newCommand]);
@@ -112,6 +114,9 @@ const CommandList: React.FC<CommandListProps> = ({
           newCommand.children = [];
         } else if (block.id === 'if') {
           newCommand.params = { condition: 'isGreen' };
+          newCommand.children = [];
+        } else if (block.id === 'while') {
+          newCommand.params = { condition: 'untilGreen' };
           newCommand.children = [];
         }
         

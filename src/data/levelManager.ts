@@ -92,6 +92,13 @@ export function getCommandBlocks() {
       description: 'Repete os comandos dentro dele várias vezes'
     },
     {
+      id:'while',
+      name: 'Enquanto',
+      icon: 'GitBranch',
+      type: 'loop',
+      description: 'Repete os comandos dentro dele enquanto uma condição for verdadeira'
+    },
+    {
       id: 'if',
       name: 'Se',
       icon: 'GitBranch',

@@ -54,6 +54,26 @@ const CommandControls: React.FC<CommandControlsProps> = ({ command, isRunning, o
       </div>
     );
   }
+
+  if (command.id === 'while') {
+    return (
+      <select
+        className="ml-1 text-xs bg-white/10 px-1 py-0.5 rounded"
+        value={command.params?.condition || 'untilGreen'}
+        onChange={(e) => {
+          onUpdate({
+            ...command,
+            params: { ...command.params, condition: e.target.value }
+          });
+        }}
+        disabled={isRunning}
+      >
+        <option value="untilGreen">até encontrar verde</option>
+        <option value="untilRed">até encontrar vermelho</option>
+        <option value="untilBorder">até encontrar borda</option>
+      </select>
+    );
+  }
   
   // If Controls
   if (command.id === 'if') {
@@ -71,6 +91,8 @@ const CommandControls: React.FC<CommandControlsProps> = ({ command, isRunning, o
       >
         <option value="isGreen">está no verde</option>
         <option value="isRed">está no vermelho</option>
+        <option value="hasCollectible">tem coletável</option>
+        <option value="isTarget">tem alvo</option>
       </select>
     );
   }

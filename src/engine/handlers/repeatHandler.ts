@@ -1,5 +1,5 @@
 
-import { Command, CommandHandler, IGameEngine, ExecutionState } from '../types';
+import { Command, CommandHandler, IGameEngine} from '../types';
 
 export class RepeatHandler implements CommandHandler {
   execute(engine: IGameEngine, command: Command): void {
@@ -36,18 +36,6 @@ export class RepeatHandler implements CommandHandler {
           if (!child.params.condition) {
             if (child.condition) {
               child.params.condition = child.condition;
-            } else {
-              if (child.name && child.name.includes("Verde")) {
-                child.params.condition = "isGreen";
-              } else if (child.name && child.name.includes("Vermelho")) {
-                child.params.condition = "isRed";
-              } else if (child.name && child.name.includes("Coletável")) {
-                child.params.condition = "hasCollectible";
-              } else if (child.name && child.name.includes("Alvo")) {
-                child.params.condition = "isTarget";
-              } else {
-                child.params.condition = "isGreen";
-              }
             }
           }
           

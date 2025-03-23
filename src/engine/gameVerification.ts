@@ -1,4 +1,3 @@
-
 import { IGameEngine } from './types';
 import { getDirectionVector } from './utils';
 import { completeLevel } from '../data/levelManager';
@@ -57,6 +56,16 @@ export class GameVerification {
       obj.x === frontX && 
       obj.y === frontY
     );
+  }
+  
+  isBorderInFrontOfRobot(): boolean {
+    const { robot, gridSize } = this.engine.state;
+    const direction = getDirectionVector(robot.rotation || 0);
+    
+    const frontX = robot.x + direction.x;
+    const frontY = robot.y + direction.y;
+    
+    return frontX < 0 || frontX >= gridSize.width || frontY < 0 || frontY >= gridSize.height;
   }
   
   checkCollectibles(): void {

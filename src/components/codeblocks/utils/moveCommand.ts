@@ -1,4 +1,3 @@
-
 import { Command } from '@/engine/types';
 import { cloneCommands, getCommandByPath } from './commandUtils';
 
@@ -17,7 +16,7 @@ export const moveCommand = (
     if (position === 'inside' && dropPath.length > 0) {
       // Add as a child of the drop target
       const parent = getCommandByPath(commands, dropPath);
-      if (parent && (parent.id === 'repeat' || parent.id === 'if')) {
+      if (parent && (parent.id === 'repeat' || parent.id === 'if' || parent.id === 'while')) {
         // Find the parent in the clone
         let current = newCommands;
         for (let i = 0; i < dropPath.length - 1; i++) {
@@ -124,7 +123,7 @@ export const moveCommand = (
   if (position === 'inside') {
     // Add as a child of the drop target
     const parent = getCommandByPath(commands, offsetDropPath);
-    if (parent && (parent.id === 'repeat' || parent.id === 'if')) {
+    if (parent && (parent.id === 'repeat' || parent.id === 'if' || parent.id === 'while')) {
       // Find the parent in the clone
       let current = newCommands;
       for (let i = 0; i < offsetDropPath.length - 1; i++) {

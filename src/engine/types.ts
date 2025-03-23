@@ -1,4 +1,3 @@
-
 // Game object interfaces and types
 export interface GameObject {
   id: string;
@@ -32,6 +31,7 @@ export interface ExecutionState {
   shouldExecute?: boolean;
   // Extended for repeat-handler
   currentIteration?: number;
+  maxIterations?: number;
   childrenCompleted?: boolean[];
 }
 
@@ -65,6 +65,7 @@ export interface Command {
     count?: number;
     condition?: string;
     executionState?: ExecutionState;
+    maxIterations?: number;
     isDummy?: boolean;
   };
   children?: Command[];
@@ -90,6 +91,7 @@ export interface IGameEngine {
   isCellInFrontOfRobot(color: 'red' | 'green'): boolean;
   isCollectibleInFrontOfRobot(): boolean;
   isTargetInFrontOfRobot(): boolean;
+  isBorderInFrontOfRobot(): boolean;
   rotateRobot(degrees: number): void;
   checkCollectibles(): void;
   checkTarget(): void;

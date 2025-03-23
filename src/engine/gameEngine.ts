@@ -1,10 +1,9 @@
-
 import { Level } from '../data/levelTypes';
-import { completeLevel } from '../data/levelManager';
-import { saveCompletedLevels, getCompletedLevels } from '../data/progressManager';
+import { getCompletedLevels } from '../data/progressManager';
 import { GameState, Command, CommandHandler, IGameEngine, GameObject } from './types';
 import { MoveForwardHandler, MoveBackwardHandler, TurnRightHandler, TurnLeftHandler, StopHandler } from './handlers/commandHandlers';
 import { RepeatHandler } from './handlers/repeatHandler';
+import { WhileHandler } from './handlers/whileHandler';
 import { IfHandler } from './handlers/ifHandler';
 import { createInitialRobot, resetCommandStates } from './utils';
 import { GameMovement } from './gameMovement';
@@ -40,6 +39,7 @@ class GameEngine implements IGameEngine {
     this.commandHandlers.set('turnLeft', new TurnLeftHandler());
     this.commandHandlers.set('stop', new StopHandler());
     this.commandHandlers.set('repeat', new RepeatHandler());
+    this.commandHandlers.set('while', new WhileHandler());
     this.commandHandlers.set('if', new IfHandler());
   }
 
@@ -259,7 +259,7 @@ class GameEngine implements IGameEngine {
 
       this.executeCommand(command);
 
-      if (command.id !== 'repeat' && command.id !== 'if') {
+      if (command.id !== 'repeat' && command.id !== 'if' && command.id !== 'while') {
         const isInsideRepeat = this.isCommandInsideRepeat(this.state.executionPointer);
         if (!isInsideRepeat) {
           console.log("Command outside repeat, incrementing pointer");
@@ -311,6 +311,10 @@ class GameEngine implements IGameEngine {
 
   isCellInFrontOfRobot(color: 'red' | 'green'): boolean {
     return this.verification.isCellInFrontOfRobot(color);
+  }
+  
+  isBorderInFrontOfRobot(): boolean {
+    return this.verification.isBorderInFrontOfRobot();
   }
   
   isCollectibleInFrontOfRobot(): boolean {
