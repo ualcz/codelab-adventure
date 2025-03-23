@@ -92,6 +92,7 @@ export interface IGameEngine {
   isCollectibleInFrontOfRobot(): boolean;
   isTargetInFrontOfRobot(): boolean;
   isBorderInFrontOfRobot(): boolean;
+  isBarrierInFrontOfRobot(): boolean;
   rotateRobot(degrees: number): void;
   checkCollectibles(): void;
   checkTarget(): void;

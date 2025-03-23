@@ -14,25 +14,23 @@ export class WhileHandler implements CommandHandler {
       params = command.params = {};
     }
     
-    // Inicializa a condição do while, similar ao if
+    // Inicializa a condição do while, sempre usando 'untilBarrier'
     if (!params.condition) {
       if (command.condition) {
         params.condition = command.condition;
       } else {
         if (command.name) {
-          if (command.name.includes("Verde")) {
-            params.condition = "untilGreen";
-          } else if (command.name.includes("Vermelho")) {
-            params.condition = "untilRed";
+          if (command.name.includes("Barreira")) {
+            params.condition = "untilBarrier";
           } else if (command.name.includes("Borda")) {
             params.condition = "untilBorder";
           } else {
-            params.condition = "untilGreen";
-            console.log("Using default 'untilGreen' condition for while command without defined condition");
+            params.condition = "untilBarrier";
+            console.log("Using default 'untilBarrier' condition for while command without defined condition");
           }
         } else {
-          params.condition = "untilGreen";
-          console.log("Using default 'untilGreen' condition for while command without defined condition");
+          params.condition = "untilBarrier";
+          console.log("Using default 'untilBarrier' condition for while command without defined condition");
         }
       }
     }
@@ -57,15 +55,10 @@ export class WhileHandler implements CommandHandler {
     console.log(`DEBUG WHILE: Evaluating condition '${params.condition}'`);
     
     // Novas condições: continua executando até encontrar verde/vermelho/borda
-    if (params.condition === 'untilGreen') {
-      // Continua executando até encontrar uma célula verde
-      conditionMet = !engine.isCellInFrontOfRobot('green');
-      console.log(`DEBUG WHILE: Checking if cell in front is NOT green: ${conditionMet}`);
-    } else if (params.condition === 'untilRed') {
-      // Continua executando até encontrar uma célula vermelha
-      conditionMet = !engine.isCellInFrontOfRobot('red');
-      console.log(`DEBUG WHILE: Checking if cell in front is NOT red: ${conditionMet}`);
-    } else if (params.condition === 'untilBorder') {
+    if (params.condition === 'untilBarrier') {
+      conditionMet = !engine.isBarrierInFrontOfRobot();
+      console.log(`DEBUG WHILE: Checking if barrier is NOT in front: ${conditionMet}`);
+    }else if (params.condition === 'untilBorder') {
       // Continua executando até encontrar a borda do mapa
       conditionMet = !engine.isBorderInFrontOfRobot();
       console.log(`DEBUG WHILE: Checking if border is NOT in front: ${conditionMet}`);

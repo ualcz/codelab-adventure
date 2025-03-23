@@ -191,14 +191,15 @@ const LEVELS: Level[] = [
   {
     id: 9,
     name: "Laços Condicionais",
-    minBlocks: 5,
-    maxBlocks: 5,
+    minBlocks: 8,
+    maxBlocks: 8,
     description: "Crie um laço condicional para executar um bloco de comandos enquanto uma condição for verdadeira",
     difficulty: "advanced",
     gridSize: { width: 6, height:6 },
     objects: [
       { ...defaultRobot, x: 0, y: 0 , rotation: 180 },
 
+      { id: 'obstacle1', type: 'obstacle', x: 0, y: 3, width: 4, height: 1 },
       { id: 'target1', type: 'target', x: 5, y: 5, width: 1, height: 1 }
     ],
     availableCommands: ["moveForward", "turnRight", "turnLeft","while"],

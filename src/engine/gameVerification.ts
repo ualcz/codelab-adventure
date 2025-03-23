@@ -68,6 +68,33 @@ export class GameVerification {
     return frontX < 0 || frontX >= gridSize.width || frontY < 0 || frontY >= gridSize.height;
   }
   
+  isBarrierInFrontOfRobot(): boolean {
+    const { robot, objects, gridSize } = this.engine.state;
+    const direction = getDirectionVector(robot.rotation || 0);
+    
+    const frontX = robot.x + direction.x;
+    const frontY = robot.y + direction.y;
+    
+    // Check if the position is out of bounds (border)
+    if (frontX < 0 || frontX >= gridSize.width || frontY < 0 || frontY >= gridSize.height) {
+      console.log(`Barrier check: Border detected at (${frontX},${frontY})`);
+      return true;
+    }
+    
+    // Check for obstacles or blocking red cells
+    const blockingObject = objects.find(obj => 
+      (obj.x === frontX && obj.y === frontY) && 
+      (obj.type === 'obstacle' || (obj.type === 'colorCell' && obj.color === 'red' && obj.isBlocking))
+    );
+    
+    const result = !!blockingObject;
+    if (result) {
+      console.log(`Barrier check: Obstacle detected at (${frontX},${frontY})`);
+    }
+    
+    return result;
+  }
+  
   checkCollectibles(): void {
     const { robot, objects } = this.engine.state;
     

@@ -317,6 +317,10 @@ class GameEngine implements IGameEngine {
     return this.verification.isBorderInFrontOfRobot();
   }
   
+  isBarrierInFrontOfRobot(): boolean {
+    return this.verification.isBarrierInFrontOfRobot();
+  }
+  
   isCollectibleInFrontOfRobot(): boolean {
     return this.verification.isCollectibleInFrontOfRobot();
   }

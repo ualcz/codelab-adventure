@@ -76,7 +76,7 @@ const CommandList: React.FC<CommandListProps> = ({
           newCommand.params = { condition: 'isGreen' };
           newCommand.children = [];
         } else if (block.id === 'while') {
-          newCommand.params = { condition: 'untilGreen' };
+          newCommand.params = { condition: 'untilBarrier' };
           newCommand.children = [];
         }
         
@@ -116,7 +116,7 @@ const CommandList: React.FC<CommandListProps> = ({
           newCommand.params = { condition: 'isGreen' };
           newCommand.children = [];
         } else if (block.id === 'while') {
-          newCommand.params = { condition: 'untilGreen' };
+          newCommand.params = { condition: 'untilBarrier' };
           newCommand.children = [];
         }
         

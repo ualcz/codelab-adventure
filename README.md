@@ -371,13 +371,17 @@ repeat(2) {
 
 - **9**
 ```typescript
-while(borda) {
+while(bareira) {
   moveForward();
 }
 turnRight(90)
 while(borda) {
   moveForward();
 }
+turnLeft(90);
+while(borda) {
+  moveForward();
+  }
 ```
 
 
