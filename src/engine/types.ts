@@ -33,6 +33,7 @@ export interface ExecutionState {
   currentIteration?: number;
   maxIterations?: number;
   childrenCompleted?: boolean[];
+  nestedCommandsState?:{}
 }
 
 export interface GameState {

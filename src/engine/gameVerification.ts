@@ -75,21 +75,46 @@ export class GameVerification {
     const frontX = robot.x + direction.x;
     const frontY = robot.y + direction.y;
     
-    // Check if the position is out of bounds (border)
-    if (frontX < 0 || frontX >= gridSize.width || frontY < 0 || frontY >= gridSize.height) {
-      console.log(`Barrier check: Border detected at (${frontX},${frontY})`);
-      return true;
+    // Verifica todos os objetos para encontrar obstáculos que ocupam a posição (frontX, frontY)
+    const obstaclesAtPosition = objects.filter(obj => {
+      // Verifica se o objeto é um obstáculo ou uma célula vermelha bloqueante
+      const isBlockingType = obj.type === 'obstacle' ;
+      
+      if (!isBlockingType) return false;
+      
+      // Verifica se o objeto ocupa a posição (frontX, frontY)
+      // Considerando que objetos podem ter width e height > 1
+      const objEndX = obj.x + (obj.width || 1) - 1;
+      const objEndY = obj.y + (obj.height || 1) - 1;
+      
+      return (
+        frontX >= obj.x && frontX <= objEndX &&
+        frontY >= obj.y && frontY <= objEndY
+      );
+    });
+    
+    // Verifica se há algum objeto na posição
+    const objectsAtPosition = objects.filter(obj => {
+      const objEndX = obj.x + (obj.width || 1) - 1;
+      const objEndY = obj.y + (obj.height || 1) - 1;
+      
+      return (
+        frontX >= obj.x && frontX <= objEndX &&
+        frontY >= obj.y && frontY <= objEndY
+      );
+    });
+    
+    if (objectsAtPosition.length === 0) {
+    } else {
+      objectsAtPosition.forEach(obj => {
+      });
     }
     
-    // Check for obstacles or blocking red cells
-    const blockingObject = objects.find(obj => 
-      (obj.x === frontX && obj.y === frontY) && 
-      (obj.type === 'obstacle' || (obj.type === 'colorCell' && obj.color === 'red' && obj.isBlocking))
-    );
-    
-    const result = !!blockingObject;
+    const result = obstaclesAtPosition.length > 0;
     if (result) {
-      console.log(`Barrier check: Obstacle detected at (${frontX},${frontY})`);
+      obstaclesAtPosition.forEach(obj => {
+      });
+    } else {
     }
     
     return result;
