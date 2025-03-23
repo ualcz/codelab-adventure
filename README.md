@@ -266,7 +266,7 @@ Para adicionar um novo nível, adicione um objeto ao array em `levelsData.ts`:
   name: "Nome do Nível",
   description: "Descrição do nível",
   difficulty: "intermediate",
-  gridSize: { width: 8, height: 8 },
+  gridSize: { max-width: 8, max-height: 8 },
   objects: [
     // Objetos do nível (robô, obstáculos, etc.)
   ],
@@ -291,34 +291,34 @@ O sistema foi projetado para ser facilmente extensível:
 ## 🚀 Solução
 
 - **1**
-<img src="./img/1.png" alt="resposta" width="300" height="200">
+<img src="./img/1.png" alt="resposta" max-width="300" max-height="200">
 
 - **2**
-<img src="./img/2.png" alt="resposta" width="300" height="200">
+<img src="./img/2.png" alt="resposta" max-width="300" max-height="200">
 
 - **3**
-<img src="./img/3.png" alt="resposta" width="300" height="200">
+<img src="./img/3.png" alt="resposta" max-width="300" max-height="200">
 
 - **4**
-<img src="./img/4.png" alt="resposta" width="300" height="200">
+<img src="./img/4.png" alt="resposta" max-width="300" max-height="200">
 
 - **5**
-<img src="./img/5.png" alt="resposta" width="300" height="200">
+<img src="./img/5.png" alt="resposta" max-width="300" max-height="200">
 
 - **6**
-<img src="./img/6.png" alt="resposta" width="300" height="200">
+<img src="./img/6.png" alt="resposta" max-width="300" max-height="200">
 
 - **7**
-<img src="./img/7.png" alt="resposta" width="300" height="200">
+<img src="./img/7.png" alt="resposta" max-width="300" max-height="200">
 
 - **8**
-<img src="./img/8.png" alt="resposta" width="300" height="200">
+<img src="./img/8.png" alt="resposta" max-width="300" max-height="200">
 
 - **9**
-<img src="./img/9.png" alt="resposta" width="300" height="200">
+<img src="./img/9.png" alt="resposta" max-width="300" max-height="200">
 
 - **10**
-<img src="./img/10.png" alt="resposta" width="300" height="200">
+<img src="./img/10.png" alt="resposta" max-width="300" max-height="200">
 
 ## 📄 Licença
 
