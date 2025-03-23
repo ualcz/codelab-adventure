@@ -132,6 +132,10 @@
     @apply bg-gradient-to-r from-green-600 to-green-400 text-white border-green-500/30 hover:border-green-500/50 shadow-sm shadow-green-500/20;
   }
 
+  .action-block {
+    @apply bg-gradient-to-r from-green-600 to-green-400 text-white border-green-500/30 hover:border-green-500/50 shadow-sm shadow-green-500/20;
+  }
+
   .game-btn {
     @apply px-4 py-2 rounded-md transition-all duration-200 transform hover:scale-105 active:scale-95 shadow-md;
   }

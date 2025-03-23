@@ -105,5 +105,12 @@ export function getCommandBlocks() {
       type: 'condition',
       description: 'Executa comandos se a célula à frente for da cor especificada'
     },
+    {
+      id: 'paintGreen',
+      name: 'Pintar verde',
+      icon: 'paint',
+      type: 'action',
+      description: 'Pinta a célula à frente de verde'
+    }
   ];
 }

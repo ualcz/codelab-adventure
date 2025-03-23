@@ -7,7 +7,8 @@ import {
   RotateCw, 
   RotateCcw,
   GitBranch,
-  Repeat
+  Repeat,
+  Paintbrush
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Command } from '@/engine/types';
@@ -167,6 +168,7 @@ const CommandBlock: React.FC<CommandBlockProps> = ({
       case 'repeat': return RefreshCw;
       case 'while': return Repeat;
       case 'if': return GitBranch;
+      case 'paintGreen': return Paintbrush;
       default: return ArrowUp;
     }
   };
@@ -178,6 +180,7 @@ const CommandBlock: React.FC<CommandBlockProps> = ({
     if (command.id === 'repeat') return 'loop-block';
     if (command.id === 'while') return 'loop-block while-block';
     if (command.id === 'if') return 'condition-block';
+    if (command.id === 'paintGreen') return 'action-block';
     return 'control-block';
   };
 

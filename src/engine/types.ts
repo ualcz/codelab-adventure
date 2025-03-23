@@ -106,4 +106,5 @@ export interface IGameEngine {
   isRobotOnRedCell(): boolean;
   debugGameState(): void;
   notifyUpdate(): void;
+  paintCellInFrontOfRobot(color: 'red' | 'green'): void;
 }

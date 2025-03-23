@@ -214,50 +214,52 @@ const LEVELS: Level[] = [
     name: 'Labirinto de Cores Alternantes',
     description: 'Supere obstáculos e domine o timing com células que mudam de cor',
     difficulty: 'advanced',
-    availableCommands: ["moveForward", "turnRight", "turnLeft", "if", "stop", "repeat", "while"],
+    availableCommands: ["moveForward", "turnRight", "turnLeft", "if", "stop", "repeat", "while","paintGreen"],
     unlocked: true,
     completed: false,
     concepts: ['Condicionais', 'Células Coloridas', 'Timing', 'Planejamento de Rota'],
     objective: 'Guie o robô até o alvo, observando as células que mudam de cor e desviando das barreiras.',
     hint: 'As células alternam entre verde e vermelho. Verde permite passagem, vermelho bloqueia. Observe o padrão de alternância e planeje seus movimentos!',
-    gridSize: { width: 12, height: 12 },
-    colorCycleSpeed: 5500,
+    gridSize: { width: 8, height: 12 },
+    colorCycleSpeed: 15500,
     objects: [
       // Robô inicial
-      { ...defaultRobot, x: 0, y: 0 },
+      { ...defaultRobot, x: 0, y: 0 , rotation: 180 },
       
       // Barreiras fixas
-      { id: 'obstacle1', type: 'obstacle', x: 2, y: 0, width: 1, height: 1 },
-      { id: 'obstacle2', type: 'obstacle', x: 4, y: 0, width: 1, height: 3 },
-      { id: 'obstacle3', type: 'obstacle', x: 0, y: 3, width: 3, height: 1 },
-      { id: 'obstacle4', type: 'obstacle', x: 7, y: 3, width: 1, height: 7 },
-      { id: 'obstacle5', type: 'obstacle', x: 3, y: 6, width: 3, height: 1 },
-      { id: 'obstacle6', type: 'obstacle', x: 9, y: 0, width: 1, height: 9 },
-      { id: 'obstacle7', type: 'obstacle', x: 2, y: 9, width: 4, height: 1 },
-      { id: 'obstacle8', type: 'obstacle', x: 5, y: 10, width: 1, height: 2 },
+      { id: 'obstacle1', type: 'obstacle', x: 1, y: 1, width: 3, height: 1},
+      { id: 'obstacle2', type: 'obstacle', x: 4, y: 1, width: 1, height: 2 },
+      { id: 'obstacle3', type: 'obstacle', x: 5, y: 2, width: 1, height: 1 },
+      { id: 'obstacle4', type: 'obstacle', x: 6, y: 0, width: 2, height: 1 },
+      { id: 'obstacle5', type: 'obstacle', x: 0, y: 3, width: 3, height: 1 },
+      { id: 'obstacle6', type: 'obstacle', x: 7, y: 2, width: 1, height: 8 },
+      { id: 'obstacle7', type: 'obstacle', x: 3, y: 6, width: 3, height: 1 },
+      { id: 'obstacle8', type: 'obstacle', x: 1, y: 9, width: 5, height: 2 },
+      { id: 'obstacle9', type: 'obstacle', x: 1, y: 6, width: 2, height: 2 },
       
       // Primeira seção - Caminho inicial
-      { id: 'color1', type: 'colorCell', x: 1, y: 1, color: 'red', isBlocking: true, width: 1, height: 1 },
-      { id: 'color2', type: 'colorCell', x: 3, y: 1, color: 'green', isBlocking: false, width: 1, height: 1 },
-      { id: 'color3', type: 'colorCell', x: 5, y: 1, color: 'red', isBlocking: true, width: 1, height: 1 },
+      { id: 'color1', type: 'colorCell', x: 0, y: 2, color: 'red', isBlocking: true, width: 1, height: 1 },
+
       
       // Segunda seção - Desvio central
       { id: 'color4', type: 'colorCell', x: 2, y: 4, color: 'green', isBlocking: false, width: 1, height: 1 },
-      { id: 'color5', type: 'colorCell', x: 4, y: 4, color: 'red', isBlocking: true, width: 1, height: 1 },
+      { id: 'color5', type: 'colorCell', x: 3, y: 4, color: 'red', isBlocking: true, width: 1, height: 1 },
       { id: 'color6', type: 'colorCell', x: 6, y: 4, color: 'green', isBlocking: false, width: 1, height: 1 },
+      { id: 'color7', type: 'colorCell', x: 6, y: 5, color: 'red', isBlocking: true, width: 1, height: 1 },
+      { id: 'color8', type: 'colorCell', x: 3, y: 2, color: 'green', isBlocking: true, width: 1, height: 1 },
+      { id: 'color9', type: 'colorCell', x: 0, y: 7, color: 'red', isBlocking: true, width: 1, height: 1 },
+      { id: 'color10', type: 'colorCell', x: 0, y: 11, color: 'green', isBlocking: false, width: 1, height: 1 },
+      { id: 'color11', type: 'colorCell', x: 5, y: 11, color: 'red', isBlocking: true, width: 1, height: 1 },
       
       // Terceira seção - Passagem estreita
-      { id: 'color7', type: 'colorCell', x: 8, y: 5, color: 'red', isBlocking: true, width: 1, height: 1 },
-      { id: 'color8', type: 'colorCell', x: 8, y: 7, color: 'green', isBlocking: false, width: 1, height: 1 },
+     
       
       // Quarta seção - Corredor final
-      { id: 'color9', type: 'colorCell', x: 10, y: 8, color: 'red', isBlocking: true, width: 1, height: 1 },
-      { id: 'color10', type: 'colorCell', x: 10, y: 10, color: 'green', isBlocking: false, width: 1, height: 1 },
-      { id: 'color11', type: 'colorCell', x: 8, y: 10, color: 'red', isBlocking: true, width: 1, height: 1 },
+    
       { id: 'color12', type: 'colorCell', x: 6, y: 9, color: 'green', isBlocking: false, width: 1, height: 1 },
       
       // Objetivo final
-      { id: 'target1', type: 'target', x: 11, y: 11, width: 1, height: 1 }
+      { id: 'target1', type: 'target', x: 6, y: 11, width: 1, height: 1 }
     ]
   }
 ];

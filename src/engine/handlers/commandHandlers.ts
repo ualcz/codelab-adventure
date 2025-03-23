@@ -1,4 +1,3 @@
-
 import { Command, CommandHandler, IGameEngine } from '../types';
 
 export class MoveForwardHandler implements CommandHandler {
@@ -31,5 +30,14 @@ export class StopHandler implements CommandHandler {
   execute(engine: IGameEngine, command: Command): void {
     engine.state.moves++;
     console.log("Robot stopped in place");
+  }
+}
+
+export class PaintGreenHandler implements CommandHandler {
+  execute(engine: IGameEngine, command: Command): void {
+    if (engine.isCellInFrontOfRobot('red')) {
+      engine.paintCellInFrontOfRobot('green');
+    }
+    engine.state.executionPointer++;
   }
 }

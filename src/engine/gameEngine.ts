@@ -1,11 +1,11 @@
 import { Level } from '../data/levelTypes';
 import { getCompletedLevels } from '../data/progressManager';
-import { GameState, Command, CommandHandler, IGameEngine, GameObject } from './types';
-import { MoveForwardHandler, MoveBackwardHandler, TurnRightHandler, TurnLeftHandler, StopHandler } from './handlers/commandHandlers';
+import { GameState, Command, CommandHandler, IGameEngine, GameObject} from './types';
+import { MoveForwardHandler, MoveBackwardHandler, TurnRightHandler, TurnLeftHandler, StopHandler, PaintGreenHandler } from './handlers/commandHandlers';
 import { RepeatHandler } from './handlers/repeatHandler';
 import { WhileHandler } from './handlers/whileHandler';
 import { IfHandler } from './handlers/ifHandler';
-import { createInitialRobot, resetCommandStates } from './utils';
+import { createInitialRobot, resetCommandStates, getDirectionVector } from './utils';
 import { GameMovement } from './gameMovement';
 import { GameVerification } from './gameVerification';
 
@@ -36,6 +36,7 @@ class GameEngine implements IGameEngine {
     this.commandHandlers.set('moveForward', new MoveForwardHandler());
     this.commandHandlers.set('moveBackward', new MoveBackwardHandler());
     this.commandHandlers.set('turnRight', new TurnRightHandler());
+    this.commandHandlers.set('paintGreen', new PaintGreenHandler());
     this.commandHandlers.set('turnLeft', new TurnLeftHandler());
     this.commandHandlers.set('stop', new StopHandler());
     this.commandHandlers.set('repeat', new RepeatHandler());
@@ -413,6 +414,41 @@ class GameEngine implements IGameEngine {
 
   isRobotOnRedCell(): boolean {
     return this.verification.isRobotOnRedCell();
+  }
+
+  paintCellInFrontOfRobot(color: 'red' | 'green'): void {
+    const rotation = this.state.robot.rotation || 0;
+    const direction = getDirectionVector(rotation);
+    const frontX = this.state.robot.x + direction.x;
+    const frontY = this.state.robot.y + direction.y;
+
+    // Procura por uma célula colorida na posição à frente
+    const colorCell = this.state.objects.find(obj => 
+      obj.type === 'colorCell' && 
+      obj.x === frontX && 
+      obj.y === frontY
+    );
+
+    if (colorCell) {
+      // Atualiza a cor da célula existente
+      colorCell.color = color;
+      colorCell.isBlocking = color === 'red';
+    } else {
+      // Cria uma nova célula colorida
+      const newCell: GameObject = {
+        id: `colorCell_${frontX}_${frontY}`,
+        type: 'colorCell',
+        x: frontX,
+        y: frontY,
+        width: 1,
+        height: 1,
+        color: color,
+        isBlocking: color === 'red'
+      };
+      this.state.objects.push(newCell);
+    }
+
+    this.notifyUpdate();
   }
 
   debugGameState(): void {
