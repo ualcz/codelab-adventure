@@ -291,34 +291,34 @@ O sistema foi projetado para ser facilmente extensível:
 ## 🚀 Solução
 
 - **1**
-<img src="./img/1.png" alt="Alt Text" width="300" height="200">
+<img src="./img/1.png" alt="resposta" width="300" height="200">
 
 - **2**
-![respota](img/2.png)
+<img src="./img/2.png" alt="resposta" width="300" height="200">
 
 - **3**
-![respota](img/3.png)
+<img src="./img/3.png" alt="resposta" width="300" height="200">
 
 - **4**
-![respota](img/4.png)
+<img src="./img/4.png" alt="resposta" width="300" height="200">
 
 - **5**
-![respota](img/5.png)
+<img src="./img/5.png" alt="resposta" width="300" height="200">
 
 - **6**
-![respota](img/6.png)
+<img src="./img/6.png" alt="resposta" width="300" height="200">
 
 - **7**
-![respota](img/7.png)
+<img src="./img/7.png" alt="resposta" width="300" height="200">
 
 - **8**
-![respota](img/8.png)
+<img src="./img/8.png" alt="resposta" width="300" height="200">
 
 - **9**
-![respota](img/9.png)
+<img src="./img/9.png" alt="resposta" width="300" height="200">
 
 - **10**
-![respota](img/10.png)
+<img src="./img/10.png" alt="resposta" width="300" height="200">
 
 ## 📄 Licença
 
