@@ -24,10 +24,6 @@ export class IfHandler implements CommandHandler {
             params.condition = "isGreen";
           } else if (command.name.includes("Vermelho")) {
             params.condition = "isRed";
-          } else if (command.name.includes("Coletável")) {
-            params.condition = "hasCollectible";
-          } else if (command.name.includes("Alvo")) {
-            params.condition = "isTarget";
           } else {
             params.condition = "isGreen";
             console.log("Using default 'isGreen' condition for if command without defined condition");
@@ -48,10 +44,6 @@ export class IfHandler implements CommandHandler {
         conditionMet = engine.isCellInFrontOfRobot('green');
       } else if (params.condition === 'isRed') {
         conditionMet = engine.isCellInFrontOfRobot('red');
-      } else if (params.condition === 'hasCollectible') {
-        conditionMet = engine.isCollectibleInFrontOfRobot();
-      } else if (params.condition === 'isTarget') {
-        conditionMet = engine.isTargetInFrontOfRobot();
       }
 
       console.log(`DEBUG IF: Condition '${params.condition}' evaluated to: ${conditionMet}`);

@@ -68,8 +68,9 @@ const CommandControls: React.FC<CommandControlsProps> = ({ command, isRunning, o
         }}
         disabled={isRunning}
       >
-        <option value="untilBorder" className="bg-pink-400 text-white">até encontrar borda</option>
-        <option value="untilBarrier" className="bg-pink-400 text-white">até encontrar barreira</option>
+        <option value="untilBorder" className="bg-pink-400 text-white">não encontrar borda</option>
+        <option value="untilBarrier" className="bg-pink-400 text-white">não encontrar barreira</option>
+        <option value="untilCollectible" className="bg-pink-400 text-white">não encontrar moeda</option>
       </select>
     );
   }
@@ -88,10 +89,8 @@ const CommandControls: React.FC<CommandControlsProps> = ({ command, isRunning, o
         }}
         disabled={isRunning}
       >
-        <option value="isGreen" className="bg-pink-400 text-white">até encontrar verde</option>
-        <option value="isRed" className="bg-pink-400 text-white">até encontrar vermelho</option>
-        <option value="hasCollectible" className="bg-pink-400 text-white">até encontrar coletável</option>
-        <option value="isTarget" className="bg-pink-400 text-white">até encontrar alvo</option>
+        <option value="isGreen" className="bg-purple-400 text-white">encontrar verde</option>
+        <option value="isRed" className="bg-purple-400 text-white">encontrar vermelho</option>
       </select>
     );
   }

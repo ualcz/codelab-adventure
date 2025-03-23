@@ -29,6 +29,7 @@ const DraggableBlock: React.FC<DraggableBlockProps> = ({ block, onDragStart, cla
   if (block.type === 'control') blockClass = 'control-block';
   if (block.type === 'loop') blockClass = 'loop-block';
   if (block.type === 'condition') blockClass = 'condition-block';
+  if (block.type === 'action') blockClass = 'action-block';
 
   return (
     <div 

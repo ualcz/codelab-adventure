@@ -5,7 +5,7 @@ export interface Level {
   id: number;
   name: string;
   description: string;
-  difficulty: 'beginner' | 'intermediate' | 'advanced';
+  difficulty: 'beginner' | 'intermediate' | 'advanced'|'expert'|'master';
   gridSize: { width: number; height: number };
   objects: GameObject[];
   availableCommands: string[];

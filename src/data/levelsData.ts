@@ -217,8 +217,44 @@ const LEVELS: Level[] = [
     completed: false,
     concepts: ["laços condicionais", "pensamento computacional"],
   },
+
   {
     id: 10,
+    name: "Laços Dentro de Laços",
+    minBlocks: 15,
+    maxBlocks: 22,
+    description: "Use laços condicionais aninhados para resolver problemas mais complexos",
+    difficulty: "master",
+    gridSize: { width: 12, height: 12 },
+    objects: [
+      { ...defaultRobot, x: 0, y: 0, rotation: 90 },
+      // Labirinto com múltiplas seções
+      { id: 'maze1', type: 'obstacle', x: 2, y: 1, width: 1, height: 9 },
+      { id: 'maze2', type: 'obstacle', x: 0, y: 2, width: 2, height: 1 },
+      { id: 'maze3', type: 'obstacle', x: 1, y: 6, width: 1, height: 1 },
+      { id: 'maze4', type: 'obstacle', x: 4, y: 2, width: 5, height: 1 },
+      { id: 'maze5', type: 'obstacle', x: 5, y: 3, width: 1, height: 4 },
+      { id: 'maze6', type: 'obstacle', x: 3, y: 5, width: 1, height: 1 },
+      { id: 'maze7', type: 'obstacle', x: 3, y: 8, width: 3, height: 1 },
+      { id: 'maze8', type: 'obstacle', x: 7, y: 5, width: 1, height: 3 },
+      { id: 'maze9', type: 'obstacle', x: 10, y: 0, width: 1, height: 11 },
+      { id: 'maze10', type: 'obstacle', x: 6, y: 10, width: 5, height: 1 },
+      { id: 'maze11', type: 'obstacle', x: 4, y: 0, width: 1, height: 2 },
+
+      {id: 'collectible1', type: 'collectible', x: 9, y: 9, width: 1, height: 1 },
+
+      { id: 'target1', type: 'target', x: 0, y: 3, width: 1, height: 1 }
+    ],
+    availableCommands: ["moveForward", "turnRight", "turnLeft", "while", "if", "else", "isPathForward", "isEdgeAhead", "isWallOnRight", "isWallOnLeft", "not"],
+    objective: "Navegue pelo labirinto complexo usando laços aninhados e diferentes estratégias",
+    hint: "Pense em laços dentro de outros laços para resolver diferentes partes do problema",
+    unlocked: false,
+    completed: false,
+    concepts: ["laços aninhados", "estruturas de controle complexas", "resolução de problemas avançados"],
+  },
+
+  {
+    id: 20,
     name: 'Labirinto de Cores Alternantes',
     description: 'Supere obstáculos e domine o timing com células que mudam de cor',
     difficulty: 'advanced',

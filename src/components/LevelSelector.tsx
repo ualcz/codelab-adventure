@@ -16,6 +16,8 @@ const LevelSelector: React.FC<LevelSelectorProps> = ({ onSelectLevel, currentLev
     let stars = 1;
     if (difficulty === 'intermediate') stars = 2;
     if (difficulty === 'advanced') stars = 3;
+    if (difficulty === 'expert') stars = 4;
+    if (difficulty === 'master') stars = 5;
     
     return (
       <div className="flex">
