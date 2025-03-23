@@ -291,7 +291,7 @@ O sistema foi projetado para ser facilmente extensível:
 ## 🚀 Solução
 
 - **1**
-<img src="img/1.png" alt="Alt Text" width="300" height="200">
+<img src="./img/1.png" alt="Alt Text" width="300" height="200">
 
 - **2**
 ![respota](img/2.png)
