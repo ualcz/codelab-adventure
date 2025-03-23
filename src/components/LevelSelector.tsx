@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Level, getLevels } from '@/data/levelManager';
 import { CheckSquare, Lock, BotIcon } from 'lucide-react';
@@ -19,12 +18,14 @@ const LevelSelector: React.FC<LevelSelectorProps> = ({ onSelectLevel, currentLev
     if (difficulty === 'expert') stars = 4;
     if (difficulty === 'master') stars = 5;
     
+    const maxStars = 5; // Maximum number of stars to display
+    
     return (
       <div className="flex">
         {[...Array(stars)].map((_, i) => (
           <BotIcon key={i} className="h-4 w-4 text-game-warning fill-game-warning" />
         ))}
-        {[...Array(3 - stars)].map((_, i) => (
+        {[...Array(Math.max(0, maxStars - stars))].map((_, i) => (
           <BotIcon key={i + stars} className="h-4 w-4 text-white/20" />
         ))}
       </div>
