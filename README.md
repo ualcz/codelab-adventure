@@ -291,34 +291,34 @@ O sistema foi projetado para ser facilmente extensível:
 ## 🚀 Solução
 
 - **1**
-<img src="./img/1.png" alt="resposta" style="width:50%; height:auto;">
+<img src="./public/img/1.png" alt="resposta" style="width:50%; height:auto;">
 
 - **2**
-<img src="./img/2.png" alt="resposta" style="width:50%; height:auto;">
+<img src="./public/img/2.png" alt="resposta" style="width:50%; height:auto;">
 
 - **3**
-<img src="./img/3.png" alt="resposta" style="width:50%; height:auto;">
+<img src="./public/img/3.png" alt="resposta" style="width:50%; height:auto;">
 
 - **4**
-<img src="./img/4.png" alt="resposta" style="width:50%; height:auto;">
+<img src="./public/img/4.png" alt="resposta" style="width:50%; height:auto;">
 
 - **5**
-<img src="./img/5.png" alt="resposta" style="width:50%; height:auto;">
+<img src="./public/img/5.png" alt="resposta" style="width:50%; height:auto;">
 
 - **6**
-<img src="./img/6.png" alt="resposta" style="width:50%; height:auto;">
+<img src="./public/img/6.png" alt="resposta" style="width:50%; height:auto;">
 
 - **7**
-<img src="./img/7.png" alt="resposta" style="width:50%; height:auto;">
+<img src="./public/img/7.png" alt="resposta" style="width:50%; height:auto;">
 
 - **8**
-<img src="./img/8.png" alt="resposta" style="width:50%; height:auto;">
+<img src="./public/img/8.png" alt="resposta" style="width:50%; height:auto;">
 
 - **9**
-<img src="./img/9.png" alt="resposta" style="width:50%; height:auto;">
+<img src="./public/img/9.png" alt="resposta" style="width:50%; height:auto;">
 
 - **10**
-<img src="./img/10.png" alt="resposta" style="width:50%; height:auto;">
+<img src="./public/img/10.png" alt="resposta" style="width:50%; height:auto;">
 
 ## 📄 Licença
 
