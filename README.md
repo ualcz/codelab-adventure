@@ -288,42 +288,20 @@ O sistema foi projetado para ser facilmente extensível:
 - **Novos objetos do jogo**: Estenda o tipo `GameObject` e adicione a lógica necessária
 - **Novos conceitos de programação**: Introduza gradualmente em novos níveis
 
-## 🚀 Solucão
+## 🚀 Solução
 
 - **1**
-```typescript
-moveForward();
-moveForward();
-turnLeft(90);
-moveForward();
-moveForward();
-```
+![respota](img/1.png)
+
 - **2**
-```typescript
-turnRight(90);
-moveForward();
-moveForward();
-moveForward();
-turnLeft(90);
-moveForward();
-moveForward();
-moveForward();
-```
+![respota](img/2.png)
+
 - **3**
-```typescript
-repeat(5) {
-moveForward();
-}
-```
+![respota](img/3.png)
+
 - **4**
-```typescript
-repeat(4) {
-  repeat(4) {
-    moveForward();
-    turnLeft(90);
-  }
-}
-```
+![respota](img/4.png)
+
 - **5**
 ```typescript
 
@@ -334,56 +312,16 @@ repeat(4) {
 
 ```
 - **7**
-```typescript
-repeat(4) {
-   repeat(2) {
-    moveForward();
-     turnLeft(90);
-  }
-  
-  repeat(2) {
-    moveForward();
-    moveForward();
-    turnLeft(90);
-  }
-}
-```
+![respota](img/7.png)
+
 - **8**
-```typescript
-repeat(2) {
-   repeat(9) {
-    moveForward();
-  }
-  turnRight(90);
-  moveForward();
-  moveForward();
-  turnRight(90)
-  
-  repeat(9) {
-    moveForward();
-  }
-  turnLeft(90);
-  moveForward();
-  moveForward();
-  turnLeft(90);
-}
-```
+![respota](img/8.png)
 
 - **9**
-```typescript
-while(bareira) {
-  moveForward();
-}
-turnRight(90)
-while(borda) {
-  moveForward();
-}
-turnLeft(90);
-while(borda) {
-  moveForward();
-  }
-```
+![respota](img/9.png)
 
+- **10**
+![respota](img/10.png)
 
 ## 📄 Licença
 
