@@ -58,7 +58,7 @@ const CommandControls: React.FC<CommandControlsProps> = ({ command, isRunning, o
   if (command.id === 'while') {
     return (
       <select
-        className="ml-1 text-xs bg-white/10 px-1 py-0.5 rounded"
+        className="ml-1 text-xs bg-white/20 px-1 py-0.5 rounded"
         value={command.params?.condition || 'untilGreen'}
         onChange={(e) => {
           onUpdate({
@@ -68,9 +68,9 @@ const CommandControls: React.FC<CommandControlsProps> = ({ command, isRunning, o
         }}
         disabled={isRunning}
       >
-        <option value="untilGreen">até encontrar verde</option>
-        <option value="untilRed">até encontrar vermelho</option>
-        <option value="untilBorder">até encontrar borda</option>
+        <option value="untilGreen" className="bg-pink-400 text-white">até encontrar verde</option>
+        <option value="untilRed" className="bg-pink-400 text-white">até encontrar vermelho</option>
+        <option value="untilBorder" className="bg-pink-400 text-white">até encontrar borda</option>
       </select>
     );
   }
@@ -89,10 +89,10 @@ const CommandControls: React.FC<CommandControlsProps> = ({ command, isRunning, o
         }}
         disabled={isRunning}
       >
-        <option value="isGreen">está no verde</option>
-        <option value="isRed">está no vermelho</option>
-        <option value="hasCollectible">tem coletável</option>
-        <option value="isTarget">tem alvo</option>
+        <option value="isGreen" className="bg-pink-400 text-white">está no verde</option>
+        <option value="isRed" className="bg-pink-400 text-white">está no vermelho</option>
+        <option value="hasCollectible" className="bg-pink-400 text-white">tem coletável</option>
+        <option value="isTarget" className="bg-pink-400 text-white">tem alvo</option>
       </select>
     );
   }

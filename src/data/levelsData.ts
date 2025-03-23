@@ -29,11 +29,11 @@ const LEVELS: Level[] = [
     difficulty: "beginner",
     gridSize: { width: 4, height: 4 },
     objects: [
-      { ...defaultRobot, x: 0, y: 0, rotation: 0 },
-      { id: 'obstacle1', type: 'obstacle', x: 1, y: 1, width: 1, height: 1 },
+      { ...defaultRobot, x: 0, y: 0, rotation: 90 },
+      { id: 'obstacle1', type: 'obstacle', x: 1, y: 0, width: 1, height: 2 },
       { id: 'target1', type: 'target', x: 3, y: 3, width: 1, height: 1 }
     ],
-    availableCommands: ["moveForward", "turnRight", "turnLeft", "stop","while"],
+    availableCommands: ["moveForward", "turnRight", "turnLeft", "stop"],
     objective: "Desvie do obstáculo e alcance o alvo",
     hint: "Planeje sua rota, usando voltas à direita e à esquerda",
     unlocked: true,
@@ -81,14 +81,14 @@ const LEVELS: Level[] = [
     name: "Introdução a Algoritmos",
     description: "Resolva problemas com estratégia",
     difficulty: "intermediate",
-    gridSize: { width: 7, height: 5 },
+    gridSize: { width: 9, height: 6 },
     objects: [
-      { ...defaultRobot, x: 0, y: 0 },
+      { ...defaultRobot, x: 0, y: 0, rotation: 180 },
       { id: 'obstacle1', type: 'obstacle', x: 2, y: 0, width: 1, height: 3 },
-      { id: 'obstacle2', type: 'obstacle', x: 4, y: 2, width: 1, height: 3 },
+      { id: 'obstacle2', type: 'obstacle', x: 5, y: 2, width: 1, height: 4 },
       { id: 'collectible1', type: 'collectible', x: 1, y: 4, width: 1, height: 1 },
       { id: 'collectible2', type: 'collectible', x: 3, y: 4, width: 1, height: 1 },
-      { id: 'target1', type: 'target', x: 6, y: 0, width: 1, height: 1 }
+      { id: 'target1', type: 'target', x: 8, y: 0, width: 1, height: 1 }
     ],
     availableCommands: ["moveForward", "turnRight", "turnLeft", "repeat", "stop"],
     objective: "Desenvolva uma estratégia para coletar itens e chegar ao alvo",
@@ -99,27 +99,6 @@ const LEVELS: Level[] = [
   },
   {
     id: 6,
-    name: "Labirinto Lógico",
-    description: "Navegue usando lógica e repetição",
-    difficulty: "intermediate",
-    gridSize: { width: 8, height: 6 },
-    objects: [
-      { ...defaultRobot, x: 0, y: 0 },
-      { id: 'obstacle1', type: 'obstacle', x: 2, y: 0, width: 1, height: 4 },
-      { id: 'obstacle2', type: 'obstacle', x: 5, y: 2, width: 1, height: 4 },
-      { id: 'collectible1', type: 'collectible', x: 3, y: 5, width: 1, height: 1 },
-      { id: 'collectible2', type: 'collectible', x: 6, y: 5, width: 1, height: 1 },
-      { id: 'target1', type: 'target', x: 7, y: 0, width: 1, height: 1 }
-    ],
-    availableCommands: ["moveForward", "turnRight", "turnLeft", "repeat", "stop"],
-    objective: "Encontre o caminho através de obstáculos, coletando itens",
-    hint: "Use laços aninhados para criar padrões de navegação",
-    unlocked: true,
-    completed: false,
-    concepts: ["navegação complexa", "laços aninhados"]
-  },
-  {
-    id: 7,
     name: "Otimização de Rota",
     description: "Encontre o caminho mais eficiente",
     difficulty: "advanced",
@@ -141,19 +120,33 @@ const LEVELS: Level[] = [
     concepts: ["otimização", "estratégia algoritmica"]
   },
   {
-    id: 8,
+    id: 7,
     name: "Espiral de Coleta",
+    minBlocks: 8,
     description: "Desenvolva um algoritmo de coleta",
     difficulty: "advanced",
     gridSize: { width: 9, height: 9 },
     objects: [
       { ...defaultRobot, x: 4, y: 4, rotation: 0 },
+
       { id: 'collectible1', type: 'collectible', x: 3, y: 3, width: 1, height: 1 },
-      { id: 'collectible2', type: 'collectible', x: 5, y: 3, width: 1, height: 1 },
-      { id: 'collectible3', type: 'collectible', x: 5, y: 5, width: 1, height: 1 },
-      { id: 'collectible4', type: 'collectible', x: 3, y: 5, width: 1, height: 1 },
-      { id: 'collectible5', type: 'collectible', x: 2, y: 4, width: 1, height: 1 },
-      { id: 'collectible6', type: 'collectible', x: 6, y: 4, width: 1, height: 1 },
+      { id: 'collectible2', type: 'collectible', x: 3, y: 4, width: 1, height: 1 },
+
+      { id: 'collectible3', type: 'collectible', x: 3, y: 5, width: 1, height: 1 },
+      { id: 'collectible4', type: 'collectible', x: 4, y: 5, width: 1, height: 1 },
+      { id: 'collectible5', type: 'collectible', x: 5, y: 5, width: 1, height: 1 },
+
+      { id: 'collectible6', type: 'collectible', x: 4, y: 6, width: 1, height: 1 },
+      { id: 'collectible7', type: 'collectible', x: 5, y: 6, width: 1, height: 1 },
+      { id: 'collectible8', type: 'collectible', x: 6, y: 6, width: 1, height: 1 },
+
+      { id: 'collectible9', type: 'collectible', x: 5, y: 7, width: 1, height: 1 },
+      { id: 'collectible10', type: 'collectible', x: 6, y: 7, width: 1, height: 1 },
+      { id: 'collectible11', type: 'collectible', x: 7, y: 7, width: 1, height: 1 },
+
+      {id: 'collectible12', type: 'collectible', x: 6, y: 8, width: 1, height: 1 },
+      {id: 'collectible13', type: 'collectible', x: 7, y: 8, width: 1, height: 1 },
+      
       { id: 'target1', type: 'target', x: 8, y: 8, width: 1, height: 1 }
     ],
     availableCommands: ["moveForward", "turnRight", "turnLeft", "repeat", "stop"],
@@ -164,21 +157,29 @@ const LEVELS: Level[] = [
     concepts: ["algoritmos de varredura", "padrões de movimento"]
   },
   {
-    id: 9,
+    id: 8,
     name: "Desafio Algorítmico",
+    minBlocks: 14,
     description: "Aplique todos os conceitos aprendidos",
     difficulty: "advanced",
-    gridSize: { width: 10, height: 10 },
+    gridSize: { width: 9, height: 10 },
     objects: [
-      { ...defaultRobot, x: 0, y: 0 },
-      { id: 'obstacle1', type: 'obstacle', x: 2, y: 0, width: 1, height: 7 },
-      { id: 'obstacle2', type: 'obstacle', x: 5, y: 3, width: 1, height: 7 },
-      { id: 'obstacle3', type: 'obstacle', x: 8, y: 0, width: 1, height: 7 },
+      { ...defaultRobot, x: 0, y: 0 , rotation: 180 },
+      { id: 'obstacle1', type: 'obstacle', x: 1, y: 0, width: 1, height: 7 },
+      { id: 'obstacle2', type: 'obstacle', x: 3, y: 3, width: 1, height: 7 },
+      { id: 'obstacle3', type: 'obstacle', x: 5, y: 0, width: 1, height: 7 },
+      { id: 'obstacle4', type: 'obstacle', x: 7, y: 3, width: 1, height: 7 },
+
+
       { id: 'collectible1', type: 'collectible', x: 1, y: 9, width: 1, height: 1 },
       { id: 'collectible2', type: 'collectible', x: 4, y: 9, width: 1, height: 1 },
-      { id: 'collectible3', type: 'collectible', x: 7, y: 9, width: 1, height: 1 },
-      { id: 'collectible4', type: 'collectible', x: 9, y: 9, width: 1, height: 1 },
-      { id: 'target1', type: 'target', x: 9, y: 0, width: 1, height: 1 }
+      { id: 'collectible3', type: 'collectible', x: 6, y: 9, width: 1, height: 1 },
+      { id: 'collectible4', type: 'collectible', x: 2, y: 0, width: 1, height: 1 },
+      { id: 'collectible5', type: 'collectible', x: 4, y: 0, width: 1, height: 1 },
+      { id: 'collectible6', type: 'collectible', x: 7, y: 0, width: 1, height: 1 },
+      
+
+      { id: 'target1', type: 'target', x: 8, y: 0, width: 1, height: 1 }
     ],
     availableCommands: ["moveForward", "turnRight", "turnLeft", "repeat", "stop"],
     objective: "Utilize todos os conceitos para navegar pelo labirinto complexo",
@@ -188,43 +189,74 @@ const LEVELS: Level[] = [
     concepts: ["pensamento computacional", "resolução de problemas complexos"]
   },
   {
-    id: 10,
-    name: 'Células Coloridas',
-    description: 'Aprenda a lidar com células coloridas',
-    difficulty: 'intermediate',
-    concepts: ['Condicionais', 'Células Coloridas'],
-    objective: 'Guie o robô até o alvo, evitando as células vermelhas.',
-    hint: 'Use o comando "Se" para verificar a cor da célula antes de se mover.',
-    availableCommands: ["moveForward", "turnRight", "turnLeft", "if", "stop", "repeat"],
+    id: 9,
+    name: "Laços Condicionais",
+    minBlocks: 5,
+    maxBlocks: 5,
+    description: "Crie um laço condicional para executar um bloco de comandos enquanto uma condição for verdadeira",
+    difficulty: "advanced",
+    gridSize: { width: 6, height:6 },
+    objects: [
+      { ...defaultRobot, x: 0, y: 0 , rotation: 180 },
+
+      { id: 'target1', type: 'target', x: 5, y: 5, width: 1, height: 1 }
+    ],
+    availableCommands: ["moveForward", "turnRight", "turnLeft","while"],
+    objective: "descubre o poder dos laços condicionais",
+    hint: "crie uma repetição que execute um bloco de comandos enquanto uma condição for verdadeira",
     unlocked: true,
     completed: false,
-    gridSize: { width: 8, height: 8 },
-    objects: [
-      { ...defaultRobot, x: 0, y: 0 },
-      { id: 'target1', type: 'target', x: 5, y: 5, width: 1, height: 1 },
-    ]
+    concepts: ["laços condicionais", "pensamento computacional"],
   },
   {
-    id: 11,
-    name: 'Cores Alternantes',
-    description: 'Domine o timing com células que mudam de cor',
+    id: 10,
+    name: 'Labirinto de Cores Alternantes',
+    description: 'Supere obstáculos e domine o timing com células que mudam de cor',
     difficulty: 'advanced',
-    availableCommands: ["moveForward", "turnRight", "turnLeft", "if", "stop", "repeat"],
+    availableCommands: ["moveForward", "turnRight", "turnLeft", "if", "stop", "repeat", "while"],
     unlocked: true,
     completed: false,
-    concepts: ['Condicionais', 'Células Coloridas', 'Timing'],
-    objective: 'Guie o robô até o alvo, observando as células que mudam de cor.',
-    hint: 'As células alternam entre verde e vermelho. Planeje seu movimento com cuidado!',
-    gridSize: { width: 5, height: 5 },
+    concepts: ['Condicionais', 'Células Coloridas', 'Timing', 'Planejamento de Rota'],
+    objective: 'Guie o robô até o alvo, observando as células que mudam de cor e desviando das barreiras.',
+    hint: 'As células alternam entre verde e vermelho. Verde permite passagem, vermelho bloqueia. Observe o padrão de alternância e planeje seus movimentos!',
+    gridSize: { width: 12, height: 12 },
     colorCycleSpeed: 5500,
     objects: [
+      // Robô inicial
       { ...defaultRobot, x: 0, y: 0 },
-      { id: 'target1', type: 'target', x: 4, y: 4, width: 1, height: 1 },
+      
+      // Barreiras fixas
+      { id: 'obstacle1', type: 'obstacle', x: 2, y: 0, width: 1, height: 1 },
+      { id: 'obstacle2', type: 'obstacle', x: 4, y: 0, width: 1, height: 3 },
+      { id: 'obstacle3', type: 'obstacle', x: 0, y: 3, width: 3, height: 1 },
+      { id: 'obstacle4', type: 'obstacle', x: 7, y: 3, width: 1, height: 7 },
+      { id: 'obstacle5', type: 'obstacle', x: 3, y: 6, width: 3, height: 1 },
+      { id: 'obstacle6', type: 'obstacle', x: 9, y: 0, width: 1, height: 9 },
+      { id: 'obstacle7', type: 'obstacle', x: 2, y: 9, width: 4, height: 1 },
+      { id: 'obstacle8', type: 'obstacle', x: 5, y: 10, width: 1, height: 2 },
+      
+      // Primeira seção - Caminho inicial
       { id: 'color1', type: 'colorCell', x: 1, y: 1, color: 'red', isBlocking: true, width: 1, height: 1 },
-      { id: 'color2', type: 'colorCell', x: 2, y: 2, color: 'green', isBlocking: false, width: 1, height: 1 },
-      { id: 'color3', type: 'colorCell', x: 3, y: 3, color: 'red', isBlocking: true, width: 1, height: 1 },
-      { id: 'color4', type: 'colorCell', x: 2, y: 1, color: 'green', isBlocking: false, width: 1, height: 1 },
-      { id: 'color5', type: 'colorCell', x: 3, y: 2, color: 'red', isBlocking: true, width: 1, height: 1 }
+      { id: 'color2', type: 'colorCell', x: 3, y: 1, color: 'green', isBlocking: false, width: 1, height: 1 },
+      { id: 'color3', type: 'colorCell', x: 5, y: 1, color: 'red', isBlocking: true, width: 1, height: 1 },
+      
+      // Segunda seção - Desvio central
+      { id: 'color4', type: 'colorCell', x: 2, y: 4, color: 'green', isBlocking: false, width: 1, height: 1 },
+      { id: 'color5', type: 'colorCell', x: 4, y: 4, color: 'red', isBlocking: true, width: 1, height: 1 },
+      { id: 'color6', type: 'colorCell', x: 6, y: 4, color: 'green', isBlocking: false, width: 1, height: 1 },
+      
+      // Terceira seção - Passagem estreita
+      { id: 'color7', type: 'colorCell', x: 8, y: 5, color: 'red', isBlocking: true, width: 1, height: 1 },
+      { id: 'color8', type: 'colorCell', x: 8, y: 7, color: 'green', isBlocking: false, width: 1, height: 1 },
+      
+      // Quarta seção - Corredor final
+      { id: 'color9', type: 'colorCell', x: 10, y: 8, color: 'red', isBlocking: true, width: 1, height: 1 },
+      { id: 'color10', type: 'colorCell', x: 10, y: 10, color: 'green', isBlocking: false, width: 1, height: 1 },
+      { id: 'color11', type: 'colorCell', x: 8, y: 10, color: 'red', isBlocking: true, width: 1, height: 1 },
+      { id: 'color12', type: 'colorCell', x: 6, y: 9, color: 'green', isBlocking: false, width: 1, height: 1 },
+      
+      // Objetivo final
+      { id: 'target1', type: 'target', x: 11, y: 11, width: 1, height: 1 }
     ]
   }
 ];

@@ -288,16 +288,98 @@ O sistema foi projetado para ser facilmente extensível:
 - **Novos objetos do jogo**: Estenda o tipo `GameObject` e adicione a lógica necessária
 - **Novos conceitos de programação**: Introduza gradualmente em novos níveis
 
-## 🚀 Futuras Melhorias
+## 🚀 Solucão
 
-- **Sistema de dicas contextual**: Fornecer dicas personalizadas conforme o progresso
-- **Tutoriais interativos**: Introduzir conceitos de forma mais guiada
-- **Modo de criação de níveis**: Permitir que usuários criem seus próprios desafios
-- **Sistema de compartilhamento**: Compartilhar soluções e níveis personalizados
-- **Análise de desempenho**: Métricas sobre eficiência das soluções criadas
-- **Modalidade multiplayer**: Competições e colaborações entre jogadores
-- **Integração com educação formal**: Alinhamento com currículos escolares
-- **Versão móvel**: Adaptação para uso em tablets e smartphones
+- **1**
+```typescript
+moveForward();
+moveForward();
+turnLeft(90);
+moveForward();
+moveForward();
+```
+- **2**
+```typescript
+turnRight(90);
+moveForward();
+moveForward();
+moveForward();
+turnLeft(90);
+moveForward();
+moveForward();
+moveForward();
+```
+- **3**
+```typescript
+repeat(5) {
+moveForward();
+}
+```
+- **4**
+```typescript
+repeat(4) {
+  repeat(4) {
+    moveForward();
+    turnLeft(90);
+  }
+}
+```
+- **5**
+```typescript
+
+```
+
+- **7**
+```typescript
+
+```
+- **7**
+```typescript
+repeat(4) {
+   repeat(2) {
+    moveForward();
+     turnLeft(90);
+  }
+  
+  repeat(2) {
+    moveForward();
+    moveForward();
+    turnLeft(90);
+  }
+}
+```
+- **8**
+```typescript
+repeat(2) {
+   repeat(9) {
+    moveForward();
+  }
+  turnRight(90);
+  moveForward();
+  moveForward();
+  turnRight(90)
+  
+  repeat(9) {
+    moveForward();
+  }
+  turnLeft(90);
+  moveForward();
+  moveForward();
+  turnLeft(90);
+}
+```
+
+- **9**
+```typescript
+while(borda) {
+  moveForward();
+}
+turnRight(90)
+while(borda) {
+  moveForward();
+}
+```
+
 
 ## 📄 Licença
 
