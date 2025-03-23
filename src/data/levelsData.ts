@@ -62,6 +62,7 @@ const LEVELS: Level[] = [
     name: "Padrões Geométricos",
     description: "Crie movimentos repetitivos",
     difficulty: "intermediate",
+    maxBlocks: 4,
     gridSize: { width: 5, height: 5 },
     objects: [
       { ...defaultRobot, x: 0, y: 0 },
@@ -80,15 +81,22 @@ const LEVELS: Level[] = [
     id: 5,
     name: "Introdução a Algoritmos",
     description: "Resolva problemas com estratégia",
+    minBlocks: 7,
+    maxBlocks:11,
     difficulty: "intermediate",
-    gridSize: { width: 9, height: 6 },
+    gridSize: { width: 8, height: 5 },
     objects: [
       { ...defaultRobot, x: 0, y: 0, rotation: 180 },
-      { id: 'obstacle1', type: 'obstacle', x: 2, y: 0, width: 1, height: 3 },
-      { id: 'obstacle2', type: 'obstacle', x: 5, y: 2, width: 1, height: 4 },
-      { id: 'collectible1', type: 'collectible', x: 1, y: 4, width: 1, height: 1 },
-      { id: 'collectible2', type: 'collectible', x: 3, y: 4, width: 1, height: 1 },
-      { id: 'target1', type: 'target', x: 8, y: 0, width: 1, height: 1 }
+
+      { id: 'obstacle1', type: 'obstacle', x: 5, y: 0, width: 1, height: 4},
+      { id: 'obstacle2', type: 'obstacle', x: 2, y: 0, width: 1, height: 4},
+      { id: 'obstacle3', type: 'obstacle', x: 6, y: 1, width: 1, height: 3},
+
+      { id: 'collectible1', type: 'collectible', x: 3, y: 0, width: 1, height: 1 },
+      { id: 'collectible2', type: 'collectible', x: 4, y: 0, width: 1, height: 1 },
+      { id: 'collectible3', type: 'collectible', x: 3, y: 4, width: 1, height: 1 },
+      { id: 'collectible4', type: 'collectible', x: 4, y: 4, width: 1, height: 1 },
+      { id: 'target1', type: 'target', x: 6, y: 0, width: 1, height: 1 }
     ],
     availableCommands: ["moveForward", "turnRight", "turnLeft", "repeat", "stop"],
     objective: "Desenvolva uma estratégia para coletar itens e chegar ao alvo",
