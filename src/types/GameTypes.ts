@@ -1,5 +1,4 @@
 
-// Game object interfaces and types
 export interface GameObject {
   id: string;
   type: 'robot' | 'obstacle' | 'collectible' | 'target' | 'colorCell';

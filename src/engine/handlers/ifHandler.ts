@@ -1,5 +1,5 @@
 
-import { Command, CommandHandler, IGameEngine, ExecutionState } from '../types';
+import { Command, CommandHandler, IGameEngine, ExecutionState } from '../../types/GameTypes';
 
 export class IfHandler implements CommandHandler {
   execute(engine: IGameEngine, command: Command): void {

@@ -1,5 +1,5 @@
 
-import { GameObject } from '@/engine/types';
+import { GameObject } from '@/types/GameTypes';
 
 export interface Level {
   id: number;

@@ -1,8 +1,7 @@
-
-import { IGameEngine } from './types';
+import { IGameEngine } from '../types/GameTypes';
 import { getDirectionVector } from './utils';
-import { completeLevel } from '../data/levelManager';
-import { saveCompletedLevels } from '../data/progressManager';
+import { completeLevel } from '../data/level/levelManager';
+import { saveCompletedLevels } from '../data/level/progressManager';
 
 export class GameVerification {
   private engine: IGameEngine;

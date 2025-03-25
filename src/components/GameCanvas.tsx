@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { GameState, Position } from '@/engine/types';
+import { GameState , GameObject } from '@/types/GameTypes';
 import { Badge } from '@/components/ui/badge';
-import { GameObject } from '@/engine/types';
-import { Level } from '@/data/levelTypes';
+import { Level } from '@/types/levelTypes';
 import { 
   Target,  
   AlertTriangle, 

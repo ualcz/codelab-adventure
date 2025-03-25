@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { BotIcon, Save } from 'lucide-react';
 import LevelSelector from '@/components/LevelSelector';
-import { getCompletedLevels } from '@/data/levelManager';
-import { Level } from '@/data/levelTypes';
+import { getCompletedLevels } from '@/data/level/levelManager';
+import { Level } from '@/types/levelTypes';
 
 interface LevelsTabProps {
   onSelectLevel: (level: Level) => void;

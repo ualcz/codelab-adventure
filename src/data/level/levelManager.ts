@@ -1,11 +1,11 @@
 
-import { Level } from './levelTypes';
+import { Level } from '@/types/levelTypes';
 import LEVELS from './levelsData';
 import { getCompletedLevels, saveCompletedLevels, loadProgress } from './progressManager';
 export { clearProgress } from './progressManager';
 
-export type { GameObject } from '@/engine/types';
-export type { Level } from './levelTypes';
+export type { GameObject } from '@/types/GameTypes';
+export type { Level } from '@/types/levelTypes';
 export { getCompletedLevels };
 
 loadProgress();

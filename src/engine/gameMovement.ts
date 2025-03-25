@@ -1,5 +1,5 @@
 
-import { IGameEngine } from './types';
+import { IGameEngine } from '../types/GameTypes';
 import { getDirectionVector } from './utils';
 
 export class GameMovement {

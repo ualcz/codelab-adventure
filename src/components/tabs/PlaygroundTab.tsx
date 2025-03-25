@@ -4,8 +4,8 @@ import { ArrowLeft, Rocket, Trophy} from 'lucide-react';
 import CodeBlocks from '@/components/codeblocks';
 import GameCanvas from '@/components/GameCanvas';
 import { Command, GameState } from '@/engine';
-import { getLevel } from '@/data/levelManager';
-import { Level } from '@/data/levelTypes';
+import { getLevel } from '@/data/level/levelManager';
+import { Level } from '@/types/levelTypes';
 
 interface PlaygroundTabProps {
   currentLevel?: Level;

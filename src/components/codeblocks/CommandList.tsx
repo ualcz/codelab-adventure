@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Command } from '@/engine/types';
+import { Command } from '@/types/GameTypes';
 import CommandBlock from './CommandBlock';
 import EmptyDropArea from './interface/EmptyDropArea';
 import { 

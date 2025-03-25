@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Command } from '@/engine/types';
+import { Command } from '@/types/GameTypes';
 import { Play, Square, RefreshCw, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import CommandPalette from './interface/CommandPalette';

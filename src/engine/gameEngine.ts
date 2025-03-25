@@ -1,7 +1,7 @@
 
-import { Level } from '../data/levelTypes';
-import { getCompletedLevels } from '../data/progressManager';
-import { GameState, Command, CommandHandler, IGameEngine, GameObject} from './types';
+import { Level } from '../types/levelTypes';
+import { getCompletedLevels } from '../data/level/progressManager';
+import { GameState, Command, CommandHandler, IGameEngine, GameObject} from '../types/GameTypes';
 import { MoveForwardHandler, MoveBackwardHandler, TurnRightHandler, TurnLeftHandler, StopHandler, PaintGreenHandler } from './handlers/commandHandlers';
 import { RepeatHandler } from './handlers/repeatHandler';
 import { WhileHandler } from './handlers/whileHandler';

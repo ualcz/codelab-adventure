@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import GameHeader from '@/components/GameHeader';
-import { Level } from '@/data/levelTypes';
+import { Level } from '@/types/levelTypes';
 import gameEngine, { Command, GameState } from '@/engine';
 import { useToast } from '@/hooks/use-toast';
 

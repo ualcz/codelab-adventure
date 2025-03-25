@@ -1,6 +1,6 @@
 
-import { Level } from './levelTypes';
-import { defaultRobot } from './gameObjects';
+import { Level } from '@/types/levelTypes';
+import { defaultRobot } from '../gameObjects';
 
 const LEVELS: Level[] = [
   {
@@ -309,3 +309,4 @@ const LEVELS: Level[] = [
 ];
 
 export default LEVELS;
+

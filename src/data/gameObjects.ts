@@ -1,4 +1,5 @@
-import { GameObject } from '@/engine/types';
+
+import { GameObject } from '@/types/GameTypes';
 export type { GameObject };
 
 export const defaultRobot: GameObject = {

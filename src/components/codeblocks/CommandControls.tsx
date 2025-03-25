@@ -2,7 +2,7 @@
 import React from 'react';
 import { Plus, Minus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Command } from '@/engine/types';
+import { Command } from '@/types/GameTypes';
 
 interface CommandControlsProps {
   command: Command;

@@ -1,5 +1,5 @@
 
-import { Command, CommandHandler, IGameEngine} from '../types';
+import { Command, CommandHandler, IGameEngine} from '../../types/GameTypes';
 
 export class RepeatHandler implements CommandHandler {
   execute(engine: IGameEngine, command: Command): void {

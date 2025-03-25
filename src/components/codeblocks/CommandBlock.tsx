@@ -11,7 +11,7 @@ import {
   Paintbrush
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Command } from '@/engine/types';
+import { Command } from '@/types/GameTypes';
 import { CommandBlockProps } from './types';
 import DropIndicator from './interface/DropIndicator';
 import DropZone from './interface/DropZone';

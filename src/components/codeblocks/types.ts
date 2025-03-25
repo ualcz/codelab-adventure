@@ -1,4 +1,4 @@
-import { Command } from '@/engine/types';
+import { Command } from '@/types/GameTypes';
 
 export interface CodeBlocksProps {
   availableCommands: string[];

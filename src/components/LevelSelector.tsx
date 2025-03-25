@@ -1,5 +1,5 @@
 import React from 'react';
-import { Level, getLevels } from '@/data/levelManager';
+import { Level, getLevels } from '@/data/level/levelManager';
 import { CheckSquare, Lock, BotIcon } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 

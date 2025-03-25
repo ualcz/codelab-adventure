@@ -1,7 +1,6 @@
-
-import { GameState, Command } from './types';
+import { GameState, Command } from '../types/GameTypes';
 import { createInitialRobot } from './utils';
-import { Level } from '../data/levelTypes';
+import { Level } from '../types/levelTypes';
 
 export class StateManager {
   private initialRobotState: any;
