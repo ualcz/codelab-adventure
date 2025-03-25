@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Plus, Minus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -70,7 +71,7 @@ const CommandControls: React.FC<CommandControlsProps> = ({ command, isRunning, o
       >
         <option value="untilBorder" className="bg-pink-400 text-white">não encontrar borda</option>
         <option value="untilBarrier" className="bg-pink-400 text-white">não encontrar barreira</option>
-        <option value="untilCollectible" className="bg-pink-400 text-white">não encontrar moeda</option>
+        <option value="untilCollectible" className="bg-pink-400 text-white"> não encontrar moeda</option>
       </select>
     );
   }

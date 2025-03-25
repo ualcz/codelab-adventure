@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Command } from '@/engine/types';
 import { Play, Square, RefreshCw, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import CommandPalette from './CommandPalette';
+import CommandPalette from './interface/CommandPalette';
 import CommandList from '@/components/ui/codeblocks/CommandList';
 import { CodeBlocksProps } from './types';
 import gameEngine from '@/engine/gameEngine';

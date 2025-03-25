@@ -1,3 +1,4 @@
+
 import { Command } from '@/engine/types';
 
 // Deep clone the commands array
@@ -78,7 +79,7 @@ export const updateCommand = (commands: Command[], path: (number | string)[], co
   return newCommands;
 };
 
-// Add dummy command for nested repeats
+// Add dummy command for nested repeats and while loops
 export const addDummyCommand = (commands: Command[]) => {
   const newCommands = [...commands];
   const dummyCommand: Command = {
@@ -87,27 +88,28 @@ export const addDummyCommand = (commands: Command[]) => {
     params: { isDummy: true }
   };
   
-  // Find the last repeat in the list
-  let lastRepeatIndex = -1;
+  // Find the last repeat or while in the list
+  let lastIndex = -1;
   for (let i = newCommands.length - 1; i >= 0; i--) {
-    if (newCommands[i].id === 'repeat') {
-      lastRepeatIndex = i;
+    if (newCommands[i].id === 'repeat' || newCommands[i].id === 'while') {
+      lastIndex = i;
       break;
     }
   }
   
-  if (lastRepeatIndex !== -1) {
-    // Insert the dummy command after the last repeat
-    newCommands.splice(lastRepeatIndex + 1, 0, dummyCommand);
+  if (lastIndex !== -1) {
+    // Insert the dummy command after the last repeat or while
+    newCommands.splice(lastIndex + 1, 0, dummyCommand);
   }
   
   return newCommands;
 };
 
-// Check if there are nested repeats in the commands
+// Check if there are nested repeats or while loops in the commands
 export const hasNestedRepeats = (commands: Command[]) => {
   for (let i = 0; i < commands.length; i++) {
-    if (commands[i].id === 'repeat' && commands[i].children?.some(child => child.id === 'repeat')) {
+    if ((commands[i].id === 'repeat' || commands[i].id === 'while') && 
+        commands[i].children?.some(child => child.id === 'repeat' || child.id === 'while')) {
       return true;
     }
   }

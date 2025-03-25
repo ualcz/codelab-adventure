@@ -2,7 +2,7 @@
 import React from 'react';
 import { Command } from '@/engine/types';
 import CommandBlock from '@/components/codeblocks/CommandBlock';
-import EmptyDropArea from '@/components/codeblocks/EmptyDropArea';
+import EmptyDropArea from '@/components/codeblocks/interface/EmptyDropArea';
 import { 
   removeCommand, 
   updateCommand, 
@@ -44,9 +44,9 @@ const CommandList: React.FC<CommandListProps> = ({
 
   // Modifies the onCommandsChange to add the dummy command if needed
   const handleCommandsChange = (newCommands: Command[]) => {
-    // Check if there are nested repeats
+    // Check if there are nested repeats or while loops
     if (hasNestedRepeats(newCommands)) {
-      // Add the dummy command only if there are nested repeats
+      // Add the dummy command only if there are nested repeats/whiles
       const commandsWithDummy = addDummyCommand(newCommands);
       onCommandsChange(commandsWithDummy);
     } else {
@@ -76,6 +76,18 @@ const CommandList: React.FC<CommandListProps> = ({
         } else if (block.id === 'if') {
           newCommand.params = { condition: 'isGreen' };
           newCommand.children = [];
+        } else if (block.id === 'while') {
+          newCommand.params = { condition: 'untilBarrier' };
+          newCommand.children = [];
+          
+          // Atualiza o nome com base na condição
+          if (newCommand.params.condition === 'untilBarrier') {
+            newCommand.name = 'Enquanto não encontrar barreira';
+          } else if (newCommand.params.condition === 'untilBorder') {
+            newCommand.name = 'Enquanto não encontrar borda';
+          } else if (newCommand.params.condition === 'untilCollectible') {
+            newCommand.name = 'Até coletar moeda';
+          }
         }
         
         handleCommandsChange([...commands, newCommand]);
@@ -113,6 +125,18 @@ const CommandList: React.FC<CommandListProps> = ({
         } else if (block.id === 'if') {
           newCommand.params = { condition: 'isGreen' };
           newCommand.children = [];
+        } else if (block.id === 'while') {
+          newCommand.params = { condition: 'untilBarrier' };
+          newCommand.children = [];
+          
+          // Atualiza o nome com base na condição
+          if (newCommand.params.condition === 'untilBarrier') {
+            newCommand.name = 'Enquanto não encontrar barreira';
+          } else if (newCommand.params.condition === 'untilBorder') {
+            newCommand.name = 'Enquanto não encontrar borda';
+          } else if (newCommand.params.condition === 'untilCollectible') {
+            newCommand.name = 'Até coletar moeda';
+          }
         }
         
         handleCommandsChange([...commands, newCommand]);

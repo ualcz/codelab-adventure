@@ -4,15 +4,12 @@ import LEVELS from './levelsData';
 import { getCompletedLevels, saveCompletedLevels, loadProgress } from './progressManager';
 export { clearProgress } from './progressManager';
 
-// Re-export types and interfaces
 export type { GameObject } from '@/engine/types';
 export type { Level } from './levelTypes';
 export { getCompletedLevels };
 
-// Load progress when module is first imported
 loadProgress();
 
-// Level management functions
 export const getLevels = (): Level[] => {
   return LEVELS;
 };
@@ -36,13 +33,11 @@ export const completeLevel = (id: number): void => {
   const level = LEVELS.find(level => level.id === id);
   if (level) {
     level.completed = true;
-    // Unlock next level if exists
     const nextLevel = LEVELS.find(level => level.id === id + 1);
     if (nextLevel) {
       nextLevel.unlocked = true;
     }
     
-    // Save completed levels to localStorage
     saveCompletedLevels();
   }
 };

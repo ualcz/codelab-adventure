@@ -1,3 +1,4 @@
+
 import { IGameEngine } from './types';
 import { getDirectionVector } from './utils';
 import { completeLevel } from '../data/levelManager';
@@ -25,103 +26,81 @@ export class GameVerification {
     );
     
     const result = !!cellInFront;
-    console.log(`Checking if cell in front (${frontX},${frontY}) is ${color}: ${result}`);
+    console.log(`Verificando se a célula na frente (${frontX},${frontY}) é ${color}: ${result}`);
     
     return result;
   }
   
   isCollectibleInFrontOfRobot(): boolean {
     const { robot, objects } = this.engine.state;
-    const direction = getDirectionVector(robot.rotation || 0);
-    
-    const frontX = robot.x + direction.x;
-    const frontY = robot.y + direction.y;
+    const position = this.getPositionInFrontOfRobot();
     
     return objects.some(obj => 
       obj.type === 'collectible' && 
-      obj.x === frontX && 
-      obj.y === frontY
+      obj.x === position.x && 
+      obj.y === position.y
     );
   }
   
   isTargetInFrontOfRobot(): boolean {
     const { robot, objects } = this.engine.state;
-    const direction = getDirectionVector(robot.rotation || 0);
-    
-    const frontX = robot.x + direction.x;
-    const frontY = robot.y + direction.y;
+    const position = this.getPositionInFrontOfRobot();
     
     return objects.some(obj => 
       obj.type === 'target' && 
-      obj.x === frontX && 
-      obj.y === frontY
+      obj.x === position.x && 
+      obj.y === position.y
     );
   }
   
   isBorderInFrontOfRobot(): boolean {
     const { robot, gridSize } = this.engine.state;
-    const direction = getDirectionVector(robot.rotation || 0);
+    const position = this.getPositionInFrontOfRobot();
     
-    const frontX = robot.x + direction.x;
-    const frontY = robot.y + direction.y;
-    
-    return frontX < 0 || frontX >= gridSize.width || frontY < 0 || frontY >= gridSize.height;
+    return position.x < 0 || position.x >= gridSize.width || position.y < 0 || position.y >= gridSize.height;
   }
   
   isBarrierInFrontOfRobot(): boolean {
-    const { robot, objects, gridSize } = this.engine.state;
-    const direction = getDirectionVector(robot.rotation || 0);
+    const { objects } = this.engine.state;
+    const position = this.getPositionInFrontOfRobot();
     
-    const frontX = robot.x + direction.x;
-    const frontY = robot.y + direction.y;
+    // Verifica todos os objetos para encontrar obstáculos
+    const obstacles = this.findObstaclesAtPosition(position);
     
-    // Verifica todos os objetos para encontrar obstáculos que ocupam a posição (frontX, frontY)
-    const obstaclesAtPosition = objects.filter(obj => {
-      // Verifica se o objeto é um obstáculo ou uma célula vermelha bloqueante
-      const isBlockingType = obj.type === 'obstacle' ;
+    return obstacles.length > 0;
+  }
+  
+  private findObstaclesAtPosition(position: {x: number, y: number}): any[] {
+    const { objects } = this.engine.state;
+    
+    return objects.filter(obj => {
+      const isBlockingType = obj.type === 'obstacle';
       
       if (!isBlockingType) return false;
       
-      // Verifica se o objeto ocupa a posição (frontX, frontY)
-      // Considerando que objetos podem ter width e height > 1
+      // Verifica se o objeto ocupa a posição
       const objEndX = obj.x + (obj.width || 1) - 1;
       const objEndY = obj.y + (obj.height || 1) - 1;
       
       return (
-        frontX >= obj.x && frontX <= objEndX &&
-        frontY >= obj.y && frontY <= objEndY
+        position.x >= obj.x && position.x <= objEndX &&
+        position.y >= obj.y && position.y <= objEndY
       );
     });
+  }
+  
+  private getPositionInFrontOfRobot(): {x: number, y: number} {
+    const { robot } = this.engine.state;
+    const direction = getDirectionVector(robot.rotation || 0);
     
-    // Verifica se há algum objeto na posição
-    const objectsAtPosition = objects.filter(obj => {
-      const objEndX = obj.x + (obj.width || 1) - 1;
-      const objEndY = obj.y + (obj.height || 1) - 1;
-      
-      return (
-        frontX >= obj.x && frontX <= objEndX &&
-        frontY >= obj.y && frontY <= objEndY
-      );
-    });
-    
-    if (objectsAtPosition.length === 0) {
-    } else {
-      objectsAtPosition.forEach(obj => {
-      });
-    }
-    
-    const result = obstaclesAtPosition.length > 0;
-    if (result) {
-      obstaclesAtPosition.forEach(obj => {
-      });
-    } else {
-    }
-    
-    return result;
+    return {
+      x: robot.x + direction.x,
+      y: robot.y + direction.y
+    };
   }
   
   checkCollectibles(): void {
-    const { robot, objects } = this.engine.state;
+    const { robot, objects, commands, executionPointer } = this.engine.state;
     
     const collectibleIndex = objects.findIndex(obj => 
       obj.type === 'collectible' && obj.x === robot.x && obj.y === robot.y
@@ -131,7 +110,48 @@ export class GameVerification {
       this.engine.state.objects.splice(collectibleIndex, 1);
       this.engine.state.collectiblesGathered++;
       
+      this.checkWhileLoopCollectibleCondition();
+      
       this.engine.notifyUpdate();
+    }
+  }
+  
+  checkWhileLoopCollectibleCondition(): void {
+    const { commands, executionPointer } = this.engine.state;
+    
+    if (commands && executionPointer < commands.length) {
+      this.checkCommandForCollectibleCondition(commands[executionPointer]);
+      
+      for (let i = 0; i < commands.length; i++) {
+        if (i === executionPointer) continue;
+        
+        this.checkCommandForCollectibleCondition(commands[i]);
+        
+        if (commands[i].children) {
+          this.checkNestedCommandsForCollectible(commands[i].children);
+        }
+      }
+    }
+  }
+  
+  private checkCommandForCollectibleCondition(command: any): void {
+    if (command && command.id === 'while' && command.params) {
+      if (command.params.condition === 'untilCollectible' && command.params.executionState) {
+        command.params.executionState.collectibleCollected = true;
+        console.log('Coletável obtido: finalizando loop while');
+      }
+    }
+  }
+  
+  private checkNestedCommandsForCollectible(commands: any[]): void {
+    if (!commands || !Array.isArray(commands)) return;
+    
+    for (const cmd of commands) {
+      this.checkCommandForCollectibleCondition(cmd);
+      
+      if (cmd.children) {
+        this.checkNestedCommandsForCollectible(cmd.children);
+      }
     }
   }
   
@@ -150,24 +170,26 @@ export class GameVerification {
   checkLevelComplete(): void {
     const { collectiblesGathered, totalCollectibles, maxBlocks, blocksUsed } = this.engine.state;
     
-    // Check if block limit exceeded (if there is a limit)
     if (maxBlocks !== undefined && blocksUsed > maxBlocks) {
-      this.engine.missionFailed("You exceeded the maximum number of blocks allowed!");
+      this.engine.missionFailed("Você excedeu o número máximo de blocos permitidos!");
       return;
     }
     
-    // Check if collected all required items
     if (totalCollectibles === 0 || collectiblesGathered === totalCollectibles) {
       this.engine.state.isComplete = true;
       this.engine.stop();
       
-      if (this.engine.state.isComplete && this.engine.level) {
-        const levelId = this.engine.level && typeof this.engine.level === 'object' ? this.engine.level.id : null;
-        if (levelId) {
-          completeLevel(levelId);
-          saveCompletedLevels();
-          console.log(`Level ${levelId} completed and saved to localStorage!`);
-        }
+      this.saveLevelProgress();
+    }
+  }
+  
+  private saveLevelProgress(): void {
+    if (this.engine.state.isComplete && this.engine.level) {
+      const levelId = this.engine.level && typeof this.engine.level === 'object' ? this.engine.level.id : null;
+      if (levelId) {
+        completeLevel(levelId);
+        saveCompletedLevels();
+        console.log(`Nível ${levelId} completado e salvo no localStorage!`);
       }
     }
   }
@@ -178,12 +200,12 @@ export class GameVerification {
     const { robot, objects, collectiblesGathered, totalCollectibles, maxMoves, moves } = this.engine.state;
     
     if (maxMoves !== undefined && moves > maxMoves) {
-      this.engine.missionFailed("You exceeded the maximum number of moves!");
+      this.engine.missionFailed("Você excedeu o número máximo de movimentos!");
       return;
     }
 
     if (this.engine.state.maxBlocks !== undefined && this.engine.state.blocksUsed > this.engine.state.maxBlocks) {
-      this.engine.missionFailed("You exceeded the maximum number of blocks allowed!");
+      this.engine.missionFailed("Você excedeu o número máximo de blocos permitidos!");
       return;
     }
     
@@ -195,7 +217,7 @@ export class GameVerification {
     
     if (this.engine.state.executionPointer >= this.engine.state.commands.length) {
       if (!onTarget || (totalCollectibles > 0 && !allCollectiblesGathered)) {
-        this.engine.missionFailed("You did not complete all mission objectives!");
+        this.engine.missionFailed("Você não completou todos os objetivos da missão!");
       }
     }
   }
@@ -212,9 +234,9 @@ export class GameVerification {
     
     const result = !!cellAtRobot;
     
-    console.log(`Checking if robot is on ${color} cell: ${result}`, { 
-      robotPos: { x: robot.x, y: robot.y },
-      cellAtRobot
+    console.log(`Verificando se o robô está em uma célula ${color}: ${result}`, { 
+      posRobo: { x: robot.x, y: robot.y },
+      celulaNoRobo: cellAtRobot
     });
     
     return result;

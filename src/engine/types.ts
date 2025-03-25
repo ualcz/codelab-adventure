@@ -1,3 +1,4 @@
+
 // Game object interfaces and types
 export interface GameObject {
   id: string;
@@ -34,6 +35,9 @@ export interface ExecutionState {
   maxIterations?: number;
   childrenCompleted?: boolean[];
   nestedCommandsState?:{}
+  // Extended for while-handler with collectible condition
+  collectibleCollected?: boolean;
+  prevCollectibleCount?: number;
 }
 
 export interface GameState {

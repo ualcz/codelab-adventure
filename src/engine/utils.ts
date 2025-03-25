@@ -23,7 +23,7 @@ export function createInitialRobot(): GameObject {
     y: 0,
     width: 1,
     height: 1,
-    rotation: 90 // Default direction (pointing right)
+    rotation: 90 
   };
 }
 

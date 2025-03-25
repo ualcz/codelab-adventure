@@ -1,7 +1,8 @@
+
 import React from 'react';
 import { Command } from '@/engine/types';
 import CommandBlock from './CommandBlock';
-import EmptyDropArea from './EmptyDropArea';
+import EmptyDropArea from './interface/EmptyDropArea';
 import { 
   removeCommand, 
   updateCommand, 
@@ -41,15 +42,11 @@ const CommandList: React.FC<CommandListProps> = ({
     handleCommandsChange(newCommands);
   };
 
-  // Modifies the onCommandsChange to add the dummy command if needed
   const handleCommandsChange = (newCommands: Command[]) => {
-    // Check if there are nested repeats
     if (hasNestedRepeats(newCommands)) {
-      // Add the dummy command only if there are nested repeats
       const commandsWithDummy = addDummyCommand(newCommands);
       onCommandsChange(commandsWithDummy);
     } else {
-      // Remove any existing dummy command
       const filteredCommands = newCommands.filter(cmd => !cmd.params?.isDummy);
       onCommandsChange(filteredCommands);
     }
@@ -98,17 +95,14 @@ const CommandList: React.FC<CommandListProps> = ({
       const dragData = JSON.parse(data);
       
       if (dragData.type === 'command') {
-        // Move an existing command to the end
         handleMoveCommand(dragData.path, [], 'after');
       } else if (dragData.type === 'block') {
-        // Add a new block from the palette
         const block = dragData.block;
         const newCommand: Command = {
           id: block.id,
           name: block.name
         };
         
-        // Add params for specific block types
         if (block.id === 'repeat') {
           newCommand.params = { count: 3 };
           newCommand.children = [];
@@ -136,7 +130,6 @@ const CommandList: React.FC<CommandListProps> = ({
       ) : (
         <div>
           {commands.map((command, index) => (
-            // Don't render if it's a dummy command
             !command.params?.isDummy && (
               <CommandBlock
                 key={index}
@@ -150,7 +143,6 @@ const CommandList: React.FC<CommandListProps> = ({
             )
           ))}
           
-          {/* Empty area at the end for dropping */}
           {!isRunning && (
             <div 
               className="h-20"

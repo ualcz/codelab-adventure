@@ -1,3 +1,4 @@
+
 import { Level } from '../data/levelTypes';
 import { getCompletedLevels } from '../data/progressManager';
 import { GameState, Command, CommandHandler, IGameEngine, GameObject} from './types';
@@ -5,25 +6,25 @@ import { MoveForwardHandler, MoveBackwardHandler, TurnRightHandler, TurnLeftHand
 import { RepeatHandler } from './handlers/repeatHandler';
 import { WhileHandler } from './handlers/whileHandler';
 import { IfHandler } from './handlers/ifHandler';
-import { createInitialRobot, resetCommandStates, getDirectionVector } from './utils';
+import { resetCommandStates, getDirectionVector } from './utils';
 import { GameMovement } from './gameMovement';
 import { GameVerification } from './gameVerification';
+import { StateManager } from './stateManager';
 
 class GameEngine implements IGameEngine {
   state: GameState;
   level: Level | null = null;
   private intervalId: number | null = null;
   private onUpdateCallback: ((state: GameState) => void) | null = null;
-  private initialRobotState: GameObject;
-  private initialObjects: GameObject[] = [];
   private commandHandlers: Map<string, CommandHandler>;
   private colorCycleInterval: number | null = null;
   private movement: GameMovement;
   private verification: GameVerification;
+  private stateManager: StateManager;
   
   constructor() {
-    this.state = this.createInitialState();
-    this.initialRobotState = { ...this.state.robot };
+    this.stateManager = new StateManager();
+    this.state = this.stateManager.createInitialState();
     
     this.commandHandlers = new Map();
     this.registerCommandHandlers();
@@ -44,49 +45,9 @@ class GameEngine implements IGameEngine {
     this.commandHandlers.set('if', new IfHandler());
   }
 
-  private createInitialState(): GameState {
-    return {
-      robot: createInitialRobot(),
-      objects: [],
-      gridSize: { width: 10, height: 10 },
-      isRunning: false,
-      isComplete: false,
-      isFailed: false,
-      collectiblesGathered: 0,
-      totalCollectibles: 0,
-      moves: 0,
-      blocksUsed: 0,
-      commands: [],
-      executionPointer: 0,
-      speed: 500
-    };
-  }
-
   loadLevel(level: Level): void {
     this.level = level;
-    
-    const robotObj = level.objects.find(obj => obj.type === 'robot');
-    const collectibles = level.objects.filter(obj => obj.type === 'collectible');
-    const nonRobotObjects = level.objects.filter(obj => obj.type !== 'robot');
-    
-    this.state = {
-      ...this.createInitialState(),
-      robot: robotObj ? 
-        {
-          ...(robotObj as GameObject)
-        } : 
-        {
-          ...this.state.robot
-        },
-      objects: [...nonRobotObjects as GameObject[]],
-      gridSize: level.gridSize,
-      totalCollectibles: collectibles.length,
-      maxMoves: level.maxMoves,
-      maxBlocks: level.maxBlocks
-    };
-    
-    this.initialRobotState = { ...this.state.robot };
-    this.initialObjects = JSON.parse(JSON.stringify(nonRobotObjects));
+    this.state = this.stateManager.prepareLevel(this.state, level);
     
     this.startColorCycling(level.colorCycleSpeed || 800);
     
@@ -95,23 +56,7 @@ class GameEngine implements IGameEngine {
 
   setCommands(commands: Command[]): void {
     this.state.commands = commands;
-    
-    // Count total blocks
-    const countBlocks = (cmds: Command[]): number => {
-      return cmds.reduce((total, cmd) => {
-        // Don't count dummy commands
-        if (cmd.params?.isDummy) return total;
-        // Add 1 for current command
-        let count = 1;
-        // Recursively count child blocks (for repeat and if)
-        if (cmd.children && cmd.children.length > 0) {
-          count += countBlocks(cmd.children);
-        }
-        return total + count;
-      }, 0);
-    };
-
-    this.state.blocksUsed = countBlocks(commands);
+    this.state.blocksUsed = this.stateManager.countBlocksUsed(commands);
     this.notifyUpdate();
   }
 
@@ -122,25 +67,22 @@ class GameEngine implements IGameEngine {
 
   start(): void {
     if (this.state.isRunning) {
-      console.log("Game is already running");
+      console.log("Jogo já está em execução");
       return;
     }
     
     if (!this.state.commands || !this.state.commands.length) {
-      console.warn("No commands to execute");
+      console.warn("Nenhum comando para executar");
       return;
     }
 
-    // Check if exceeding block limit before starting
+    // Verifica se excede o limite de blocos antes de iniciar
     if (this.state.maxBlocks !== undefined && this.state.blocksUsed > this.state.maxBlocks) {
-      this.missionFailed("You exceeded the maximum number of blocks allowed!");
+      this.missionFailed("Você excedeu o número máximo de blocos permitidos!");
       return;
     }
     
-    if (this.intervalId !== null) {
-      clearInterval(this.intervalId);
-      this.intervalId = null;
-    }
+    this.stopExecution();
     
     resetCommandStates(this.state.commands);
     this.state.isRunning = true;
@@ -149,7 +91,7 @@ class GameEngine implements IGameEngine {
     this.state.moves = 0;
     this.state.collectiblesGathered = 0;
     
-    console.log("Starting command execution:", this.state.commands);
+    console.log("Iniciando execução de comandos:", this.state.commands);
     
     this.intervalId = window.setInterval(() => {
       if (!this.state.isRunning) {
@@ -163,13 +105,17 @@ class GameEngine implements IGameEngine {
     this.notifyUpdate();
   }
 
-  stop(): void {
-    if (!this.state.isRunning) return;
-    
+  private stopExecution(): void {
     if (this.intervalId !== null) {
       clearInterval(this.intervalId);
       this.intervalId = null;
     }
+  }
+
+  stop(): void {
+    if (!this.state.isRunning) return;
+    
+    this.stopExecution();
     
     this.state.isRunning = false;
     this.notifyUpdate();
@@ -180,30 +126,15 @@ class GameEngine implements IGameEngine {
   }
 
   reset(): void {
-    if (this.intervalId !== null) {
-      clearInterval(this.intervalId);
-      this.intervalId = null;
-    }
-    
-    this.state.robot = { ...this.initialRobotState };
-    this.state.objects = JSON.parse(JSON.stringify(this.initialObjects));
-    
-    this.state.isRunning = false;
-    this.state.isComplete = false;
-    this.state.isFailed = false;
-    this.state.moves = 0;
-    this.state.collectiblesGathered = 0;
-    this.state.executionPointer = 0;
-    
+    this.stopExecution();
+    this.state = this.stateManager.resetState(this.state);
     resetCommandStates(this.state.commands);
-    
     this.notifyUpdate();
   }
 
   resetAll(): void {
     this.reset();
-    this.state.blocksUsed = 0;
-    this.state.commands = [];
+    this.state = this.stateManager.resetAllState(this.state);
     this.notifyUpdate();
   }
 
@@ -213,33 +144,13 @@ class GameEngine implements IGameEngine {
     }
     
     if (this.state.executionPointer >= this.state.commands.length) {
-      console.log("End of commands reached");
+      console.log("Fim dos comandos alcançado");
       this.verification.checkMissionFailure();
       this.stop();
       return;
     }
     
-    // Check for infinite loops - limit to 1000 consecutive repeat executions 
-    // at the same pointer to prevent game freezing
-    if (!this.state._safetyCounter) {
-      this.state._safetyCounter = {
-        pointer: this.state.executionPointer,
-        count: 0
-      };
-    }
-    
-    if (this.state._safetyCounter.pointer === this.state.executionPointer) {
-      this.state._safetyCounter.count++;
-      if (this.state._safetyCounter.count > 1000) {
-        console.error("Possible infinite loop detected! Stopping execution.");
-        this.stop();
-        this.missionFailed("Your code appears to be in an infinite loop. Check your 'repeat' blocks.");
-        return;
-      }
-    } else {
-      this.state._safetyCounter.pointer = this.state.executionPointer;
-      this.state._safetyCounter.count = 0;
-    }
+    this.checkInfiniteLoop();
     
     try {
       const command = this.state.commands[this.state.executionPointer];
@@ -250,10 +161,10 @@ class GameEngine implements IGameEngine {
         return;
       }
 
-      console.log("Executing command:", command, "at position:", this.state.executionPointer);
+      console.log("Executando comando:", command, "na posição:", this.state.executionPointer);
 
       if (!command || typeof command !== 'object' || !command.id) {
-        console.warn("Invalid command found:", command);
+        console.warn("Comando inválido encontrado:", command);
         this.stop();
         return;
       }
@@ -263,16 +174,38 @@ class GameEngine implements IGameEngine {
       if (command.id !== 'repeat' && command.id !== 'if' && command.id !== 'while') {
         const isInsideRepeat = this.isCommandInsideRepeat(this.state.executionPointer);
         if (!isInsideRepeat) {
-          console.log("Command outside repeat, incrementing pointer");
+          console.log("Comando fora de repetição, incrementando ponteiro");
           this.state.executionPointer++;
         }
       }
       
       this.notifyUpdate();
     } catch (error) {
-      console.error("Execution error:", error);
+      console.error("Erro de execução:", error);
       this.stop();
-      this.missionFailed("Error executing command");
+      this.missionFailed("Erro ao executar comando");
+    }
+  }
+
+  private checkInfiniteLoop(): void {
+    if (!this.state._safetyCounter) {
+      this.state._safetyCounter = {
+        pointer: this.state.executionPointer,
+        count: 0
+      };
+    }
+    
+    if (this.state._safetyCounter.pointer === this.state.executionPointer) {
+      this.state._safetyCounter.count++;
+      if (this.state._safetyCounter.count > 1000) {
+        console.error("Possível loop infinito detectado! Interrompendo execução.");
+        this.stop();
+        this.missionFailed("Seu código parece estar em um loop infinito. Verifique seus blocos 'repetir'.");
+        return;
+      }
+    } else {
+      this.state._safetyCounter.pointer = this.state.executionPointer;
+      this.state._safetyCounter.count = 0;
     }
   }
 
@@ -291,18 +224,18 @@ class GameEngine implements IGameEngine {
 
   executeCommand(command: Command): void {
     if (!command || !command.id) {
-      console.warn("Invalid command:", command);
+      console.warn("Comando inválido:", command);
       return;
     }
     
     const handler = this.commandHandlers.get(command.id);
     
     if (!handler) {
-      console.warn(`Handler not found for command: ${command.id}`);
+      console.warn(`Manipulador não encontrado para o comando: ${command.id}`);
       return;
     }
     
-    console.log(`Executing command: ${command.id}`);
+    console.log(`Executando comando: ${command.id}`);
     handler.execute(this, command);
   }
 
@@ -342,18 +275,15 @@ class GameEngine implements IGameEngine {
     this.verification.checkTarget();
   }
 
-  missionFailed(reason: string = "You did not complete the mission!"): void {
-    if (this.intervalId !== null) {
-      clearInterval(this.intervalId);
-      this.intervalId = null;
-    }
+  missionFailed(reason: string = "Você não completou a missão!"): void {
+    this.stopExecution();
     
     this.state.isFailed = true;
     this.state.isRunning = false;
     
-    this.state.robot = { ...this.initialRobotState };
+    this.state.robot = { ...this.stateManager.getInitialRobot() };
     
-    console.log("Mission failed:", reason);
+    console.log("Missão falhou:", reason);
     
     this.notifyUpdate();
   }
@@ -381,9 +311,9 @@ class GameEngine implements IGameEngine {
         lastSaved: new Date().toISOString()
       }));
       
-      console.log('Progress saved successfully!');
+      console.log('Progresso salvo com sucesso!');
     } catch (error) {
-      console.error('Error saving progress:', error);
+      console.error('Erro ao salvar progresso:', error);
     }
   }
 
@@ -452,11 +382,11 @@ class GameEngine implements IGameEngine {
   }
 
   debugGameState(): void {
-    console.log("=== DEBUG GAME STATE ===");
-    console.log("Robot position:", this.state.robot);
-    console.log("Color cells:", this.state.objects.filter(obj => obj.type === 'colorCell'));
-    console.log("Execution pointer:", this.state.executionPointer);
-    console.log("Commands:", this.state.commands);
+    console.log("=== DEBUG ESTADO DO JOGO ===");
+    console.log("Posição do robô:", this.state.robot);
+    console.log("Células coloridas:", this.state.objects.filter(obj => obj.type === 'colorCell'));
+    console.log("Ponteiro de execução:", this.state.executionPointer);
+    console.log("Comandos:", this.state.commands);
     console.log("=======================");
   }
 }

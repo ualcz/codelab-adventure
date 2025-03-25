@@ -1,7 +1,6 @@
 
 import LEVELS from './levelsData';
 
-// Get completed levels from localStorage
 export const getCompletedLevels = (): number[] => {
   try {
     const savedProgress = localStorage.getItem('gameProgress');
@@ -12,8 +11,6 @@ export const getCompletedLevels = (): number[] => {
       }
     }
     
-    // If nothing is found in localStorage or format is incorrect,
-    // calculate from the current LEVELS array
     return LEVELS.filter(level => level.completed).map(level => level.id);
   } catch (error) {
     console.error('Error retrieving completed levels:', error);
@@ -21,7 +18,6 @@ export const getCompletedLevels = (): number[] => {
   }
 };
 
-// Save completed levels to localStorage
 export const saveCompletedLevels = (): void => {
   try {
     const completedLevelIds = LEVELS.filter(level => level.completed).map(level => level.id);
@@ -30,7 +26,6 @@ export const saveCompletedLevels = (): void => {
       lastSaved: new Date().toISOString()
     }));
     
-    // Dispatch a storage event to notify other tabs
     window.dispatchEvent(new Event('storage'));
     
     console.log('Progress saved:', completedLevelIds);
@@ -39,12 +34,10 @@ export const saveCompletedLevels = (): void => {
   }
 };
 
-// Clear all progress from localStorage
 export const clearProgress = (): void => {
   try {
     localStorage.removeItem('gameProgress');
     
-    // Reset all levels in memory
     LEVELS.forEach(level => {
       level.completed = false;
       if (level.id === 1) {
@@ -54,7 +47,6 @@ export const clearProgress = (): void => {
       }
     });
     
-    // Dispatch a storage event to notify other tabs
     window.dispatchEvent(new Event('storage'));
     
     console.log('Progress cleared successfully');
@@ -63,27 +55,22 @@ export const clearProgress = (): void => {
   }
 };
 
-// Load progress from localStorage and apply to LEVELS
 export const loadProgress = (): void => {
   try {
     const completedLevelIds = getCompletedLevels();
     
-    // First, reset all levels (except the first one)
     LEVELS.forEach(level => {
       level.completed = false;
       level.unlocked = level.id === 1;
     });
     
-    // Apply completed levels and unlock next level
     completedLevelIds.forEach(levelId => {
       const level = LEVELS.find(l => l.id === levelId);
       if (level) {
         level.completed = true;
         
-        // Unlock this level (in case it wasn't already)
         level.unlocked = true;
         
-        // Unlock next level if exists
         const nextLevel = LEVELS.find(l => l.id === levelId + 1);
         if (nextLevel) {
           nextLevel.unlocked = true;

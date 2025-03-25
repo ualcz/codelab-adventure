@@ -1,6 +1,6 @@
+
 import { Command } from '@/engine/types';
 
-// Get a command by path
 export const getCommandByPath = (commands: Command[], path: (number | string)[]) => {
   let current = [...commands];
   let currentCommand = null;
@@ -18,17 +18,12 @@ export const getCommandByPath = (commands: Command[], path: (number | string)[])
   return currentCommand;
 };
 
-// Deep clone the commands array
 export const cloneCommands = (commands: Command[]) => JSON.parse(JSON.stringify(commands));
 
-// Count blocks in commands
 export const countBlocks = (commands: Command[]): number => {
   return commands.reduce((total, cmd) => {
-    // Não conta comandos dummy
     if (cmd.params?.isDummy) return total;
-    // Adiciona 1 para o comando atual
     let count = 1;
-    // Recursivamente conta blocos filhos (para repeat e if)
     if (cmd.children && cmd.children.length > 0) {
       count += countBlocks(cmd.children);
     }
@@ -36,7 +31,6 @@ export const countBlocks = (commands: Command[]): number => {
   }, 0);
 };
 
-// Add dummy command after loops (used for nested repeats)
 export const addDummyCommand = (commands: Command[]) => {
   const newCommands = [...commands];
   const dummyCommand: Command = {
@@ -45,34 +39,34 @@ export const addDummyCommand = (commands: Command[]) => {
     params: { isDummy: true }
   };
   
-  // Procura o último repeat na lista
-  let lastRepeatIndex = -1;
+  let lastLoopIndex = -1;
   for (let i = newCommands.length - 1; i >= 0; i--) {
-    if (newCommands[i].id === 'repeat') {
-      lastRepeatIndex = i;
+    if (newCommands[i].id === 'repeat' || newCommands[i].id === 'while') {
+      lastLoopIndex = i;
       break;
     }
   }
   
-  if (lastRepeatIndex !== -1) {
-    // Insere o comando fantasma após o último repeat
-    newCommands.splice(lastRepeatIndex + 1, 0, dummyCommand);
+  if (lastLoopIndex !== -1) {
+    newCommands.splice(lastLoopIndex + 1, 0, dummyCommand);
   }
   
   return newCommands;
 };
 
-// Check for nested repeats
 export const hasNestedRepeats = (commands: Command[]): boolean => {
   for (let i = 0; i < commands.length; i++) {
-    if (commands[i].id === 'repeat' && commands[i].children?.some(child => child.id === 'repeat')) {
+    if ((commands[i].id === 'repeat' || commands[i].id === 'while') && 
+        commands[i].children?.some(child => 
+          child.id === 'repeat' || child.id === 'while'
+        )) {
       return true;
     }
   }
   return false;
 };
 
-// Create a new command from block data
+
 export const createCommandFromBlock = (block: any): Command => {
   const newCommand: Command = {
     id: block.id,
@@ -84,6 +78,9 @@ export const createCommandFromBlock = (block: any): Command => {
     newCommand.children = [];
   } else if (block.id === 'if') {
     newCommand.params = { condition: 'isGreen' };
+    newCommand.children = [];
+  } else if (block.id === 'while') {
+    newCommand.params = { condition: 'untilBarrier' };
     newCommand.children = [];
   }
   
