@@ -189,21 +189,6 @@ O sistema utiliza eventos de arrastar e soltar do HTML5 para permitir que o usu�
 - Remova comandos não desejados
 - Aninhe comandos dentro de loops e condicionais
 
-## 🎮 Níveis e Progressão
-
-O jogo inclui diversos níveis de dificuldade crescente, cada um focado em um conceito específico:
-
-1. **Primeiros Passos**: Introdução a movimentos básicos
-2. **Navegação Precisa**: Exploração de múltiplas direções
-3. **Introdução a Loops**: Conceitos básicos de repetição
-4. **Padrões Geométricos**: Criação de sequências repetitivas
-5. **Algoritmos Básicos**: Resolução estratégica de problemas
-6. **Labirintos**: Navegação em ambientes complexos
-7. **Otimização de Rotas**: Encontrar caminhos eficientes
-8. **Coleta de Itens**: Algoritmos de varredura
-9. **Desafios Avançados**: Aplicação de múltiplos conceitos
-10. **Células Coloridas**: Introdução a condicionais
-11. **Células Dinâmicas**: Timing e lógica avançada
 
 ### Sistema de Persistência
 O progresso do usuário é salvo no localStorage do navegador:

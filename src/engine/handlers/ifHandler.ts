@@ -78,9 +78,11 @@ export class IfHandler implements CommandHandler {
       } else if (params.condition === 'isRed') {
         conditionMet = engine.isCellInFrontOfRobot('red');
       } else if (params.condition === 'collectibleCollected') {
-        // Verificar se uma moeda foi coletada durante a execução
-        conditionMet = engine.state.collectiblesGathered > 0;
-        console.log(`DEBUG IF: Verificando se moeda foi coletada: ${conditionMet}`);
+        // Check if a collectible was collected in the current move
+        const currentCount = engine.state.collectiblesGathered;
+        conditionMet = currentCount > (params.count ?? currentCount - 1);
+        params.count = currentCount;
+        console.log(`DEBUG IF: Checking if coin was collected: ${conditionMet}`);
       } else if (params.condition === 'targetReached') {
         // Verificar se o robô chegou ao alvo
         const { robot, objects } = engine.state;

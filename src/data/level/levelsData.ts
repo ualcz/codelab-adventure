@@ -298,7 +298,7 @@ const LEVELS: Level[] = [
     minBlocks: 6,
     description: "use o bloco roxo para detectar obstáculos, bordas e células coloridas",
     difficulty: "expert",
-    colorCycleSpeed: 1000,
+    colorCycleSpeed: 10000,
     gridSize: { width: 8, height: 8 },
     objects: [
       { ...defaultRobot, x: 0, y: 0, rotation: 90 },
@@ -313,6 +313,7 @@ const LEVELS: Level[] = [
       { id: 'color1', type: 'colorCell', x: 3, y: 2, color: 'green', isBlocking: false, width: 1, height: 1 },
       { id: 'color2', type: 'colorCell', x: 4, y: 3, color: 'red', isBlocking: true, width: 1, height: 1 },
       { id: 'color3', type: 'colorCell', x: 3, y: 5, color: 'green', isBlocking: false, width: 1, height: 1 },
+      { id: 'color4', type: 'colorCell', x: 5, y: 0, color: 'red', isBlocking: true, width: 1, height: 1 },
       { id: 'color4', type: 'colorCell', x: 4, y: 6, color: 'red', isBlocking: true, width: 1, height: 1 },
       
       // Coletáveis
