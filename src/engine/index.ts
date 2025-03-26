@@ -10,12 +10,12 @@ export * from '@/types/GameTypes';
 export type { Level } from '@/types/levelTypes';
 
 // Core components
-export { GameVerification } from './core/gameVerification';
-export { GameMovement } from './core/gameMovement';
-export { StateManager } from './core/stateManager';
-export { CommandRegistry } from './core/commandRegistry';
-export { ColorCycleManager } from './core/colorCycleManager';
-export { ExecutionManager } from './core/executionManager';
+export { GameVerification } from './core/game/gameVerification';
+export { GameMovement } from './core/game/gameMovement';
+export { StateManager } from './core/managers/stateManager';
+export { CommandRegistry } from './core/managers/commandRegistry';
+export { ColorCycleManager } from './core/managers/colorCycleManager';
+export { ExecutionManager } from './core//managers/executionManager';
 
 // Handlers
 export { ConditionEvaluator } from './handlers/helpers/conditionEvaluator';

@@ -6,12 +6,12 @@ import { MoveForwardHandler, MoveBackwardHandler, TurnRightHandler, TurnLeftHand
 import { RepeatHandler } from '@/engine/handlers/repeatHandler';
 import { WhileHandler } from '@/engine/handlers/whileHandler';
 import { IfHandler } from '@/engine/handlers/ifHandler';
-import { GameMovement } from './gameMovement';
-import { GameVerification } from './gameVerification';
-import { StateManager } from './stateManager';
-import { CommandRegistry } from './commandRegistry';
-import { ColorCycleManager } from './colorCycleManager';
-import { ExecutionManager } from './executionManager';
+import { GameMovement } from './game/gameMovement';
+import { GameVerification } from './game/gameVerification';
+import { StateManager } from './managers/stateManager';
+import { CommandRegistry } from './managers/commandRegistry';
+import { ColorCycleManager } from './managers/colorCycleManager';
+import { ExecutionManager } from './managers/executionManager';
 import { getDirectionVector } from '@/engine/utils';
 
 export class GameEngine implements IGameEngine {
