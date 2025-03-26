@@ -7,6 +7,17 @@ export class ConditionEvaluator {
       return command.params.condition;
     }
     
+    if (command.params?.sensorType) {
+      switch (command.params.sensorType) {
+        case 'barrier': return 'untilBarrier';
+        case 'border': return 'untilBorder';
+        case 'collectible': return 'untilCollectible';
+        case 'target': return 'untilTarget';
+        case 'greenCell': return 'isGreen';
+        case 'redCell': return 'isRed';
+      }
+    }
+    
     if (command.condition) {
       return command.condition;
     }
@@ -20,6 +31,10 @@ export class ConditionEvaluator {
         return "untilBorder";
       } else if (command.name.toLowerCase().includes("alvo") || command.name.toLowerCase().includes("target")) {
         return "untilTarget";
+      } else if (command.name.toLowerCase().includes("verde")) {
+        return "isGreen";
+      } else if (command.name.toLowerCase().includes("vermelho")) {
+        return "isRed";
       }
     }
     
@@ -63,6 +78,12 @@ export class ConditionEvaluator {
       }
       
       return true;
+    } else if (params.condition === 'isGreen') {
+      // Verifica se há uma célula verde à frente do robô
+      return engine.isCellInFrontOfRobot('green');
+    } else if (params.condition === 'isRed') {
+      // Verifica se há uma célula vermelha à frente do robô
+      return engine.isCellInFrontOfRobot('red');
     }
     
     return true;

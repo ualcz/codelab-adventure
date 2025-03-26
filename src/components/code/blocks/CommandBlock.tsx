@@ -9,7 +9,12 @@ import {
   RotateCcw,
   GitBranch,
   Repeat,
-  Paintbrush
+  Paintbrush,
+  Target,
+  Square,
+  Circle,
+  Shield,
+  Coins
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Command } from '@/types/GameTypes';
@@ -145,6 +150,19 @@ const CommandBlock: React.FC<CommandBlockProps> = ({
   };
 
   const getIcon = () => {
+    if (command.id.startsWith('sensor_')) {
+      const sensorType = command.id.split('sensor_')[1];
+      switch (sensorType) {
+        case 'barrier': return Shield;
+        case 'border': return Square;
+        case 'collectible': return Coins;
+        case 'target': return Target;
+        case 'redCell': return Circle;
+        case 'greenCell': return Circle;
+        default: return Shield;
+      }
+    }
+
     switch (command.id) {
       case 'moveForward': return ArrowUp;
       case 'moveBackward': return ArrowDown;
@@ -159,6 +177,7 @@ const CommandBlock: React.FC<CommandBlockProps> = ({
   };
 
   const getBlockClass = () => {
+    if (command.id.startsWith('sensor_')) return 'sensor-block';
     if (command.id === 'moveForward' || command.id === 'moveBackward') return 'control-block';
     if (command.id === 'turnRight' || command.id === 'turnLeft') return 'control-block';
     if (command.id === 'repeat') return 'loop-block';
@@ -172,10 +191,16 @@ const CommandBlock: React.FC<CommandBlockProps> = ({
   const indent = path.length - 1;
   const Icon = getIcon();
   const blockClass = getBlockClass();
+  const isConditionalBlock = command.id === 'if' || command.id === 'while';
 
   const handleCommandUpdate = (updatedCommand: Command) => {
     onUpdate(path, updatedCommand);
   };
+
+  const isSensorAttachedToCondition = 
+    command.id.startsWith('sensor_') && 
+    path.length > 1 && 
+    (path[path.length - 2] === 0 || path[path.length - 2] === 'condition');
 
   return (
     <div 
@@ -203,8 +228,14 @@ const CommandBlock: React.FC<CommandBlockProps> = ({
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1">
-            <Icon className="h-3 w-3 flex-shrink-0" />
+            <Icon className={`h-3 w-3 flex-shrink-0 ${command.id.includes('red') ? 'text-red-400' : command.id.includes('green') ? 'text-green-400' : ''}`} />
             <span className="text-xs">{command.name}</span>
+            
+            {isConditionalBlock && !command.params?.condition && (
+              <div className="ml-2 px-4 py-1 bg-white/10 rounded text-xs text-white/50 flex items-center">
+                Arraste um sensor aqui
+              </div>
+            )}
             
             <CommandControls 
               command={command}

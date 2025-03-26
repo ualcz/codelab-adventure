@@ -19,13 +19,44 @@ export class IfHandler implements CommandHandler {
       if (command.condition) {
         params.condition = command.condition;
       } else {
-        if (command.name) {
+        // Use the sensorType to determine the condition
+        if (params.sensorType) {
+          switch (params.sensorType) {
+            case 'greenCell':
+              params.condition = 'isGreen';
+              break;
+            case 'redCell':
+              params.condition = 'isRed';
+              break;
+            case 'collectible':
+              params.condition = 'collectibleCollected';
+              break;
+            case 'target':
+              params.condition = 'targetReached';
+              break;
+            case 'barrier':
+              params.condition = 'isBarrierAhead';
+              break;
+            case 'border':
+              params.condition = 'isBorderAhead';
+              break;
+            default:
+              params.condition = 'isGreen';
+              break;
+          }
+        } else if (command.name) {
           if (command.name.includes("Verde")) {
             params.condition = "isGreen";
           } else if (command.name.includes("Vermelho")) {
             params.condition = "isRed";
           } else if (command.name.includes("Moeda") || command.name.includes("moeda")) {
             params.condition = "collectibleCollected";
+          } else if (command.name.includes("Alvo") || command.name.includes("alvo")) {
+            params.condition = "targetReached";
+          } else if (command.name.includes("Barreira") || command.name.includes("barreira")) {
+            params.condition = "isBarrierAhead";
+          } else if (command.name.includes("Borda") || command.name.includes("borda")) {
+            params.condition = "isBorderAhead";
           } else {
             params.condition = "isGreen";
             console.log("Using default 'isGreen' condition for if command without defined condition");
@@ -50,6 +81,19 @@ export class IfHandler implements CommandHandler {
         // Verificar se uma moeda foi coletada durante a execução
         conditionMet = engine.state.collectiblesGathered > 0;
         console.log(`DEBUG IF: Verificando se moeda foi coletada: ${conditionMet}`);
+      } else if (params.condition === 'targetReached') {
+        // Verificar se o robô chegou ao alvo
+        const { robot, objects } = engine.state;
+        conditionMet = objects.some(obj => 
+          obj.type === 'target' && obj.x === robot.x && obj.y === robot.y
+        );
+        console.log(`DEBUG IF: Verificando se chegou ao alvo: ${conditionMet}`);
+      } else if (params.condition === 'isBarrierAhead') {
+        conditionMet = engine.isBarrierInFrontOfRobot();
+        console.log(`DEBUG IF: Verificando se há barreira à frente: ${conditionMet}`);
+      } else if (params.condition === 'isBorderAhead') {
+        conditionMet = engine.isBorderInFrontOfRobot();
+        console.log(`DEBUG IF: Verificando se há borda à frente: ${conditionMet}`);
       }
 
       console.log(`DEBUG IF: Condition '${params.condition}' evaluated to: ${conditionMet}`);
@@ -76,7 +120,7 @@ export class IfHandler implements CommandHandler {
 
           engine.executeCommand(currentChild);
 
-          if ((currentChild.id === 'repeat' || currentChild.id === 'if') && 
+          if ((currentChild.id === 'repeat' || currentChild.id === 'if' || currentChild.id === 'while') && 
               currentChild.params?.executionState?.completed !== true) {
             engine.state.executionPointer = state.parentPointer;
             return;

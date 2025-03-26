@@ -60,9 +60,9 @@ const LevelPage = () => {
     if (tab === 'home') {
       navigate('/');
     } else if (tab === 'levels') {
-      navigate('/');
+      navigate('/', { state: { initialTab: 'levels' } });
     } else if (tab === 'learn') {
-      navigate('/');
+      navigate('/', { state: { initialTab: 'learn' } });
     }
   };
 

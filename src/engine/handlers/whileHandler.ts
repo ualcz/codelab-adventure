@@ -39,7 +39,34 @@ export class WhileHandler implements CommandHandler {
   
   private initializeCondition(command: Command): void {
     if (!command.params.condition) {
-      command.params.condition = ConditionEvaluator.determineConditionType(command);
+      // Use sensorType to determine condition if available
+      if (command.params.sensorType) {
+        switch (command.params.sensorType) {
+          case 'barrier':
+            command.params.condition = 'untilBarrier';
+            break;
+          case 'border':
+            command.params.condition = 'untilBorder';
+            break;
+          case 'collectible':
+            command.params.condition = 'untilCollectible';
+            break;
+          case 'target':
+            command.params.condition = 'untilTarget';
+            break;
+          case 'greenCell':
+            command.params.condition = 'isGreen';
+            break;
+          case 'redCell':
+            command.params.condition = 'isRed';
+            break;
+          default:
+            command.params.condition = ConditionEvaluator.determineConditionType(command);
+            break;
+        }
+      } else {
+        command.params.condition = ConditionEvaluator.determineConditionType(command);
+      }
     }
   }
   
@@ -90,7 +117,35 @@ export class WhileHandler implements CommandHandler {
   private setupNestedWhileCondition(currentChild: Command): void {
     if (currentChild.id === 'while' && !currentChild.params?.condition) {
       if (!currentChild.params) currentChild.params = {};
-      currentChild.params.condition = ConditionEvaluator.determineConditionType(currentChild);
+      
+      // Use sensorType to determine condition if available
+      if (currentChild.params.sensorType) {
+        switch (currentChild.params.sensorType) {
+          case 'barrier':
+            currentChild.params.condition = 'untilBarrier';
+            break;
+          case 'border':
+            currentChild.params.condition = 'untilBorder';
+            break;
+          case 'collectible':
+            currentChild.params.condition = 'untilCollectible';
+            break;
+          case 'target':
+            currentChild.params.condition = 'untilTarget';
+            break;
+          case 'greenCell':
+            currentChild.params.condition = 'isGreen';
+            break;
+          case 'redCell':
+            currentChild.params.condition = 'isRed';
+            break;
+          default:
+            currentChild.params.condition = ConditionEvaluator.determineConditionType(currentChild);
+            break;
+        }
+      } else {
+        currentChild.params.condition = ConditionEvaluator.determineConditionType(currentChild);
+      }
     }
   }
 }

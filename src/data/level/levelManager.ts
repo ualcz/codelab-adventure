@@ -98,7 +98,7 @@ export function getCommandBlocks() {
       name: 'Se',
       icon: 'GitBranch',
       type: 'condition',
-      description: 'Executa comandos se a célula à frente for da cor especificada'
+      description: 'Executa comandos se a condição for verdadeira'
     },
     {
       id: 'paintGreen',
@@ -106,6 +106,65 @@ export function getCommandBlocks() {
       icon: 'paint',
       type: 'action',
       description: 'Pinta a célula à frente de verde'
-    }
+    },
   ];
 }
+
+
+
+export const sensorObjects = {
+  barrier: {
+    id: 'sensor_barrier',
+    type: 'sensor',
+    sensorType: 'barrier' as const,
+    name: 'Barreira',
+    description: 'Detecta barreiras na frente do robô',
+    icon: 'shield',
+    blockType: 'sensor'
+  },
+  border: {
+    id: 'sensor_border',
+    type: 'sensor',
+    sensorType: 'border' as const,
+    name: 'Borda',
+    description: 'Detecta bordas do mapa na frente do robô',
+    icon: 'square',
+    blockType: 'sensor'
+  },
+  collectible: {
+    id: 'sensor_collectible',
+    type: 'sensor',
+    sensorType: 'collectible' as const,
+    name: 'Moeda',
+    description: 'Detecta se uma moeda foi coletada',
+    icon: 'coins',
+    blockType: 'sensor'
+  },
+  target: {
+    id: 'sensor_target',
+    type: 'sensor',
+    sensorType: 'target' as const,
+    name: 'Alvo',
+    description: 'Detecta se o robô chegou ao alvo',
+    icon: 'target',
+    blockType: 'sensor'
+  },
+  redCell: {
+    id: 'sensor_redCell',
+    type: 'sensor',
+    sensorType: 'redCell' as const,
+    name: 'Célula Vermelha',
+    description: 'Detecta células vermelhas na frente do robô',
+    icon: 'circle',
+    blockType: 'sensor'
+  },
+  greenCell: {
+    id: 'sensor_greenCell',
+    type: 'sensor',
+    sensorType: 'greenCell' as const,
+    name: 'Célula Verde',
+    description: 'Detecta células verdes na frente do robô',
+    icon: 'circle',
+    blockType: 'sensor'
+  }
+};

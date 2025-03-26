@@ -74,10 +74,10 @@ const CommandList: React.FC<CommandListProps> = ({
           newCommand.params = { count: 3 };
           newCommand.children = [];
         } else if (block.id === 'if') {
-          newCommand.params = { condition: 'isGreen' };
+          // Removido o valor padrão para sensorType - vai ser definido pelo sensor
           newCommand.children = [];
         } else if (block.id === 'while') {
-          newCommand.params = { condition: 'untilBarrier' };
+          // Removido o valor padrão para sensorType - vai ser definido pelo sensor
           newCommand.children = [];
         }
         
@@ -114,10 +114,10 @@ const CommandList: React.FC<CommandListProps> = ({
           newCommand.params = { count: 3 };
           newCommand.children = [];
         } else if (block.id === 'if') {
-          newCommand.params = { condition: 'isGreen' };
+          // Removido o valor padrão para sensorType - vai ser definido pelo sensor
           newCommand.children = [];
         } else if (block.id === 'while') {
-          newCommand.params = { condition: 'untilBarrier' };
+          // Removido o valor padrão para sensorType - vai ser definido pelo sensor
           newCommand.children = [];
         }
         
@@ -129,8 +129,8 @@ const CommandList: React.FC<CommandListProps> = ({
   };
 
   return (
-    <div className="glass-panel border border-white/10 p-4 h-[450px] overflow-y-auto rounded-md">
-      <h3 className="text-lg font-medium mb-4 text-white/90">Programa</h3>
+    <div className="p-4 h-[450px] overflow-y-auto ">
+
       
       {commands.length === 0 ? (
         <EmptyDropArea onDrop={handleEmptyAreaDrop} />

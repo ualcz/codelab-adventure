@@ -129,7 +129,7 @@
   }
 
   .sensor-block {
-    @apply bg-gradient-to-r from-green-600 to-green-400 text-white border-green-500/30 hover:border-green-500/50 shadow-sm shadow-green-500/20;
+    @apply bg-gradient-to-r from-slate-600 to-slate-400 text-white border-slate-500/30 hover:border-slate-500/50 shadow-sm shadow-slate-500/20;
   }
 
   .action-block {

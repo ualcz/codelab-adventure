@@ -9,6 +9,7 @@ export interface Level {
   gridSize: { width: number; height: number };
   objects: GameObject[];
   availableCommands: string[];
+  availableSensors?: string[]; // Lista de sensores disponíveis para o nível
   objective: string;
   hint?: string;
   maxMoves?: number;

@@ -13,6 +13,74 @@ export const moveCommand = (
   if (dragPath.length === 0 && newCommand) {
     const newCommands = cloneCommands(commands);
     
+    // Special handling for sensor blocks
+    if (newCommand.id.startsWith('sensor_')) {
+      const sensorType = newCommand.id.split('sensor_')[1] as 'barrier' | 'border' | 'collectible' | 'target' | 'redCell' | 'greenCell';
+      
+      // Check if dropping inside a while or if block
+      if (position === 'inside' && dropPath.length > 0) {
+        const parent = getCommandByPath(commands, dropPath);
+        
+        if (parent) {
+          if (parent.id === 'while') {
+            // Update the while block with the sensor parameters
+            let current = newCommands;
+            for (let i = 0; i < dropPath.length - 1; i++) {
+              const index = dropPath[i] as number;
+              if (current[index]) {
+                current = current[index].children || [];
+              }
+            }
+            const parentIndex = dropPath[dropPath.length - 1] as number;
+            if (current[parentIndex]) {
+              current[parentIndex].params = {
+                ...current[parentIndex].params,
+                sensorType: sensorType,
+                sensorBlock: newCommand.id,
+                condition: sensorType === 'barrier' ? 'untilBarrier' : 
+                           sensorType === 'border' ? 'untilBorder' : 
+                           sensorType === 'collectible' ? 'untilCollectible' : 
+                           sensorType === 'target' ? 'untilTarget' :
+                           sensorType === 'redCell' ? 'untilRed' :
+                           'untilGreen'
+              };
+              current[parentIndex].name = `Enquanto ${getWhileDescription(sensorType)}`;
+            }
+            return newCommands;
+          } else if (parent.id === 'if') {
+            // Update the if block with the sensor parameters
+            let current = newCommands;
+            for (let i = 0; i < dropPath.length - 1; i++) {
+              const index = dropPath[i] as number;
+              if (current[index]) {
+                current = current[index].children || [];
+              }
+            }
+            const parentIndex = dropPath[dropPath.length - 1] as number;
+            if (current[parentIndex]) {
+              current[parentIndex].params = {
+                ...current[parentIndex].params,
+                sensorType: sensorType,
+                sensorBlock: newCommand.id,
+                condition: sensorType === 'greenCell' ? 'isGreen' : 
+                           sensorType === 'redCell' ? 'isRed' : 
+                           sensorType === 'collectible' ? 'collectibleCollected' : 
+                           sensorType === 'target' ? 'targetReached' :
+                           sensorType === 'barrier' ? 'isBarrierAhead' :
+                           'isBorderAhead'
+              };
+              current[parentIndex].name = `Se ${getIfDescription(sensorType)}`;
+            }
+            return newCommands;
+          }
+        }
+      }
+      
+      // Don't allow sensor blocks to be dropped outside of if/while
+      console.log("Sensores só podem ser usados dentro de blocos 'Se' ou 'Enquanto'");
+      return commands;
+    }
+    
     if (position === 'inside' && dropPath.length > 0) {
       // Add as a child of the drop target
       const parent = getCommandByPath(commands, dropPath);
@@ -74,6 +142,12 @@ export const moveCommand = (
   // Get the command that's being dragged
   const draggedCommand = getCommandByPath(commands, dragPath);
   if (!draggedCommand) return commands;
+  
+  // Check if it's a sensor block
+  if (draggedCommand.id.startsWith('sensor_')) {
+    console.log("Sensores não podem ser movidos diretamente");
+    return commands;
+  }
   
   // Create a new command array
   const newCommands = cloneCommands(commands);
@@ -173,3 +247,32 @@ export const moveCommand = (
   
   return newCommands;
 };
+
+function getSensorDescription(sensorType: 'barrier' | 'border' | 'collectible' | 'target' | 'redCell' | 'greenCell'): string {
+  // This function is kept for backward compatibility
+  return getIfDescription(sensorType);
+}
+
+function getIfDescription(sensorType: 'barrier' | 'border' | 'collectible' | 'target' | 'redCell' | 'greenCell'): string {
+  switch (sensorType) {
+    case 'barrier': return 'encontrar barreira';
+    case 'border': return 'encontrar borda';
+    case 'collectible': return 'tiver moeda coletada';
+    case 'target': return 'estiver no alvo';
+    case 'greenCell': return 'encontrar verde na frente';
+    case 'redCell': return 'encontrar vermelho na frente';
+    default: return '';
+  }
+}
+
+function getWhileDescription(sensorType: 'barrier' | 'border' | 'collectible' | 'target' | 'redCell' | 'greenCell'): string {
+  switch (sensorType) {
+    case 'barrier': return 'não houver barreira';
+    case 'border': return 'não houver borda';
+    case 'collectible': return 'não tiver moeda coletada';
+    case 'target': return 'não chegar no alvo';
+    case 'greenCell': return 'encontrar verde na frente';
+    case 'redCell': return 'encontrar vermelho na frente';
+    default: return '';
+  }
+}

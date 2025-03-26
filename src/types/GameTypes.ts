@@ -1,7 +1,7 @@
 
 export interface GameObject {
   id: string;
-  type: 'robot' | 'obstacle' | 'collectible' | 'target' | 'colorCell';
+  type: 'robot' | 'obstacle' | 'collectible' | 'target' | 'colorCell' | 'sensor';
   x: number;
   y: number;
   width: number;
@@ -9,6 +9,7 @@ export interface GameObject {
   rotation?: number;
   color?: string;
   isBlocking?: boolean;
+  sensorType?: 'barrier' | 'border' | 'collectible' | 'target' | 'redCell' | 'greenCell';
 }
 
 export interface Position {
@@ -73,6 +74,8 @@ export interface Command {
     executionState?: ExecutionState;
     maxIterations?: number;
     isDummy?: boolean;
+    sensorType?: 'barrier' | 'border' | 'collectible' | 'target' | 'redCell' | 'greenCell';
+    sensorBlock?: string; // Add the missing sensorBlock property
   };
   children?: Command[];
 }
@@ -114,4 +117,3 @@ export interface IGameEngine {
   notifyUpdate(): void;
   paintCellInFrontOfRobot(color: 'red' | 'green'): void;
 }
-

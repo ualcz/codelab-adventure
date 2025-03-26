@@ -15,6 +15,7 @@ const LEVELS: Level[] = [
       { id: 'target1', type: 'target', x: 2, y: 2, width: 1, height: 1 }
     ],
     availableCommands: ["moveForward", "turnRight", "stop"],
+    availableSensors: [],
     objective: "Mova o robô até o alvo usando movimentos simples",
     hint: "Use 'mover para frente' e 'virar à direita' para chegar ao destino",
     unlocked: true,
@@ -80,8 +81,7 @@ const LEVELS: Level[] = [
     id: 5,
     name: "Introdução a Algoritmos",
     description: "Resolva problemas com estratégia",
-    minBlocks: 7,
-    maxBlocks:11,
+    minBlocks:11,
     difficulty: "intermediate",
     gridSize: { width: 8, height: 5 },
     objects: [
@@ -166,7 +166,7 @@ const LEVELS: Level[] = [
   {
     id: 8,
     name: "Desafio Algorítmico",
-    minBlocks: 14,
+    maxBlocks:14,
     description: "Aplique todos os conceitos aprendidos",
     difficulty: "advanced",
     gridSize: { width: 9, height: 10 },
@@ -199,7 +199,6 @@ const LEVELS: Level[] = [
     id: 9,
     name: "Laços Condicionais",
     minBlocks: 8,
-    maxBlocks: 8,
     description: "Crie um laço condicional para executar um bloco de comandos enquanto uma condição for verdadeira",
     difficulty: "advanced",
     gridSize: { width: 6, height:6 },
@@ -210,17 +209,17 @@ const LEVELS: Level[] = [
       { id: 'target1', type: 'target', x: 5, y: 5, width: 1, height: 1 }
     ],
     availableCommands: ["moveForward", "turnRight", "turnLeft","while"],
+    availableSensors: ["barrier", "border"],
     objective: "descubre o poder dos laços condicionais",
     hint: "crie uma repetição que execute um bloco de comandos enquanto uma condição for verdadeira",
     unlocked: true,
     completed: false,
     concepts: ["laços condicionais", "pensamento computacional"],
   },
-
   {
     id: 10,
     name: "Laços Dentro de Laços",
-    minBlocks: 15,
+    minBlocks: 12,
     maxBlocks: 22,
     description: "Use laços condicionais aninhados para resolver problemas mais complexos",
     difficulty: "master",
@@ -228,46 +227,46 @@ const LEVELS: Level[] = [
     objects: [
       { ...defaultRobot, x: 0, y: 0, rotation: 90 },
       // Labirinto com múltiplas seções
-      { id: 'maze1', type: 'obstacle', x: 2, y: 1, width: 1, height: 9 },
+      { id: 'maze1', type: 'obstacle', x: 2, y: 1, width: 1, height: 8 },
       { id: 'maze2', type: 'obstacle', x: 0, y: 2, width: 2, height: 1 },
-      { id: 'maze3', type: 'obstacle', x: 1, y: 6, width: 1, height: 1 },
+      { id: 'maze3', type: 'obstacle', x: 0, y: 9, width: 1, height: 1 },
       { id: 'maze4', type: 'obstacle', x: 4, y: 2, width: 5, height: 1 },
       { id: 'maze5', type: 'obstacle', x: 5, y: 3, width: 1, height: 4 },
       { id: 'maze6', type: 'obstacle', x: 3, y: 5, width: 1, height: 1 },
       { id: 'maze7', type: 'obstacle', x: 3, y: 8, width: 3, height: 1 },
       { id: 'maze8', type: 'obstacle', x: 7, y: 5, width: 1, height: 3 },
-      { id: 'maze9', type: 'obstacle', x: 10, y: 0, width: 1, height: 11 },
+      { id: 'maze9', type: 'obstacle', x: 10, y: 0, width: 1, height: 10 },
       { id: 'maze10', type: 'obstacle', x: 6, y: 10, width: 5, height: 1 },
-      { id: 'maze11', type: 'obstacle', x: 4, y: 0, width: 1, height: 2 },
+      { id: 'maze11', type: 'obstacle', x: 4, y: 0, width: 1, height: 1 },
 
       {id: 'collectible1', type: 'collectible', x: 9, y: 9, width: 1, height: 1 },
 
-      { id: 'target1', type: 'target', x: 0, y: 3, width: 1, height: 1 }
+      { id: 'target1', type: 'target', x: 1, y: 3, width: 1, height: 1 }
     ],
-    availableCommands: ["moveForward", "turnRight", "turnLeft", "while", "if", "else", "isPathForward", "isEdgeAhead", "isWallOnRight", "isWallOnLeft", "not"],
+    availableCommands: ["moveForward", "turnRight", "turnLeft", "while", "if"],
+    availableSensors: ["barrier", "border", "collectible", "target", "greenCell","redCell"],
     objective: "Navegue pelo labirinto complexo usando laços aninhados e diferentes estratégias",
     hint: "Pense em laços dentro de outros laços para resolver diferentes partes do problema",
     unlocked: false,
     completed: false,
     concepts: ["laços aninhados", "estruturas de controle complexas", "resolução de problemas avançados"],
   },
-  
   {
     id: 11,
     name: "Operadores Lógicos",
-    minBlocks: 10,
-    maxBlocks: 15,
+    minBlocks: 6,
     description: "Aprenda a combinar condições com operadores lógicos AND e OR",
     difficulty: "expert",
+    colorCycleSpeed: 3500,
     gridSize: { width: 8, height: 8 },
     objects: [
       { ...defaultRobot, x: 0, y: 0, rotation: 90 },
       
       // Obstáculos estratégicos
-      { id: 'obstacle1', type: 'obstacle', x: 2, y: 0, width: 1, height: 3 },
-      { id: 'obstacle2', type: 'obstacle', x: 2, y: 4, width: 1, height: 4 },
+      { id: 'obstacle1', type: 'obstacle', x: 2, y: 1, width: 1, height: 2 },
+      { id: 'obstacle2', type: 'obstacle', x: 0, y: 4, width: 3, height: 1 },
       { id: 'obstacle3', type: 'obstacle', x: 5, y: 1, width: 1, height: 3 },
-      { id: 'obstacle4', type: 'obstacle', x: 5, y: 5, width: 1, height: 3 },
+      { id: 'obstacle4', type: 'obstacle', x: 5, y: 5, width: 1, height: 2 },
       
       // Células coloridas em padrões complexos
       { id: 'color1', type: 'colorCell', x: 3, y: 2, color: 'green', isBlocking: false, width: 1, height: 1 },
@@ -276,21 +275,23 @@ const LEVELS: Level[] = [
       { id: 'color4', type: 'colorCell', x: 4, y: 6, color: 'red', isBlocking: true, width: 1, height: 1 },
       
       // Coletáveis
-      { id: 'collectible1', type: 'collectible', x: 4, y: 0, width: 1, height: 1 },
-      { id: 'collectible2', type: 'collectible', x: 4, y: 4, width: 1, height: 1 },
-      { id: 'collectible3', type: 'collectible', x: 4, y: 7, width: 1, height: 1 },
+      { id: 'collectible1', type: 'collectible', x: 3, y: 1, width: 1, height: 1 },
+      { id: 'collectible2', type: 'collectible', x: 3, y: 4, width: 1, height: 1 },
+      { id: 'collectible3', type: 'collectible', x: 4, y: 5, width: 1, height: 1 },
+      { id: 'collectible4', type: 'collectible', x: 7, y: 0, width: 1, height: 1 },
+      { id: 'collectible5', type: 'collectible', x: 4, y: 1, width: 1, height: 1 },
+      { id: 'collectible6', type: 'collectible', x: 7, y: 4, width: 1, height: 1 },
       
       // Alvo
-      { id: 'target1', type: 'target', x: 7, y: 7, width: 1, height: 1 }
+      { id: 'target1', type: 'target', x: 0, y: 5, width: 1, height: 1 }
     ],
-    availableCommands: ["moveForward", "turnRight", "turnLeft", "if", "else", "while", "and", "or", "isGreenAhead", "isRedAhead", "isCollectibleAhead"],
+    availableCommands: ["moveForward", "turnRight", "turnLeft", "if", "while", "paintGreen"],
     objective: "Colete todos os itens e chegue ao alvo usando operadores lógicos para tomar decisões complexas",
     hint: "Combine condições com AND e OR para lidar com situações onde múltiplas verificações são necessárias",
     unlocked: false,
     completed: false,
     concepts: ["operadores lógicos", "condições compostas", "tomada de decisão complexa"],
   },
-  
   {
     id: 12,
     name: "Funções Simples",
@@ -326,7 +327,6 @@ const LEVELS: Level[] = [
     completed: false,
     concepts: ["funções", "abstração", "reutilização de código"],
   },
-  
   {
     id: 13,
     name: "Funções com Parâmetros",
@@ -362,7 +362,6 @@ const LEVELS: Level[] = [
     completed: false,
     concepts: ["funções parametrizadas", "generalização", "reusabilidade avançada"],
   },
-  
   {
     id: 14,
     name: "Recursão Simples",
@@ -399,7 +398,6 @@ const LEVELS: Level[] = [
     completed: false,
     concepts: ["recursão", "condições de parada", "exploração de labirintos"],
   },
-  
   {
     id: 15,
     name: "Eventos e Gatilhos",
@@ -438,7 +436,6 @@ const LEVELS: Level[] = [
     completed: false,
     concepts: ["eventos", "gatilhos", "programação reativa", "modificação do ambiente"],
   },
-  
   {
     id: 16,
     name: "Algoritmos de Busca",
@@ -484,7 +481,6 @@ const LEVELS: Level[] = [
     completed: false,
     concepts: ["algoritmos de busca", "exploração de labirintos", "marcação de caminhos", "detecção de ciclos"],
   },
-  
   {
     id: 17,
     name: "Otimização de Recursos",
@@ -525,7 +521,6 @@ const LEVELS: Level[] = [
     completed: false,
     concepts: ["gerenciamento de recursos", "planejamento estratégico", "otimização de caminhos"],
   },
-  
   {
     id: 18,
     name: "Programação Paralela",
@@ -569,7 +564,6 @@ const LEVELS: Level[] = [
     completed: false,
     concepts: ["programação paralela", "sincronização", "coordenação", "múltiplos agentes"],
   },
-  
   {
     id: 19,
     name: "Inteligência Artificial",
@@ -610,13 +604,13 @@ const LEVELS: Level[] = [
     completed: false,
     concepts: ["inteligência artificial", "aprendizado de máquina", "comportamentos adaptativos", "reconhecimento de padrões"],
   },
-  
   {
     id: 20,
     name: 'Labirinto de Cores Alternantes',
     description: 'Supere obstáculos e domine o timing com células que mudam de cor',
     difficulty: 'advanced',
     availableCommands: ["moveForward", "turnRight", "turnLeft", "if", "stop", "repeat", "while","paintGreen"],
+    availableSensors: ["redCell", "greenCell", "barrier", "border"],
     unlocked: true,
     completed: false,
     concepts: ['Condicionais', 'Células Coloridas', 'Timing', 'Planejamento de Rota'],
