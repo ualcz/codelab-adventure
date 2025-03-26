@@ -197,9 +197,8 @@ const LEVELS: Level[] = [
   },
   {
     id: 9,
-    name: "Introdução a lacos condicionais",
+    name: "Introdução a laços condicionais",
     minBlocks: 7,
-    maxBlocks: 10,
     description: "Utilize laços condicionais para resolver problemas mais complexos",
     difficulty: "intermediate",
     gridSize: { width: 8, height: 8 },
@@ -228,7 +227,7 @@ const LEVELS: Level[] = [
       { id: 'target1', type: 'target', x: 6, y: 1, width: 1, height: 1 }
     ],
     availableCommands: ["moveForward", "turnRight", "turnLeft", "while"],
-    availableSensors: ["barrier"],
+    availableSensors: ["barrier","target"],
     objective: "Desenvolva uma estratégia para coletar itens e chegar ao alvo",
     hint: "Crie um laço condicional para executar um bloco de comandos enquanto uma condição for verdadeira",
     unlocked: false,
