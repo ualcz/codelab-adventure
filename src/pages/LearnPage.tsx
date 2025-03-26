@@ -17,7 +17,6 @@ const LearnPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-game-background to-game-surface text-white">
       <GameHeader currentTab="learn" onTabChange={handleTabChange} />
-      
       <div className="py-4">
         <LearnTab onNavigate={handleTabChange} />
       </div>

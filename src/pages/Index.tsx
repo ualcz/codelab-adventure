@@ -18,7 +18,6 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-game-background to-game-surface text-white">
       <GameHeader currentTab="home" onTabChange={handleTabChange} />
-      
       <div className="py-4">
         <HomeTab onNavigate={handleTabChange} />
       </div>

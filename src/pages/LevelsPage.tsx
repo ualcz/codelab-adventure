@@ -22,7 +22,6 @@ const LevelsPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-game-background to-game-surface text-white">
       <GameHeader currentTab="levels" onTabChange={handleTabChange} />
-      
       <div className="py-4">
         <LevelsTab 
           onSelectLevel={handleSelectLevel} 
