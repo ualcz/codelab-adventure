@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { getCommandBlocks } from '@/data/level/levelManager';
-import DraggableBlock from './DraggableBlock';
+import DraggableBlock from './blocks/DraggableBlock';
 
 interface CommandPaletteProps {
   availableCommands: string[];

@@ -2,7 +2,7 @@
 import React from 'react';
 import { Plus, Minus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { CommandControlsProps } from '../types';
+import { CommandControlsProps } from '@/components/types';
 
 const CommandControls: React.FC<CommandControlsProps> = ({ command, isRunning, onUpdate }) => {
   // Repeat Controls

@@ -16,7 +16,6 @@ CodeLab é uma plataforma interativa de aprendizado de programação baseada em 
 - [Conceitos de Programação Ensinados](#conceitos-de-programação-ensinados)
 - [Guia de Desenvolvimento](#guia-de-desenvolvimento)
 - [Extensibilidade](#extensibilidade)
-- [Futuras Melhorias](#futuras-melhorias)
 
 ## 🔍 Visão Geral
 
@@ -47,9 +46,11 @@ src/
 
 #### `/components`
 Contém todos os componentes de UI da aplicação, organizados em subpastas:
-- `/codeblocks`: Componentes relacionados à interface de programação
+- `/code`: Componentes relacionados à interface de programação
 - `/ui`: Componentes de UI reutilizáveis (botões, modais, etc.)
-- `/tabs`: Componentes para diferentes seções da aplicação
+- `/game`: Componentes relacionados ao ambiente do jogo e visualização
+- `/Header`: Componentes de navegação e cabeçalho
+- `/level`: Componentes relacionados à seleção de níveis
 
 #### `/data`
 Gerencia dados estáticos e persistência:
@@ -61,14 +62,15 @@ Gerencia dados estáticos e persistência:
 
 #### `/engine`
 O núcleo da lógica do jogo:
-- `gameEngine.ts`: Implementação principal do motor do jogo
-- `gameMovement.ts`: Lógica de movimento do robô
-- `gameVerification.ts`: Verificação de objetivos e condições
-- `types.ts`: Tipos e interfaces do motor
+- `/core`: Implementações principais do motor do jogo
+  - `/game`: Lógica de movimento e verificação
+  - `/managers`: Gerenciadores de estado, comandos e execução
 - `/handlers`: Manipuladores para diferentes tipos de comandos
+- `/utils.ts`: Funções utilitárias para o motor
 
 #### `/pages`
 Páginas principais da aplicação:
+- `LevelPage.tsx`: Página que renderiza e gerencia um nível específico
 - `Index.tsx`: Página principal com abas e controle de navegação
 
 ## 🧱 Componentes Principais
@@ -94,6 +96,13 @@ Renderiza o ambiente do jogo, incluindo:
 - Robô e sua orientação
 - Obstáculos e coletáveis
 - Células coloridas e alvo
+
+### PlaygroundTab
+Componente principal da interface de jogo que integra:
+- Interface de CodeBlocks
+- Visualização do GameCanvas
+- Controles de execução
+- Informações do nível atual
 
 ## ⚙️ Motor do Jogo
 
@@ -127,6 +136,15 @@ interface GameState {
 6. Verificações são realizadas para detectar objetivos ou falhas
 7. A UI é atualizada com o novo estado
 
+### Gerenciadores de Estado e Execução
+O motor do jogo é composto por diversos gerenciadores especializados:
+- `StateManager`: Gerencia o estado do jogo e sua inicialização
+- `CommandRegistry`: Registra e gerencia os manipuladores de comandos
+- `ExecutionManager`: Controla a execução sequencial dos comandos
+- `ColorCycleManager`: Gerencia a alternância de cores em células dinâmicas
+- `GameMovement`: Gerencia o movimento do robô na grade
+- `GameVerification`: Verifica objetivos, colisões e condições de vitória/derrota
+
 ### Manipuladores de Comandos
 Cada tipo de comando tem seu próprio manipulador:
 - `MoveForwardHandler`: Move o robô para frente
@@ -134,7 +152,9 @@ Cada tipo de comando tem seu próprio manipulador:
 - `TurnRightHandler`: Gira o robô à direita
 - `TurnLeftHandler`: Gira o robô à esquerda
 - `StopHandler`: Faz o robô parar no lugar
+- `PaintGreenHandler`: Pinta a célula à frente de verde
 - `RepeatHandler`: Implementa a funcionalidade de repetição
+- `WhileHandler`: Implementa loops condicionais
 - `IfHandler`: Implementa lógica condicional
 
 ## 📝 Sistema de Comandos
@@ -160,6 +180,7 @@ interface Command {
 - **Básicos**: Movimentos simples (andar, girar)
 - **Loops**: Repetição de um conjunto de comandos
 - **Condicionais**: Execução baseada em condições do ambiente
+- **Ações**: Manipulação do ambiente (pintar células)
 
 ### Interface de Arrastar e Soltar
 O sistema utiliza eventos de arrastar e soltar do HTML5 para permitir que o usuário:
@@ -170,19 +191,19 @@ O sistema utiliza eventos de arrastar e soltar do HTML5 para permitir que o usu�
 
 ## 🎮 Níveis e Progressão
 
-O jogo inclui 11 níveis de dificuldade crescente:
+O jogo inclui diversos níveis de dificuldade crescente, cada um focado em um conceito específico:
 
-1. **Primeiro Passo**: Introdução a movimentos básicos
-2. **Navegando com Precisão**: Exploração de múltiplas direções
-3. **Introdução à Repetição**: Básico de loops
-4. **Padrões Geométricos**: Criação de padrões repetitivos
-5. **Introdução a Algoritmos**: Resolução estratégica de problemas
-6. **Labirinto Lógico**: Navegação em ambiente complexo
-7. **Otimização de Rota**: Encontrar caminhos eficientes
-8. **Espiral de Coleta**: Algoritmos de varredura
-9. **Desafio Algorítmico**: Aplicação de múltiplos conceitos
+1. **Primeiros Passos**: Introdução a movimentos básicos
+2. **Navegação Precisa**: Exploração de múltiplas direções
+3. **Introdução a Loops**: Conceitos básicos de repetição
+4. **Padrões Geométricos**: Criação de sequências repetitivas
+5. **Algoritmos Básicos**: Resolução estratégica de problemas
+6. **Labirintos**: Navegação em ambientes complexos
+7. **Otimização de Rotas**: Encontrar caminhos eficientes
+8. **Coleta de Itens**: Algoritmos de varredura
+9. **Desafios Avançados**: Aplicação de múltiplos conceitos
 10. **Células Coloridas**: Introdução a condicionais
-11. **Cores Alternantes**: Timing avançado com células que mudam de cor
+11. **Células Dinâmicas**: Timing e lógica avançada
 
 ### Sistema de Persistência
 O progresso do usuário é salvo no localStorage do navegador:
@@ -220,22 +241,23 @@ npm install
 npm run dev
 ```
 
-### Estrutura do Código
+### Fluxo de Execução
 
-#### Fluxo de Execução
-1. O usuário seleciona um nível no `LevelsTab`
-2. O `PlaygroundTab` carrega o nível e renderiza o `GameCanvas` e `CodeBlocks`
-3. O usuário arrasta e solta blocos para criar um programa
-4. Ao pressionar "Executar", o `gameEngine` processa cada comando
-5. O `GameCanvas` atualiza a visualização com base no estado do jogo
-6. Ao completar um nível, o progresso é salvo e o próximo nível é desbloqueado
+1. O usuário seleciona um nível na tela inicial
+2. O `LevelPage` carrega o nível e renderiza o `PlaygroundTab`
+3. O `PlaygroundTab` carrega o `GameCanvas` e `CodeBlocks`
+4. O usuário arrasta e solta blocos para criar um programa
+5. Ao pressionar "Executar", o `gameEngine` processa cada comando
+6. O `GameCanvas` atualiza a visualização com base no estado do jogo
+7. Ao completar um nível, o progresso é salvo e o próximo nível é desbloqueado
 
-#### Criação de Novos Comandos
+### Adicionando Novos Comandos
+
 Para adicionar um novo tipo de comando:
 
 1. Crie um novo manipulador em `src/engine/handlers/`:
 ```typescript
-export class NewCommandHandler implements CommandHandler {
+export class NovoComandoHandler implements CommandHandler {
   execute(engine: IGameEngine, command: Command): void {
     // Implementação do comando
   }
@@ -244,13 +266,13 @@ export class NewCommandHandler implements CommandHandler {
 
 2. Registre o manipulador no `gameEngine.ts`:
 ```typescript
-this.commandHandlers.set('newCommand', new NewCommandHandler());
+this.commandRegistry.register('novoComando', new NovoComandoHandler());
 ```
 
 3. Adicione-o ao array de comandos disponíveis em `levelManager.ts`:
 ```typescript
 {
-  id: 'newCommand',
+  id: 'novoComando',
   name: 'Novo Comando',
   icon: 'icon-name',
   type: 'control',
@@ -258,7 +280,8 @@ this.commandHandlers.set('newCommand', new NewCommandHandler());
 }
 ```
 
-#### Criação de Novos Níveis
+### Adicionando Novos Níveis
+
 Para adicionar um novo nível, adicione um objeto ao array em `levelsData.ts`:
 ```typescript
 {
@@ -266,7 +289,7 @@ Para adicionar um novo nível, adicione um objeto ao array em `levelsData.ts`:
   name: "Nome do Nível",
   description: "Descrição do nível",
   difficulty: "intermediate",
-  gridSize: { max-width: 8, max-height: 8 },
+  gridSize: { width: 8, height: 8 },
   objects: [
     // Objetos do nível (robô, obstáculos, etc.)
   ],
@@ -278,15 +301,6 @@ Para adicionar um novo nível, adicione um objeto ao array em `levelsData.ts`:
   concepts: ["sequência", "loops"]
 }
 ```
-
-## 🔌 Extensibilidade
-
-O sistema foi projetado para ser facilmente extensível:
-
-- **Novos tipos de comandos**: Implemente a interface `CommandHandler`
-- **Novos níveis**: Adicione-os ao arquivo `levelsData.ts`
-- **Novos objetos do jogo**: Estenda o tipo `GameObject` e adicione a lógica necessária
-- **Novos conceitos de programação**: Introduza gradualmente em novos níveis
 
 ## 🚀 Solução
 
@@ -319,6 +333,19 @@ O sistema foi projetado para ser facilmente extensível:
 
 - **10**
 <img src="./public/img/10.png" alt="resposta" style="width:50%; height:auto;">
+
+
+
+## 🔌 Extensibilidade
+
+O sistema foi projetado para ser facilmente extensível:
+
+- **Novos tipos de comandos**: Implemente a interface `CommandHandler`
+- **Novos níveis**: Adicione-os ao arquivo `levelsData.ts`
+- **Novos objetos do jogo**: Estenda o tipo `GameObject` e adicione a lógica necessária
+- **Novos conceitos de programação**: Introduza gradualmente em novos níveis
+
+
 
 ## 📄 Licença
 

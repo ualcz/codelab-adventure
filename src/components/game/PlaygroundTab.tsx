@@ -2,8 +2,8 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Rocket, Trophy} from 'lucide-react';
-import CodeBlocks from '@/components/codeblocks';
-import GameCanvas from '@/components/GameCanvas';
+import CodeBlocks from '@/components/code/CodeBlocks';
+import GameCanvas from '@/components/game/GameCanvas';
 import { Command, GameState } from '@/engine';
 import { getLevel } from '@/data/level/levelManager';
 import { Level } from '@/types/levelTypes';

@@ -1,5 +1,6 @@
+
 import React, { useEffect, useRef, useState } from 'react';
-import { GameState , GameObject } from '@/types/GameTypes';
+import { GameState, GameObject } from '@/types/GameTypes';
 import { Badge } from '@/components/ui/badge';
 import { Level } from '@/types/levelTypes';
 import { 

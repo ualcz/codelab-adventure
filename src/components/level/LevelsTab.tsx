@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { BotIcon, Save } from 'lucide-react';
-import LevelSelector from '@/components/LevelSelector';
+import LevelSelector from '@/components/level/LevelSelector';
 import { getCompletedLevels } from '@/data/level/levelManager';
 import { Level } from '@/types/levelTypes';
 

@@ -1,5 +1,5 @@
 import { Command } from '@/types/GameTypes';
-import { cloneCommands, getCommandByPath } from '@/components/codeblocks/utils/commandUtils';
+import { cloneCommands, getCommandByPath } from '@/components/utils/commandUtils';
 
 // Move a command from one location to another
 export const moveCommand = (

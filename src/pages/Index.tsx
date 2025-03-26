@@ -1,11 +1,11 @@
 
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import GameHeader from '@/components/GameHeader';
+import GameHeader from '@/components/Header/GameHeader';
 
-import HomeTab from '@/components/tabs/HomeTab';
-import LevelsTab from '@/components/tabs/LevelsTab';
-import LearnTab from '@/components/tabs/LearnTab';
+import HomeTab from '@/components/home/HomeTab';
+import LevelsTab from '@/components/level/LevelsTab';
+import LearnTab from '@/components/Lean/LearnTab';
 import { Level } from '@/types/levelTypes';
 
 const Index = () => {

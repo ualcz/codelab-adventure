@@ -1,10 +1,11 @@
+
 import React, { useState } from 'react';
 import { Command } from '@/types/GameTypes';
 import { Play, Square, RefreshCw, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import CommandPalette from './components/CommandPalette';
-import CommandList from '@/components/tabs/CommandList';
-import { CodeBlocksProps } from './types';
+import CommandPalette from './CommandPalette';
+import CommandList from '@/components/game/CommandList';
+import { CodeBlocksProps } from '@/components/types';
 import gameEngine from '@/engine/index';
 
 const CodeBlocks: React.FC<CodeBlocksProps> = ({ 

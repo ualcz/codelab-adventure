@@ -1,12 +1,12 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import GameHeader from '@/components/GameHeader';
+import GameHeader from '@/components/Header/GameHeader';
 import { Level } from '@/types/levelTypes';
 import gameEngine, { Command, GameState } from '@/engine';
 import { useToast } from '@/hooks/use-toast';
 import { getLevel } from '@/data/level/levelManager';
-import PlaygroundTab from '@/components/tabs/PlaygroundTab';
+import PlaygroundTab from '@/components/game/PlaygroundTab';
 
 const LevelPage = () => {
   const { levelId } = useParams();
@@ -29,15 +29,32 @@ const LevelPage = () => {
     
     setCurrentLevel(level);
     gameEngine.loadLevel(level);
+    
+    // Force a reset and update after loading the level
+    gameEngine.reset();
+    setGameState(gameEngine.getState());
     setIsComplete(false);
+    
+    // Force an update to ensure the canvas renders correctly
+    setTimeout(() => {
+      gameEngine.notifyUpdate();
+    }, 100);
   }, [levelId, navigate]);
 
   useEffect(() => {
-    gameEngine.onUpdate((state) => {
+    const updateHandler = (state: GameState) => {
       setGameState(state);
       setIsComplete(state.isComplete);
-    });
-  }, [isComplete, toast]);
+    };
+    
+    gameEngine.onUpdate(updateHandler);
+    
+    // Cleanup function to prevent memory leaks
+    return () => {
+      // This is a hack since there's no direct way to remove the listener
+      gameEngine.onUpdate(() => {});
+    };
+  }, []);
 
   const handleTabChange = (tab: string) => {
     if (tab === 'home') {

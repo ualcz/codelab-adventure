@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Command } from '@/types/GameTypes';
-import { CommandBlockProps } from '../types';
+import { CommandBlockProps } from '@/components/types';
 import DropIndicator from '@/components/ui/codeblocks/DropIndicator';
 import DropZone from '@/components/ui/codeblocks/DropZone';
 import CommandControls from './CommandControls';

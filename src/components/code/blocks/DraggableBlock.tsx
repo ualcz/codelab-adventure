@@ -12,7 +12,7 @@ import {
   GitBranch,
   Repeat
 } from 'lucide-react';
-import { DraggableBlockProps } from '../types';
+import { DraggableBlockProps } from '@/components/types';
 
 const DraggableBlock: React.FC<DraggableBlockProps> = ({ block, onDragStart, className }) => {
   const getIcon = () => {

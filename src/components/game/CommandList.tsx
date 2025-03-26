@@ -1,15 +1,15 @@
 
 import React from 'react';
 import { Command } from '@/types/GameTypes';
-import CommandBlock from '@/components/codeblocks/components/CommandBlock';
+import CommandBlock from '@/components/code/blocks/CommandBlock';
 import EmptyDropArea from '@/components/ui/codeblocks/EmptyDropArea';
 import { 
   removeCommand, 
   updateCommand, 
   hasNestedRepeats, 
   addDummyCommand 
-} from '@/components/codeblocks/utils/commandUtils';
-import { moveCommand } from '@/components/codeblocks/utils/moveCommand';
+} from '@/components/utils/commandUtils';
+import { moveCommand } from '@/components/utils/moveCommand';
 
 interface CommandListProps {
   commands: Command[];
