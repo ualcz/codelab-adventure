@@ -54,7 +54,7 @@ export class GameEngine implements IGameEngine {
     this.level = level;
     this.state = this.stateManager.prepareLevel(this.state, level);
     
-    this.colorCycleManager.startColorCycling(level.colorCycleSpeed || 800);
+    this.colorCycleManager.startColorCycling(level.colorCycleSpeed || 1000);
     
     this.notifyUpdate();
   }

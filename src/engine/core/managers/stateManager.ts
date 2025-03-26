@@ -21,7 +21,7 @@ export class StateManager {
       blocksUsed: 0,
       commands: [],
       executionPointer: 0,
-      speed: 500
+      speed: 200
     };
   }
   
