@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { getCommandBlocks } from '@/data/level/levelManager';
-import DraggableBlock from '../DraggableBlock';
+import DraggableBlock from './DraggableBlock';
 
 interface CommandPaletteProps {
   availableCommands: string[];
@@ -18,8 +18,11 @@ const CommandPalette: React.FC<CommandPaletteProps> = ({ availableCommands, onDr
       <h3 className="text-lg font-medium mb-4 text-white/90">Blocos Disponíveis</h3>
       <div className="flex flex-wrap gap-2">
         {commandBlocks.map((block) => (
-          <DraggableBlock key={block.id} block={block} onDragStart={onDragStart} 
-          className="palette-block min-w-[90px] min-h-[20px] flex items-center justify-center"
+          <DraggableBlock 
+            key={block.id} 
+            block={block} 
+            onDragStart={onDragStart} 
+            className="palette-block min-w-[90px] min-h-[20px] flex items-center justify-center"
           />
         ))}
       </div>

@@ -2,13 +2,7 @@
 import React from 'react';
 import { Plus, Minus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Command } from '@/types/GameTypes';
-
-interface CommandControlsProps {
-  command: Command;
-  isRunning: boolean;
-  onUpdate: (command: Command) => void;
-}
+import { CommandControlsProps } from '../types';
 
 const CommandControls: React.FC<CommandControlsProps> = ({ command, isRunning, onUpdate }) => {
   // Repeat Controls
@@ -71,7 +65,8 @@ const CommandControls: React.FC<CommandControlsProps> = ({ command, isRunning, o
       >
         <option value="untilBorder" className="bg-pink-400 text-white">não encontrar borda</option>
         <option value="untilBarrier" className="bg-pink-400 text-white">não encontrar barreira</option>
-        <option value="untilCollectible" className="bg-pink-400 text-white"> não encontrar moeda</option>
+        <option value="untilCollectible" className="bg-pink-400 text-white">não encontrar moeda</option>
+        <option value="untilTarget" className="bg-pink-400 text-white">não chegar ao alvo</option>
       </select>
     );
   }
@@ -92,6 +87,7 @@ const CommandControls: React.FC<CommandControlsProps> = ({ command, isRunning, o
       >
         <option value="isGreen" className="bg-purple-400 text-white">encontrar verde</option>
         <option value="isRed" className="bg-purple-400 text-white">encontrar vermelho</option>
+        <option value="collectibleCollected" className="bg-purple-400 text-white">coletar moeda</option>
       </select>
     );
   }

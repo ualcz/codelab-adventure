@@ -1,3 +1,4 @@
+
 import { Command } from '@/types/GameTypes';
 
 export interface CodeBlocksProps {
@@ -27,4 +28,10 @@ export interface CommandBlockProps {
   onUpdate: (path: (number | string)[], command: Command) => void;
   onMoveCommand: (dragPath: (number | string)[], dropPath: (number | string)[], position: 'before' | 'after' | 'inside', newCommand?: Command) => void;
   isRunning: boolean;
+}
+
+export interface CommandControlsProps {
+  command: Command;
+  isRunning: boolean;
+  onUpdate: (command: Command) => void;
 }

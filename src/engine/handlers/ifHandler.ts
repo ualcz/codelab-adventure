@@ -1,5 +1,5 @@
 
-import { Command, CommandHandler, IGameEngine, ExecutionState } from '../../types/GameTypes';
+import { Command, CommandHandler, IGameEngine, ExecutionState } from '@/types/GameTypes';
 
 export class IfHandler implements CommandHandler {
   execute(engine: IGameEngine, command: Command): void {
@@ -24,6 +24,8 @@ export class IfHandler implements CommandHandler {
             params.condition = "isGreen";
           } else if (command.name.includes("Vermelho")) {
             params.condition = "isRed";
+          } else if (command.name.includes("Moeda") || command.name.includes("moeda")) {
+            params.condition = "collectibleCollected";
           } else {
             params.condition = "isGreen";
             console.log("Using default 'isGreen' condition for if command without defined condition");
@@ -44,6 +46,10 @@ export class IfHandler implements CommandHandler {
         conditionMet = engine.isCellInFrontOfRobot('green');
       } else if (params.condition === 'isRed') {
         conditionMet = engine.isCellInFrontOfRobot('red');
+      } else if (params.condition === 'collectibleCollected') {
+        // Verificar se uma moeda foi coletada durante a execução
+        conditionMet = engine.state.collectiblesGathered > 0;
+        console.log(`DEBUG IF: Verificando se moeda foi coletada: ${conditionMet}`);
       }
 
       console.log(`DEBUG IF: Condition '${params.condition}' evaluated to: ${conditionMet}`);

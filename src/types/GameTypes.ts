@@ -37,6 +37,8 @@ export interface ExecutionState {
   // Extended for while-handler with collectible condition
   collectibleCollected?: boolean;
   prevCollectibleCount?: number;
+  // Extended for while-handler with target condition
+  onTarget?: boolean;
 }
 
 export interface GameState {
@@ -100,6 +102,7 @@ export interface IGameEngine {
   rotateRobot(degrees: number): void;
   checkCollectibles(): void;
   checkTarget(): void;
+  checkMissionFailure(): void;
   missionFailed(reason?: string): void;
   onUpdate(callback: (state: GameState) => void): void;
   getState(): GameState;
@@ -111,3 +114,4 @@ export interface IGameEngine {
   notifyUpdate(): void;
   paintCellInFrontOfRobot(color: 'red' | 'green'): void;
 }
+

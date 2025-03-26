@@ -19,4 +19,8 @@ export interface Level {
   completed: boolean;
   concepts: string[];
   colorCycleSpeed?: number;
+  // New properties for advanced levels
+  dynamicEnvironment?: boolean;
+  multipleRobots?: boolean;
+  resourceManagement?: boolean;
 }

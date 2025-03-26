@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Rocket, Trophy} from 'lucide-react';
@@ -6,6 +7,7 @@ import GameCanvas from '@/components/GameCanvas';
 import { Command, GameState } from '@/engine';
 import { getLevel } from '@/data/level/levelManager';
 import { Level } from '@/types/levelTypes';
+import { useNavigate } from 'react-router-dom';
 
 interface PlaygroundTabProps {
   currentLevel?: Level;
@@ -26,6 +28,7 @@ const PlaygroundTab: React.FC<PlaygroundTabProps> = ({
   onResetCode,
   onNavigate
 }) => {
+  const navigate = useNavigate();
   
   // Force reset when mission fails
   React.useEffect(() => {
@@ -51,7 +54,7 @@ const PlaygroundTab: React.FC<PlaygroundTabProps> = ({
           <Button 
             variant="ghost"
             className="mr-4 text-white hover:bg-white/5"
-            onClick={() => onNavigate('levels')}
+            onClick={() => navigate('/') /* Navigate back to levels tab on home page */}
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Voltar
@@ -71,9 +74,9 @@ const PlaygroundTab: React.FC<PlaygroundTabProps> = ({
               if (currentLevel) {
                 const nextLevel = getLevel(currentLevel.id + 1);
                 if (nextLevel && nextLevel.unlocked) {
-                  onNavigate('levels');
+                  navigate(`/level/${nextLevel.id}`);
                 } else {
-                  onNavigate('levels');
+                  navigate('/');
                 }
               }
             }}
@@ -83,7 +86,6 @@ const PlaygroundTab: React.FC<PlaygroundTabProps> = ({
           </Button>
         )}
       </div>
-      
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <CodeBlocks 

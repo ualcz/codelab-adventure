@@ -1,6 +1,6 @@
 
-import { IGameEngine } from '../types/GameTypes';
-import { getDirectionVector } from './utils';
+import { IGameEngine } from '@/types/GameTypes';
+import { getDirectionVector } from '@/engine/utils';
 
 export class GameMovement {
   private engine: IGameEngine;

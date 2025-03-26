@@ -1,5 +1,5 @@
 
-import { Position, GameObject } from '../types/GameTypes';
+import { Position, GameObject } from '@/types/GameTypes';
 
 export function getDirectionVector(rotation: number): Position {
   const normalizedRotation = ((rotation % 360) + 360) % 360;

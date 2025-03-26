@@ -1,53 +1,24 @@
 
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import GameHeader from '@/components/GameHeader';
-import { Level } from '@/types/levelTypes';
-import gameEngine, { Command, GameState } from '@/engine';
-import { useToast } from '@/hooks/use-toast';
 
 import HomeTab from '@/components/tabs/HomeTab';
 import LevelsTab from '@/components/tabs/LevelsTab';
-import PlaygroundTab from '@/components/tabs/PlaygroundTab';
 import LearnTab from '@/components/tabs/LearnTab';
+import { Level } from '@/types/levelTypes';
 
 const Index = () => {
   const [currentTab, setCurrentTab] = useState('home');
-  const [gameState, setGameState] = useState<GameState>(gameEngine.getState());
-  const [currentLevel, setCurrentLevel] = useState<Level | undefined>();
-  const [isComplete, setIsComplete] = useState(false);
-  const { toast } = useToast();
-
-
-  useEffect(() => {
-    gameEngine.onUpdate((state) => {
-      setGameState(state);
-      setIsComplete(state.isComplete);
-    });
-  }, [isComplete, toast]);
+  const navigate = useNavigate();
 
   const handleTabChange = (tab: string) => {
     setCurrentTab(tab);
   };
 
   const handleSelectLevel = (level: Level) => {
-    setCurrentLevel(level);
-    gameEngine.loadLevel(level);
-    setIsComplete(false);
-    setCurrentTab('playground');
-  };
-
-  const handleRunCode = (commands: Command[]) => {
-    gameEngine.setCommands(commands);
-    gameEngine.start();
-  };
-
-  const handleStopCode = () => {
-    gameEngine.stop();
-  };
-
-  const handleResetCode = () => {
-    gameEngine.reset();
-    setIsComplete(false);
+    // Navigate to the level page instead of switching tabs
+    navigate(`/level/${level.id}`);
   };
 
   return (
@@ -59,19 +30,8 @@ const Index = () => {
         {currentTab === 'levels' && (
           <LevelsTab 
             onSelectLevel={handleSelectLevel} 
-            currentLevelId={currentLevel?.id} 
+            currentLevelId={undefined} 
             onNavigate={handleTabChange} 
-          />
-        )}
-        {currentTab === 'playground' && (
-          <PlaygroundTab 
-            currentLevel={currentLevel}
-            gameState={gameState}
-            isComplete={isComplete}
-            onRunCode={handleRunCode}
-            onStopCode={handleStopCode}
-            onResetCode={handleResetCode}
-            onNavigate={handleTabChange}
           />
         )}
         {currentTab === 'learn' && <LearnTab onNavigate={handleTabChange} />}

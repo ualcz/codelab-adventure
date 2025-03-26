@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { 
   ArrowUp, 
@@ -6,12 +7,15 @@ import {
   ChevronDown, 
   RotateCw, 
   RotateCcw,
-  Pause
+  Pause,
+  Paintbrush,
+  GitBranch,
+  Repeat
 } from 'lucide-react';
-import { DraggableBlockProps } from './types';
+import { DraggableBlockProps } from '../types';
 
 const DraggableBlock: React.FC<DraggableBlockProps> = ({ block, onDragStart, className }) => {
-  const LucideIcon = React.useMemo(() => {
+  const getIcon = () => {
     switch (block.icon) {
       case 'arrow-up': return ArrowUp;
       case 'arrow-down': return ArrowDown;
@@ -21,15 +25,22 @@ const DraggableBlock: React.FC<DraggableBlockProps> = ({ block, onDragStart, cla
       case 'git-branch': return ChevronDown;
       case 'code': return ChevronDown;
       case 'pause': return Pause;
+      case 'paintbrush': return Paintbrush;
+      case 'while': return Repeat;
       default: return ArrowUp;
     }
-  }, [block.icon]);
+  };
 
-  let blockClass = '';
-  if (block.type === 'control') blockClass = 'control-block';
-  if (block.type === 'loop') blockClass = 'loop-block';
-  if (block.type === 'condition') blockClass = 'condition-block';
-  if (block.type === 'action') blockClass = 'action-block';
+  const getBlockClass = () => {
+    if (block.type === 'control') return 'control-block';
+    if (block.type === 'loop') return 'loop-block';
+    if (block.type === 'condition') return 'condition-block';
+    if (block.type === 'action') return 'action-block';
+    return '';
+  };
+
+  const LucideIcon = getIcon();
+  const blockClass = getBlockClass();
 
   return (
     <div 

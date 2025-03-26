@@ -1,117 +1,113 @@
 
-import { Command } from '@/engine/types';
+import { Command } from '@/types/GameTypes';
 
 // Deep clone the commands array
-export const cloneCommands = (commands: Command[]) => JSON.parse(JSON.stringify(commands));
+export const cloneCommands = (commands: Command[]): Command[] => {
+  return JSON.parse(JSON.stringify(commands));
+};
 
-// Get a command by path
-export const getCommandByPath = (commands: Command[], path: (number | string)[]) => {
-  let current = [...commands];
-  let currentCommand = null;
+// Get a command by its path in the commands tree
+export const getCommandByPath = (commands: Command[], path: (number | string)[]): Command | null => {
+  if (path.length === 0) return null;
   
-  for (let i = 0; i < path.length; i++) {
+  let current = commands;
+  for (let i = 0; i < path.length - 1; i++) {
     const index = path[i] as number;
-    if (i === 0) {
-      currentCommand = current[index];
-    } else {
-      if (!currentCommand.children) return null;
-      currentCommand = currentCommand.children[index];
-    }
+    if (!current[index] || !current[index].children) return null;
+    current = current[index].children;
   }
   
-  return currentCommand;
+  const index = path[path.length - 1] as number;
+  return current[index] || null;
 };
 
-// Remove a command by path
-export const removeCommand = (commands: Command[], path: (number | string)[]) => {
-  const newCommands = cloneCommands(commands);
+// Remove a command at a given path
+export const removeCommand = (commands: Command[], path: (number | string)[]): Command[] => {
+  if (path.length === 0) return commands;
+  
+  const result = cloneCommands(commands);
   
   if (path.length === 1) {
-    // Top-level command
-    newCommands.splice(path[0] as number, 1);
-  } else {
-    // Nested command
-    let current = newCommands;
-    let parent = null;
-    let parentIndex = null;
-    
-    for (let i = 0; i < path.length - 1; i++) {
-      const index = path[i] as number;
-      if (i === path.length - 2) {
-        parent = current[index];
-        parentIndex = index;
-      } else {
-        current = current[index].children;
-      }
-    }
-    
-    if (parent && parent.children) {
-      parent.children.splice(path[path.length - 1] as number, 1);
-    }
+    // Remove from root level
+    result.splice(path[0] as number, 1);
+    return result;
   }
   
-  return newCommands;
+  // Navigate to the parent
+  let current = result;
+  for (let i = 0; i < path.length - 2; i++) {
+    const index = path[i] as number;
+    if (!current[index] || !current[index].children) return commands;
+    current = current[index].children;
+  }
+  
+  // Get the parent and remove the child
+  const parentIndex = path[path.length - 2] as number;
+  if (current[parentIndex] && current[parentIndex].children) {
+    current[parentIndex].children.splice(path[path.length - 1] as number, 1);
+  }
+  
+  return result;
 };
 
-// Update a command by path
-export const updateCommand = (commands: Command[], path: (number | string)[], command: Command) => {
-  const newCommands = cloneCommands(commands);
+// Update a command at a given path
+export const updateCommand = (commands: Command[], path: (number | string)[], command: Command): Command[] => {
+  if (path.length === 0) return commands;
+  
+  const result = cloneCommands(commands);
   
   if (path.length === 1) {
-    // Top-level command
-    newCommands[path[0] as number] = command;
-  } else {
-    // Nested command
-    let current = newCommands;
-    
-    for (let i = 0; i < path.length - 1; i++) {
-      const index = path[i] as number;
-      if (i === path.length - 2) {
-        if (current[index].children) {
-          current[index].children[path[path.length - 1] as number] = command;
+    // Update at root level
+    result[path[0] as number] = command;
+    return result;
+  }
+  
+  // Navigate to the parent
+  let current = result;
+  for (let i = 0; i < path.length - 2; i++) {
+    const index = path[i] as number;
+    if (!current[index] || !current[index].children) return commands;
+    current = current[index].children;
+  }
+  
+  // Get the parent and update the child
+  const parentIndex = path[path.length - 2] as number;
+  if (current[parentIndex] && current[parentIndex].children) {
+    current[parentIndex].children[path[path.length - 1] as number] = command;
+  }
+  
+  return result;
+};
+
+// Check if there are nested repeats or while loops
+export const hasNestedRepeats = (commands: Command[]): boolean => {
+  for (const command of commands) {
+    if ((command.id === 'repeat' || command.id === 'while') && command.children && command.children.length > 0) {
+      for (const child of command.children) {
+        if (child.id === 'repeat' || child.id === 'while') {
+          return true;
         }
-      } else if (current[index].children) {
-        current = current[index].children;
       }
-    }
-  }
-  
-  return newCommands;
-};
-
-// Add dummy command for nested repeats and while loops
-export const addDummyCommand = (commands: Command[]) => {
-  const newCommands = [...commands];
-  const dummyCommand: Command = {
-    id: 'dummy',
-    name: 'dummy',
-    params: { isDummy: true }
-  };
-  
-  // Find the last repeat or while in the list
-  let lastIndex = -1;
-  for (let i = newCommands.length - 1; i >= 0; i--) {
-    if (newCommands[i].id === 'repeat' || newCommands[i].id === 'while') {
-      lastIndex = i;
-      break;
-    }
-  }
-  
-  if (lastIndex !== -1) {
-    // Insert the dummy command after the last repeat or while
-    newCommands.splice(lastIndex + 1, 0, dummyCommand);
-  }
-  
-  return newCommands;
-};
-
-// Check if there are nested repeats or while loops in the commands
-export const hasNestedRepeats = (commands: Command[]) => {
-  for (let i = 0; i < commands.length; i++) {
-    if ((commands[i].id === 'repeat' || commands[i].id === 'while') && 
-        commands[i].children?.some(child => child.id === 'repeat' || child.id === 'while')) {
-      return true;
     }
   }
   return false;
+};
+
+// Add a dummy command to the commands array if it doesn't already exist
+export const addDummyCommand = (commands: Command[]): Command[] => {
+  const result = cloneCommands(commands);
+  
+  // Check if a dummy command already exists
+  const hasDummy = result.some(cmd => cmd.params?.isDummy);
+  
+  if (!hasDummy) {
+    // Add a dummy command that will be used for execution but not rendered
+    result.push({
+      id: 'dummy',
+      name: 'dummy',
+      params: { isDummy: true }
+    });
+  }
+  
+  return result;
 };

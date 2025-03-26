@@ -1,3 +1,4 @@
+
 import React, { useState, useRef } from 'react';
 import { 
   ArrowUp, 
@@ -12,9 +13,9 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Command } from '@/types/GameTypes';
-import { CommandBlockProps } from './types';
-import DropIndicator from './interface/DropIndicator';
-import DropZone from './interface/DropZone';
+import { CommandBlockProps } from '../types';
+import DropIndicator from '@/components/ui/codeblocks/DropIndicator';
+import DropZone from '@/components/ui/codeblocks/DropZone';
 import CommandControls from './CommandControls';
 
 const CommandBlock: React.FC<CommandBlockProps> = ({ 
@@ -203,7 +204,7 @@ const CommandBlock: React.FC<CommandBlockProps> = ({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1">
             <Icon className="h-3 w-3 flex-shrink-0" />
-            <span className="text-xs">Enquanto</span>
+            <span className="text-xs">{command.name}</span>
             
             <CommandControls 
               command={command}
