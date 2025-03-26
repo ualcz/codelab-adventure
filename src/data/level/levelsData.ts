@@ -259,7 +259,6 @@ const LEVELS: Level[] = [
     id: 11,
     name: "Laços Dentro de Laços",
     minBlocks: 12,
-    maxBlocks: 22,
     description: "Use laços condicionais aninhados para resolver problemas mais complexos",
     difficulty: "intermediate",
     gridSize: { width: 12, height: 12 },
