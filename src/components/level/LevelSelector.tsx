@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Level, getLevels } from '@/data/level/levelManager';
 import { CheckSquare, Lock, BotIcon } from 'lucide-react';
@@ -45,7 +46,10 @@ const LevelSelector: React.FC<LevelSelectorProps> = ({ onSelectLevel, currentLev
           }}
         >
           <div className="flex justify-between items-start mb-2">
-            <h3 className="text-lg font-medium text-white/90">
+            <h3 className="text-lg font-medium text-white/90 flex items-center">
+              <span className="inline-flex items-center justify-center bg-game-primary/20 text-game-primary rounded-full w-6 h-6 mr-2 text-sm font-bold">
+                {level.id}
+              </span>
               {level.name}
               {level.completed && <CheckSquare className="h-4 w-4 inline ml-2 text-game-success" />}
             </h3>

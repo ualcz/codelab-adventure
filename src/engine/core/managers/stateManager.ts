@@ -95,6 +95,13 @@ export class StateManager {
     }, 0);
   }
   
+  updateBlocksUsed(state: GameState, commands: Command[]): GameState {
+    return {
+      ...state,
+      blocksUsed: this.countBlocksUsed(commands)
+    };
+  }
+  
   getInitialRobot(): any {
     return this.initialRobotState;
   }

@@ -1,26 +1,25 @@
-
 import { useNavigate } from 'react-router-dom';
 import GameHeader from '@/components/shared/GameHeader';
 import Footer from '@/components/shared/footer';
-import HomeTab from '@/components/home/HomeTab';
+import LearnTab from '@/components/Lean/LearnTab';
 
-const Index = () => {
+const LearnPage = () => {
   const navigate = useNavigate();
 
   const handleTabChange = (tab: string) => {
-    if (tab === 'levels') {
+    if (tab === 'home') {
+      navigate('/');
+    } else if (tab === 'levels') {
       navigate('/levels');
-    } else if (tab === 'learn') {
-      navigate('/learn');
     }
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-game-background to-game-surface text-white">
-      <GameHeader currentTab="home" onTabChange={handleTabChange} />
+      <GameHeader currentTab="learn" onTabChange={handleTabChange} />
       
       <div className="py-4">
-        <HomeTab onNavigate={handleTabChange} />
+        <LearnTab onNavigate={handleTabChange} />
       </div>
 
       <Footer />
@@ -28,4 +27,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default LearnPage;

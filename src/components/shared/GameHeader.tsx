@@ -2,6 +2,7 @@
 import React from 'react';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Home, Book, Trophy, Cpu, Sparkles } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface GameHeaderProps {
   currentTab: string;
@@ -9,9 +10,15 @@ interface GameHeaderProps {
 }
 
 const GameHeader: React.FC<GameHeaderProps> = ({ currentTab, onTabChange }) => {
+  const navigate = useNavigate();
+
+  const handleTabChange = (value: string) => {
+    onTabChange(value);
+  };
+
   return (
     <div className="w-full bg-gradient-to-r from-game-background via-game-surface to-game-background border-b-2 border-game-primary/20 py-6 px-4 flex justify-between items-center glass-panel animate-fade-in shadow-lg">
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')}>
         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-game-primary to-game-tertiary flex items-center justify-center shadow-lg shadow-game-primary/30 animate-pulse-light">
           <Cpu className="h-6 w-6 text-white" />
         </div>
@@ -20,7 +27,7 @@ const GameHeader: React.FC<GameHeaderProps> = ({ currentTab, onTabChange }) => {
         </h1>
       </div>
       
-      <Tabs defaultValue={currentTab} onValueChange={onTabChange} className="w-auto">
+      <Tabs defaultValue={currentTab} onValueChange={handleTabChange} className="w-auto">
         <TabsList className="glass-panel border-2 border-white/10 bg-gradient-to-r from-game-panel/50 to-game-background/50">
           <TabsTrigger 
             value="home" 

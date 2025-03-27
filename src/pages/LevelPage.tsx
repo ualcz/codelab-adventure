@@ -1,11 +1,13 @@
+
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import GameHeader from '@/components/Header/GameHeader';
+import GameHeader from '@/components/shared/GameHeader';
 import { Level } from '@/types/levelTypes';
 import gameEngine, { Command, GameState } from '@/engine';
 import { useToast } from '@/hooks/use-toast';
 import { getLevel } from '@/data/level/levelManager';
 import PlaygroundTab from '@/components/game/PlaygroundTab';
+import Footer from '@/components/shared/footer';
 
 const LevelPage = () => {
   const { levelId } = useParams();
@@ -59,10 +61,16 @@ const LevelPage = () => {
     if (tab === 'home') {
       navigate('/');
     } else if (tab === 'levels') {
-      navigate('/', { state: { initialTab: 'levels' } });
+      navigate('/levels');
     } else if (tab === 'learn') {
-      navigate('/', { state: { initialTab: 'learn' } });
+      navigate('/learn');
     }
+  };
+
+  const handleCommandsChange = (commands: Command[]) => {
+    // This is the new function that will handle command changes and update block count
+    gameEngine.setCommands(commands);
+    setGameState({...gameEngine.getState()});
   };
 
   const handleRunCode = (commands: Command[]) => {
@@ -93,9 +101,12 @@ const LevelPage = () => {
             onStopCode={handleStopCode}
             onResetCode={handleResetCode}
             onNavigate={handleTabChange}
+            onCommandsChange={handleCommandsChange}
           />
         )}
       </div>
+
+      <Footer />
     </div>
   );
 };

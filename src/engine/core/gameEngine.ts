@@ -1,4 +1,3 @@
-
 import { Level } from '@/types/levelTypes';
 import { getCompletedLevels } from '@/data/level/progressManager';
 import { GameState, Command, CommandHandler, IGameEngine, GameObject } from '@/types/GameTypes';
@@ -66,12 +65,10 @@ export class GameEngine implements IGameEngine {
   }
 
   setSpeed(speed: number): void {
-    this.state.speed = speed;
-    this.notifyUpdate();
-  }
-
-  start(): void {
-    this.executionManager.start();
+    if (speed > 0) {
+      this.state.speed = speed;
+      this.notifyUpdate();
+    }
   }
 
   stop(): void {
@@ -208,7 +205,6 @@ export class GameEngine implements IGameEngine {
       colorCell.color = color;
       colorCell.isBlocking = color === 'red';
     } else {
-      // Fix the type issue by explicitly setting type as 'colorCell'
       const newCell: GameObject = {
         id: `colorCell_${frontX}_${frontY}`,
         type: 'colorCell',
@@ -232,5 +228,9 @@ export class GameEngine implements IGameEngine {
     console.log("Ponteiro de execução:", this.state.executionPointer);
     console.log("Comandos:", this.state.commands);
     console.log("=======================");
+  }
+
+  start(): void {
+    this.executionManager.start();
   }
 }

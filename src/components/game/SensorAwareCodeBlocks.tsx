@@ -1,13 +1,12 @@
 
-import React, { useState } from 'react';
-import { Command } from '@/types/GameTypes';
+import React, { useState, useEffect } from 'react';
+import { Command, GameState } from '@/types/GameTypes';
 import CommandPalette from '../code/CommandPalette';
 import CommandList from './CommandList';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
-import { Play, Trash, RefreshCw } from 'lucide-react';
+import { Play, Trash, RefreshCw, Blocks } from 'lucide-react';
 
-// Esta é uma versão simplificada do CodeBlocks que suporta sensores
 interface SensorAwareCodeBlocksProps {
   availableCommands: string[];
   availableSensors?: string[];
@@ -15,6 +14,8 @@ interface SensorAwareCodeBlocksProps {
   onStop: () => void;
   onReset: () => void;
   isRunning: boolean;
+  onCommandsChange?: (commands: Command[]) => void;
+  gameState: GameState;
 }
 
 const SensorAwareCodeBlocks: React.FC<SensorAwareCodeBlocksProps> = ({
@@ -23,7 +24,9 @@ const SensorAwareCodeBlocks: React.FC<SensorAwareCodeBlocksProps> = ({
   onRun,
   onStop,
   onReset,
-  isRunning
+  isRunning,
+  onCommandsChange,
+  gameState
 }) => {
   const [commands, setCommands] = useState<Command[]>([]);
   const { toast } = useToast();
@@ -37,6 +40,11 @@ const SensorAwareCodeBlocks: React.FC<SensorAwareCodeBlocksProps> = ({
 
   const handleCommandsChange = (newCommands: Command[]) => {
     setCommands(newCommands);
+    
+    // Call parent's onCommandsChange if provided
+    if (onCommandsChange) {
+      onCommandsChange(newCommands);
+    }
   };
 
   const handleRunCode = () => {
@@ -53,6 +61,11 @@ const SensorAwareCodeBlocks: React.FC<SensorAwareCodeBlocksProps> = ({
 
   const handleClearCommands = () => {
     setCommands([]);
+    
+    // Call parent's onCommandsChange with empty array if provided
+    if (onCommandsChange) {
+      onCommandsChange([]);
+    }
   };
 
   return (
