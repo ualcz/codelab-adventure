@@ -10,6 +10,7 @@ import {
   Star, 
   RotateCcw, 
   Sparkles,
+  ArrowRight,  // Add this import
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -18,13 +19,15 @@ interface GameCanvasProps {
   currentLevel?: Level;
   isComplete: boolean;
   onReset: () => void;
+  onNextLevel?: () => void;  // Add this new prop
 }
 
 const GameCanvas: React.FC<GameCanvasProps> = ({ 
   gameState, 
   currentLevel,
   isComplete,
-  onReset
+  onNextLevel,
+  onReset,
 }) => {
   const canvasRef = useRef<HTMLDivElement>(null);
   const [cellSize, setCellSize] = useState(50);
@@ -255,9 +258,19 @@ const GameCanvas: React.FC<GameCanvasProps> = ({
                       : `Solução mais eficiente: ${currentLevel.minBlocks} blocos`}
                   </p>
                 )}
-                <Badge variant="outline" className="bg-game-primary/10 text-game-primary border-game-primary/30 text-sm">
+                <Badge variant="outline" className="bg-game-primary/10 text-game-primary border-game-primary/30 text-sm mb-4">
                   {currentLevel?.concepts.join(' • ')}
                 </Badge>
+                
+                {onNextLevel && (
+                  <Button 
+                    onClick={onNextLevel}
+                    className="bg-game-success text-white hover:bg-game-success/100 flex items-center mx-auto"
+                  >
+                    Próximo Nível
+                    <ArrowRight className="h-4 w-4 ml-2" />
+                  </Button>
+                )}
               </div>
             </div>
           )}

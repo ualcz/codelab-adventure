@@ -6,7 +6,7 @@ const LEVELS: Level[] = [
     id: 1,
     name: "Primeiro Passo",
     description: "Aprenda movimentos básicos",
-    difficulty: "beginner",
+    difficulty: "beginner", // Changed from "beginner" - Very basic movement commands
     maxBlocks: 5,
     minBlocks: 3,
     gridSize: { width: 3, height: 3 },
@@ -26,7 +26,7 @@ const LEVELS: Level[] = [
     id: 2,
     name: "Navegando com Precisão",
     description: "Explore movimentos em múltiplas direções",
-    difficulty: "beginner",
+    difficulty: "beginner", // Kept as "beginner" - Simple obstacle avoidance
     gridSize: { width: 4, height: 4 },
     objects: [
       { ...defaultRobot, x: 0, y: 0, rotation: 90 },
@@ -44,7 +44,7 @@ const LEVELS: Level[] = [
     id: 3,
     name: "Introdução à Repetição",
     description: "Descubra o poder dos laços",
-    difficulty: "beginner",
+    difficulty: "beginner", // Kept as "beginner" - Basic loop introduction
     gridSize: { width: 6, height: 1 },
     objects: [
       { ...defaultRobot, x: 0, y: 0, rotation: 90 },
@@ -375,7 +375,7 @@ const LEVELS: Level[] = [
       
       { id: 'target1', type: 'target', x: 6, y: 11, width: 1, height: 1 }
     ]
-  }
+  },
 ];
 
 export default LEVELS;

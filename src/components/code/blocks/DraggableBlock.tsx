@@ -8,14 +8,15 @@ import {
   RotateCw, 
   RotateCcw,
   Pause,
-  Paintbrush,
-  GitBranch,
+  PaintBucket,
+  Split,
   Repeat,
   Target,
   Square,
   Circle,
   Shield,
-  Coins
+  Sparkles,
+  Bug
 } from 'lucide-react';
 import { DraggableBlockProps } from '@/components/types';
 
@@ -26,18 +27,19 @@ const DraggableBlock: React.FC<DraggableBlockProps> = ({ block, onDragStart, cla
       case 'arrow-down': return ArrowDown;
       case 'rotate-cw': return RotateCw;
       case 'rotate-ccw': return RotateCcw;
-      case 'repeat': return RefreshCw;
-      case 'git-branch': return GitBranch;
+      case 'repeat': return Repeat;
+      case 'split': return Split;
       case 'code': return ChevronDown;
       case 'pause': return Pause;
-      case 'paintbrush': return Paintbrush;
-      case 'while': return Repeat;
+      case 'paintbrush': 
+      case 'paint': return PaintBucket;
+      case 'refreshCw': return RefreshCw;
       case 'shield': return Shield;
       case 'square': return Square;
-      case 'coins': return Coins;
+      case 'coins': return Sparkles;
       case 'target': return Target;
       case 'circle': return Circle;
-      default: return ArrowUp;
+      default: return  Bug;
     }
   };
 
@@ -62,12 +64,12 @@ const DraggableBlock: React.FC<DraggableBlockProps> = ({ block, onDragStart, cla
 
   return (
     <div 
-      className={`code-block ${blockClass} animate-scale-in inline-block max-w-[110px] ${className || ''}`}
+      className={`code-block ${blockClass} animate-scale-in inline-block max-w-[200px] ${className || ''}`}
       draggable
       onDragStart={(e) => onDragStart(e, block)}
     >
-      <div className="flex items-center gap-1">
-        <LucideIcon className={`h-3 w-3 flex-shrink-0 ${iconClass}`} />
+      <div className="flex p-1 items-center gap-1">
+        <LucideIcon className={`h-5 w-5 flex-shrink-0 ${iconClass}`} />
         <span className="text-xs whitespace-nowrap overflow-hidden text-ellipsis">{block.name}</span>
       </div>
     </div>

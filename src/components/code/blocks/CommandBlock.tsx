@@ -7,14 +7,15 @@ import {
   X, 
   RotateCw, 
   RotateCcw,
-  GitBranch,
   Repeat,
-  Paintbrush,
+  PaintBucket,
   Target,
   Square,
   Circle,
   Shield,
-  Coins
+  Sparkles,
+  Pause,
+  Split
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Command } from '@/types/GameTypes';
@@ -155,7 +156,7 @@ const CommandBlock: React.FC<CommandBlockProps> = ({
       switch (sensorType) {
         case 'barrier': return Shield;
         case 'border': return Square;
-        case 'collectible': return Coins;
+        case 'collectible': return Sparkles;
         case 'target': return Target;
         case 'redCell': return Circle;
         case 'greenCell': return Circle;
@@ -168,10 +169,11 @@ const CommandBlock: React.FC<CommandBlockProps> = ({
       case 'moveBackward': return ArrowDown;
       case 'turnRight': return RotateCw;
       case 'turnLeft': return RotateCcw;
-      case 'repeat': return RefreshCw;
-      case 'while': return Repeat;
-      case 'if': return GitBranch;
-      case 'paintGreen': return Paintbrush;
+      case 'repeat': return Repeat;
+      case 'while': return RefreshCw;
+      case 'if': return Split;
+      case 'paintGreen': return PaintBucket;
+      case 'stop': return Pause;
       default: return ArrowUp;
     }
   };

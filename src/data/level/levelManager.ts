@@ -89,21 +89,21 @@ export function getCommandBlocks() {
     {
       id:'while',
       name: 'Enquanto',
-      icon: 'GitBranch',
+      icon: 'refreshCw',
       type: 'loop',
       description: 'Repete os comandos dentro dele enquanto uma condição for verdadeira'
     },
     {
       id: 'if',
       name: 'Se',
-      icon: 'GitBranch',
+      icon: 'split',
       type: 'condition',
       description: 'Executa comandos se a condição for verdadeira'
     },
     {
       id: 'paintGreen',
       name: 'Pintar verde',
-      icon: 'paint',
+      icon: 'paintbrush',
       type: 'action',
       description: 'Pinta a célula à frente de verde'
     },

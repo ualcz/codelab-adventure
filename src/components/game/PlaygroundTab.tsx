@@ -70,6 +70,7 @@ const PlaygroundTab: React.FC<PlaygroundTabProps> = ({
             currentLevel={currentLevel} 
             isComplete={isComplete} 
             onReset={onResetCode}
+            onNextLevel={() => onNavigate('levels')}
           />
         </div>
       </div>
