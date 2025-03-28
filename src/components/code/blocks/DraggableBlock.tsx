@@ -4,7 +4,6 @@ import {
   ArrowUp, 
   ArrowDown, 
   RefreshCw, 
-  ChevronDown, 
   RotateCw, 
   RotateCcw,
   Pause,
@@ -22,27 +21,32 @@ import { DraggableBlockProps } from '@/components/types';
 
 const DraggableBlock: React.FC<DraggableBlockProps> = ({ block, onDragStart, className }) => {
   const getIcon = () => {
-    switch (block.icon) {
-      case 'arrow-up': return ArrowUp;
-      case 'arrow-down': return ArrowDown;
-      case 'rotate-cw': return RotateCw;
-      case 'rotate-ccw': return RotateCcw;
-      case 'repeat': return Repeat;
-      case 'split': return Split;
-      case 'code': return ChevronDown;
-      case 'pause': return Pause;
-      case 'paintbrush': 
-      case 'paint': return PaintBucket;
-      case 'refreshCw': return RefreshCw;
-      case 'shield': return Shield;
-      case 'square': return Square;
-      case 'coins': return Sparkles;
-      case 'target': return Target;
-      case 'circle': return Circle;
-      default: return  Bug;
-    }
-  };
-
+      if (block.id.startsWith('sensor_')) {
+        const sensorType = block.id.split('sensor_')[1];
+        switch (sensorType) {
+          case 'barrier': return Shield;
+          case 'border': return Square;
+          case 'collectible': return Sparkles;
+          case 'target': return Target;
+          case 'redCell': return Circle;
+          case 'greenCell': return Circle;
+          default: return Bug;
+        }
+      }
+  
+      switch (block.id) {
+        case 'moveForward': return ArrowUp;
+        case 'moveBackward': return ArrowDown;
+        case 'turnRight': return RotateCw;
+        case 'turnLeft': return RotateCcw;
+        case 'repeat': return Repeat;
+        case 'while': return RefreshCw;
+        case 'if': return Split;
+        case 'paintGreen': return PaintBucket;
+        case 'stop': return Pause;
+        default: return Bug;
+      }
+    };
   const getBlockClass = () => {
     if (block.type === 'control') return 'control-block';
     if (block.type === 'loop') return 'loop-block';
