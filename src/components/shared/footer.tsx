@@ -1,25 +1,19 @@
-import { Instagram, Github, Copyright } from 'lucide-react';
-import { FaGithub, FaInstagram, FaDiscord, FaEnvelope , FaCopyright} from "react-icons/fa";
+import { Instagram, Github, Copyright, Mail } from 'lucide-react';
 
 
 const socialLinks = [
   {
-    icon: FaGithub,
+    icon: Github,
     href: "https://github.com/ualcz",
     label: "GitHub",
   },
   {
-    icon: FaInstagram,
+    icon: Instagram,
     href: "https://www.instagram.com/claubx_",
     label: "Instagram",
   },
   {
-    icon: FaDiscord,
-    href: "https://discord.com/users/949800493402718279",
-    label: "Discord",
-  },
-  {
-    icon: FaEnvelope,
+    icon: Mail,
     href: "mailto:claudeilsonsouzza@gmail.com",
     label: "Email",
   },
