@@ -24,6 +24,7 @@ const CommandPalette: React.FC<CommandPaletteProps> = ({
     .map(sensor => ({
       id: sensor.id,
       name: sensor.name,
+      icon: sensor.icon || 'shield',
       type: 'sensor',
       description: sensor.description,
       sensorType: sensor.sensorType

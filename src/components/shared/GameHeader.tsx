@@ -1,8 +1,10 @@
 
 import React from 'react';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Home, Book, Trophy, Cpu, Sparkles } from 'lucide-react';
+import { Home, Book, Trophy, Cpu, Sparkles, User, LogIn } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
+import { Button } from '@/components/ui/button';
 
 interface GameHeaderProps {
   currentTab: string;
@@ -11,6 +13,7 @@ interface GameHeaderProps {
 
 const GameHeader: React.FC<GameHeaderProps> = ({ currentTab, onTabChange }) => {
   const navigate = useNavigate();
+  const { user, isAuthenticated } = useAuth();
 
   const handleTabChange = (value: string) => {
     onTabChange(value);
@@ -54,6 +57,26 @@ const GameHeader: React.FC<GameHeaderProps> = ({ currentTab, onTabChange }) => {
       </Tabs>
       
       <div className="hidden md:flex items-center gap-2">
+        {isAuthenticated ? (
+          <Button 
+            onClick={() => navigate('/profile')} 
+            variant="outline" 
+            className="text-white border-white/10 bg-game-surface/50 hover:bg-game-surface/70 flex items-center gap-2"
+          >
+            <User className="h-4 w-4 text-game-primary" />
+            <span className="hidden md:inline">{user?.username}</span>
+          </Button>
+        ) : (
+          <Button 
+            onClick={() => navigate('/login')} 
+            variant="outline"
+            className="text-white border-white/10 bg-game-surface/50 hover:bg-game-surface/70 flex items-center gap-2"
+          >
+            <LogIn className="h-4 w-4 text-game-primary" />
+            <span className="hidden md:inline">Entrar</span>
+          </Button>
+        )}
+        
         <div className="text-xs text-white/60 bg-game-surface/50 px-3 py-1 rounded-full border border-white/10 flex items-center">
           <Sparkles className="h-3 w-3 mr-1 text-game-warning" />
           <span>Versão Beta</span>

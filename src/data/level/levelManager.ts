@@ -47,54 +47,63 @@ export function getCommandBlocks() {
     {
       id: 'moveForward',
       name: 'Andar',
+      icon: 'arrow-up',
       type: 'control',
       description: 'Move o robô para frente uma casa'
     },
     {
       id: 'moveBackward',
       name: 'Recuar',
+      icon: 'arrow-down',
       type: 'control',
       description: 'Move o robô para trás uma casa'
     },
     {
       id: 'turnRight',
       name: 'Girar direita',
+      icon: 'rotate-cw',
       type: 'control',
       description: 'Gira o robô para a direita'
     },
     {
       id: 'turnLeft',
       name: 'Girar esquerda',
+      icon: 'rotate-ccw',
       type: 'control',
       description: 'Gira o robô para a esquerda'
     },
     {
       id: 'stop',
       name: 'Parar',
+      icon: 'pause',
       type: 'control',
       description: 'Faz o robô ficar parado'
     },
     {
       id: 'repeat',
       name: 'Repetir',
+      icon: 'repeat',
       type: 'loop',
       description: 'Repete os comandos dentro dele várias vezes'
     },
     {
       id:'while',
       name: 'Enquanto',
+      icon: 'refreshCw',
       type: 'loop',
       description: 'Repete os comandos dentro dele enquanto uma condição for verdadeira'
     },
     {
       id: 'if',
       name: 'Se',
+      icon: 'split',
       type: 'condition',
       description: 'Executa comandos se a condição for verdadeira'
     },
     {
       id: 'paintGreen',
       name: 'Pintar verde',
+      icon: 'paintbrush',
       type: 'action',
       description: 'Pinta a célula à frente de verde'
     },
@@ -110,6 +119,7 @@ export const sensorObjects = {
     sensorType: 'barrier' as const,
     name: 'Barreira',
     description: 'Detecta barreiras na frente do robô',
+    icon: 'shield',
     blockType: 'sensor'
   },
   border: {
@@ -118,6 +128,7 @@ export const sensorObjects = {
     sensorType: 'border' as const,
     name: 'Borda',
     description: 'Detecta bordas do mapa na frente do robô',
+    icon: 'square',
     blockType: 'sensor'
   },
   collectible: {
@@ -126,6 +137,7 @@ export const sensorObjects = {
     sensorType: 'collectible' as const,
     name: 'Moeda',
     description: 'Detecta se uma moeda foi coletada',
+    icon: 'coins',
     blockType: 'sensor'
   },
   target: {
@@ -134,6 +146,7 @@ export const sensorObjects = {
     sensorType: 'target' as const,
     name: 'Alvo',
     description: 'Detecta se o robô chegou ao alvo',
+    icon: 'target',
     blockType: 'sensor'
   },
   redCell: {
@@ -142,6 +155,7 @@ export const sensorObjects = {
     sensorType: 'redCell' as const,
     name: 'Célula Vermelha',
     description: 'Detecta células vermelhas na frente do robô',
+    icon: 'circle',
     blockType: 'sensor'
   },
   greenCell: {
@@ -150,6 +164,7 @@ export const sensorObjects = {
     sensorType: 'greenCell' as const,
     name: 'Célula Verde',
     description: 'Detecta células verdes na frente do robô',
+    icon: 'circle',
     blockType: 'sensor'
   }
 };

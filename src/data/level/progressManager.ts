@@ -1,8 +1,10 @@
 
 import LEVELS from './levelsData';
+import { syncUserProgress, getUserProgress } from '@/services/api';
 
 export const getCompletedLevels = (): number[] => {
   try {
+    // Try to get from localStorage first
     const savedProgress = localStorage.getItem('gameProgress');
     if (savedProgress) {
       const progress = JSON.parse(savedProgress);
@@ -18,13 +20,28 @@ export const getCompletedLevels = (): number[] => {
   }
 };
 
-export const saveCompletedLevels = (): void => {
+export const saveCompletedLevels = async (): Promise<void> => {
   try {
     const completedLevelIds = LEVELS.filter(level => level.completed).map(level => level.id);
-    localStorage.setItem('gameProgress', JSON.stringify({
+    const progressData = {
       completedLevels: completedLevelIds,
       lastSaved: new Date().toISOString()
-    }));
+    };
+    
+    // Always save to localStorage
+    localStorage.setItem('gameProgress', JSON.stringify(progressData));
+    
+    // Try to sync with the API if user is logged in
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        await syncUserProgress(progressData);
+        console.log('Progress synced with server successfully');
+      } catch (apiError) {
+        console.error('Error syncing progress with server:', apiError);
+        // Continue with local save even if API sync fails
+      }
+    }
     
     window.dispatchEvent(new Event('storage'));
     
@@ -47,6 +64,20 @@ export const clearProgress = (): void => {
       }
     });
     
+    // Try to sync cleared progress with the API if user is logged in
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        syncUserProgress({
+          completedLevels: [],
+          lastSaved: new Date().toISOString()
+        });
+        console.log('Cleared progress synced with server successfully');
+      } catch (apiError) {
+        console.error('Error syncing cleared progress with server:', apiError);
+      }
+    }
+    
     window.dispatchEvent(new Event('storage'));
     
     console.log('Progress cleared successfully');
@@ -55,31 +86,56 @@ export const clearProgress = (): void => {
   }
 };
 
-export const loadProgress = (): void => {
+export const loadProgress = async (): Promise<void> => {
   try {
-    const completedLevelIds = getCompletedLevels();
-    
-    LEVELS.forEach(level => {
-      level.completed = false;
-      level.unlocked = level.id === 1;
-    });
-    
-    completedLevelIds.forEach(levelId => {
-      const level = LEVELS.find(l => l.id === levelId);
-      if (level) {
-        level.completed = true;
+    let completedLevelIds: number[] = [];
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      try {
+        // Try to load from API first
+        const apiProgress = await getUserProgress();
+        completedLevelIds = apiProgress.completedLevels || [];
         
-        level.unlocked = true;
-        
-        const nextLevel = LEVELS.find(l => l.id === levelId + 1);
-        if (nextLevel) {
-          nextLevel.unlocked = true;
-        }
+        // Update localStorage
+        localStorage.setItem('gameProgress', JSON.stringify({
+          completedLevels: completedLevelIds,
+          lastSaved: new Date().toISOString()
+        }));
+      } catch (apiError) {
+        console.error('API error, falling back to local storage:', apiError);
+        completedLevelIds = getLocalCompletedLevels();
       }
-    });
-    
-    console.log('Progress loaded successfully:', completedLevelIds);
+    } else {
+      completedLevelIds = getLocalCompletedLevels();
+    }
+
+    updateLevelStates(completedLevelIds);
   } catch (error) {
     console.error('Error loading progress:', error);
+    // Reset to safe initial state
+    resetLevelsToInitialState();
   }
+};
+
+// Helper functions
+const getLocalCompletedLevels = (): number[] => {
+  const saved = localStorage.getItem('gameProgress');
+  return saved ? JSON.parse(saved).completedLevels : [];
+};
+
+const updateLevelStates = (completedIds: number[]) => {
+  LEVELS.forEach(level => {
+    level.completed = completedIds.includes(level.id);
+    level.unlocked = level.id === 1 || 
+                    completedIds.includes(level.id) || 
+                    completedIds.includes(level.id - 1);
+  });
+};
+
+const resetLevelsToInitialState = () => {
+  LEVELS.forEach(level => {
+    level.completed = false;
+    level.unlocked = level.id === 1;
+  });
 };

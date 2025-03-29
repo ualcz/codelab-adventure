@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Level, getLevels } from '@/data/level/levelManager';
 import { CheckSquare, Lock, BotIcon } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
@@ -10,7 +10,23 @@ interface LevelSelectorProps {
 }
 
 const LevelSelector: React.FC<LevelSelectorProps> = ({ onSelectLevel, currentLevelId }) => {
-  const levels = getLevels();
+  const [levels, setLevels] = useState<Level[]>([]);
+  
+  // Update levels when component mounts and when storage changes
+  useEffect(() => {
+    const updateLevels = () => {
+      const currentLevels = getLevels();
+      setLevels([...currentLevels]); // Create a new array to ensure state update
+    };
+    
+    // Initial load
+    updateLevels();
+    
+    // Listen for storage events which happen when progress is updated
+    window.addEventListener('storage', updateLevels);
+    
+    return () => window.removeEventListener('storage', updateLevels);
+  }, []);
   
   const renderDifficultyStars = (difficulty: string) => {
     let stars = 1;
