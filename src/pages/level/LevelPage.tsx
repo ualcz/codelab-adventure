@@ -1,103 +1,81 @@
 
-import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import GameHeader from '@/components/shared/GameHeader';
+import LevelsTab from '@/components/level/LevelsTab';
 import { Level } from '@/types/levelTypes';
-import gameEngine, { Command, GameState } from '@/engine';
-import { useToast } from '@/hooks/use-toast';
-import { getLevel } from '@/data/level/levelManager';
-import PlaygroundTab from '@/components/game/PlaygroundTab';
 import Footer from '@/components/shared/footer';
+import { clearProgress, loadProgress } from '@/data/level/progressManager';
+import { useToast } from '@/hooks/use-toast';
 
 const LevelPage = () => {
-  const { levelId } = useParams();
   const navigate = useNavigate();
-  const [gameState, setGameState] = useState<GameState>(gameEngine.getState());
-  const [currentLevel, setCurrentLevel] = useState<Level | undefined>();
-  const [isComplete, setIsComplete] = useState(false);
   const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(true);
 
+  // Load progress when the component mounts
   useEffect(() => {
-
-    const id = Number(levelId);
-    const level = getLevel(id);
-    
-    if (!level || !level.unlocked) {
-      navigate('/');
-      return;
-    }
-    
-    setCurrentLevel(level);
-    gameEngine.loadLevel(level);
-    
-
-    gameEngine.reset();
-    setGameState(gameEngine.getState());
-    setIsComplete(false);
-    
-    setTimeout(() => {
-      gameEngine.notifyUpdate();
-    }, 100);
-  }, [levelId, navigate]);
-
-  useEffect(() => {
-    const updateHandler = (state: GameState) => {
-      setGameState(state);
-      setIsComplete(state.isComplete);
+    const initializeLevels = async () => {
+      try {
+        await loadProgress();
+      } catch (error) {
+        console.error('Error loading levels:', error);
+      } finally {
+        setIsLoading(false);
+      }
     };
     
-    gameEngine.onUpdate(updateHandler);
+    initializeLevels();
     
- 
-    return () => {
-      gameEngine.onUpdate(() => {});
+    // Listen for storage events to update UI when progress changes
+    const handleStorageChange = () => {
+      loadProgress();
     };
+    
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
   const handleTabChange = (tab: string) => {
     if (tab === 'home') {
       navigate('/');
-    } else if (tab === 'levels') {
-      navigate('/levels');
     } else if (tab === 'learn') {
       navigate('/learn');
+    } else if (tab === 'playground') {
+      navigate('/level/1');
     }
   };
 
-  const handleCommandsChange = (commands: Command[]) => {
-    gameEngine.setCommands(commands);
-    setGameState({...gameEngine.getState()});
+  const handleSelectLevel = (level: Level) => {
+    navigate(`/level/${level.id}`);
   };
 
-  const handleRunCode = (commands: Command[]) => {
-    gameEngine.setCommands(commands);
-    gameEngine.start();
-  };
-
-  const handleStopCode = () => {
-    gameEngine.stop();
-  };
-
-  const handleResetCode = () => {
-    gameEngine.reset();
-    setIsComplete(false);
+  const handleResetProgress = () => {
+    clearProgress();
+    toast({
+      title: "Progresso resetado",
+      description: "Todo o seu progresso foi apagado com sucesso.",
+      variant: "default",
+    });
+    // Force a reload of the page to update the UI
+    window.location.reload();
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-game-background to-game-surface text-white">
-      <GameHeader currentTab="playground" onTabChange={handleTabChange} />
+    <div className=" flex flex-col min-h-screen bg-gradient-to-br from-game-background to-game-surface text-white">
+      <GameHeader currentTab="levels" onTabChange={handleTabChange} />
       
-      <div className="py-4">
-        {currentLevel && (
-          <PlaygroundTab 
-            currentLevel={currentLevel}
-            gameState={gameState}
-            isComplete={isComplete}
-            onRunCode={handleRunCode}
-            onStopCode={handleStopCode}
-            onResetCode={handleResetCode}
+      <div className="py-4 flex-1 ">
+        {isLoading ? (
+          <div className="flex justify-center items-center h-64">
+            <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-game-primary"></div>
+          </div>
+        ) : (
+          <LevelsTab 
+            onSelectLevel={handleSelectLevel} 
+            currentLevelId={undefined} 
             onNavigate={handleTabChange}
-            onCommandsChange={handleCommandsChange}
+            onResetProgress={handleResetProgress}
           />
         )}
       </div>

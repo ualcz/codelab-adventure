@@ -24,10 +24,10 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-game-background to-game-surface text-white">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-game-background to-game-surface text-white">
       <GameHeader currentTab="home" onTabChange={handleTabChange} />
       
-      <div className="py-4">
+      <div className="flex-1">
       <div className="min-h-screen bg-gradient-to-br from-game-background to-game-surface text-white animate-fade-in">
       <div className="container mx-auto px-4 py-16 flex flex-col items-center">
         <div className="text-center mb-16 max-w-3xl">

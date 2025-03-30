@@ -1,88 +1,110 @@
 
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import GameHeader from '@/components/shared/GameHeader';
-import LevelsTab from '@/components/level/LevelsTab';
 import { Level } from '@/types/levelTypes';
-import Footer from '@/components/shared/footer';
-import { clearProgress, loadProgress } from '@/data/level/progressManager';
+import gameEngine, { Command, GameState } from '@/engine';
 import { useToast } from '@/hooks/use-toast';
+import { getLevel } from '@/data/level/levelManager';
+import PlaygroundTab from '@/components/game/PlaygroundTab';
+import Footer from '@/components/shared/footer';
 
-const LevelsPage = () => {
+const LevelGame = () => {
+  const { levelId } = useParams();
   const navigate = useNavigate();
-  const { toast } = useToast();
-  const [isLoading, setIsLoading] = useState(true);
+  const [gameState, setGameState] = useState<GameState>(gameEngine.getState());
+  const [currentLevel, setCurrentLevel] = useState<Level | undefined>();
+  const [isComplete, setIsComplete] = useState(false);
+  
 
-  // Load progress when the component mounts
   useEffect(() => {
-    const initializeLevels = async () => {
-      try {
-        await loadProgress();
-      } catch (error) {
-        console.error('Error loading levels:', error);
-      } finally {
-        setIsLoading(false);
-      }
+
+    const id = Number(levelId);
+    const level = getLevel(id);
+    
+    if (!level || !level.unlocked) {
+      navigate('/');
+      return;
+    }
+    
+    setCurrentLevel(level);
+    gameEngine.loadLevel(level);
+    
+
+    gameEngine.reset();
+    setGameState(gameEngine.getState());
+    setIsComplete(false);
+    
+    setTimeout(() => {
+      gameEngine.notifyUpdate();
+    }, 100);
+  }, [levelId, navigate]);
+
+  useEffect(() => {
+    const updateHandler = (state: GameState) => {
+      setGameState(state);
+      setIsComplete(state.isComplete);
     };
     
-    initializeLevels();
+    gameEngine.onUpdate(updateHandler);
     
-    // Listen for storage events to update UI when progress changes
-    const handleStorageChange = () => {
-      loadProgress();
+ 
+    return () => {
+      gameEngine.onUpdate(() => {});
     };
-    
-    window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
   const handleTabChange = (tab: string) => {
     if (tab === 'home') {
       navigate('/');
+    } else if (tab === 'levels') {
+      navigate('/levels');
     } else if (tab === 'learn') {
       navigate('/learn');
-    } else if (tab === 'playground') {
-      navigate('/level/1');
     }
   };
 
-  const handleSelectLevel = (level: Level) => {
-    navigate(`/level/${level.id}`);
+  const handleCommandsChange = (commands: Command[]) => {
+    gameEngine.setCommands(commands);
+    setGameState({...gameEngine.getState()});
   };
 
-  const handleResetProgress = () => {
-    clearProgress();
-    toast({
-      title: "Progresso resetado",
-      description: "Todo o seu progresso foi apagado com sucesso.",
-      variant: "default",
-    });
-    // Force a reload of the page to update the UI
-    window.location.reload();
+  const handleRunCode = (commands: Command[]) => {
+    gameEngine.setCommands(commands);
+    gameEngine.start();
+  };
+
+  const handleStopCode = () => {
+    gameEngine.stop();
+  };
+
+  const handleResetCode = () => {
+    gameEngine.reset();
+    setIsComplete(false);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-game-background to-game-surface text-white">
-      <GameHeader currentTab="levels" onTabChange={handleTabChange} />
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-game-background to-game-surface text-white">
+      <GameHeader currentTab="level" onTabChange={handleTabChange} />
       
-      <div className="py-4">
-        {isLoading ? (
-          <div className="flex justify-center items-center h-64">
-            <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-game-primary"></div>
-          </div>
-        ) : (
-          <LevelsTab 
-            onSelectLevel={handleSelectLevel} 
-            currentLevelId={undefined} 
+      <div className="flex-1">
+        {currentLevel && (
+          <PlaygroundTab 
+            currentLevel={currentLevel}
+            gameState={gameState}
+            isComplete={isComplete}
+            onRunCode={handleRunCode}
+            onStopCode={handleStopCode}
+            onResetCode={handleResetCode}
             onNavigate={handleTabChange}
-            onResetProgress={handleResetProgress}
+            onCommandsChange={handleCommandsChange}
           />
         )}
       </div>
-
+      
       <Footer />
     </div>
   );
 };
 
-export default LevelsPage;
+export default LevelGame;

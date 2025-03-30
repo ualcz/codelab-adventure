@@ -52,8 +52,8 @@ const LoginPage = () => {
   };
   
   return (
-    <div className="min-h-screen bg-gradient-to-br from-game-background to-game-surface text-white flex flex-col">
-      <div className="container mx-auto px-4 py-8 flex-1 flex flex-col items-center justify-center animate-fade-in">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-game-background to-game-surface text-white">
+      <div className="flex-1 container mx-auto px-4 py-8 flex flex-col items-center justify-center animate-fade-in">
         <div className="glass-panel border-2 border-game-primary/20 p-8 rounded-xl shadow-lg max-w-md w-full">
           <div className="flex justify-center mb-6">
             <div className="w-12 h-12 rounded-full bg-gradient-to-br from-game-primary to-game-tertiary flex items-center justify-center shadow-lg shadow-game-primary/30">

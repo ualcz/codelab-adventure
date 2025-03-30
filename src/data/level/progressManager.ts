@@ -1,5 +1,3 @@
-
-import { Level } from '@/types/levelTypes';
 import LEVELS from './levelsData';
 import { syncUserProgress, getUserProgress } from '@/services/api';
 

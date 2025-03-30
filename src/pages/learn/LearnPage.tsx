@@ -16,18 +16,17 @@ const LearnPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-game-background to-game-surface text-white">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-game-background to-game-surface text-white">
       <GameHeader currentTab="learn" onTabChange={handleTabChange} />
 
-          <div className="container mx-auto px-4 py-8 animate-fade-in">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold text-white flex items-center">
-                <Lightbulb className="h-6 w-6 mr-2 text-game-warning" />
-                Aprenda Programação
-              </h2>
-            
-            </div>
-            
+      <div className="flex-1 container mx-auto px-4 py-8 animate-fade-in">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold text-white flex items-center">
+            <Lightbulb className="h-6 w-6 mr-2 text-game-warning" />
+            Aprenda Programação
+          </h2>
+        </div>
+        
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               <div className="glass-panel p-6 rounded-lg animate-fade-in hover:scale-105 transition-all border border-game-primary/30 bg-gradient-to-br from-game-panel to-game-surface" style={{ animationDelay: '0.1s' }}>
                 <h3 className="text-xl font-semibold mb-4 flex items-center">
