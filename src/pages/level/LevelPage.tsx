@@ -18,12 +18,11 @@ const LevelPage = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    // Load level based on URL parameter
+
     const id = Number(levelId);
     const level = getLevel(id);
     
     if (!level || !level.unlocked) {
-      // If level doesn't exist or is locked, redirect to home
       navigate('/');
       return;
     }
@@ -31,12 +30,11 @@ const LevelPage = () => {
     setCurrentLevel(level);
     gameEngine.loadLevel(level);
     
-    // Force a reset and update after loading the level
+
     gameEngine.reset();
     setGameState(gameEngine.getState());
     setIsComplete(false);
     
-    // Force an update to ensure the canvas renders correctly
     setTimeout(() => {
       gameEngine.notifyUpdate();
     }, 100);
@@ -50,9 +48,8 @@ const LevelPage = () => {
     
     gameEngine.onUpdate(updateHandler);
     
-    // Cleanup function to prevent memory leaks
+ 
     return () => {
-      // This is a hack since there's no direct way to remove the listener
       gameEngine.onUpdate(() => {});
     };
   }, []);
@@ -68,7 +65,6 @@ const LevelPage = () => {
   };
 
   const handleCommandsChange = (commands: Command[]) => {
-    // This is the new function that will handle command changes and update block count
     gameEngine.setCommands(commands);
     setGameState({...gameEngine.getState()});
   };

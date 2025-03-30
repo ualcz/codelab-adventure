@@ -1,5 +1,7 @@
 
-import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import GameHeader from '@/components/shared/GameHeader';
+import Footer from '@/components/shared/footer';
 import { Button } from '@/components/ui/button';
 import { 
   Trophy, 
@@ -9,13 +11,24 @@ import {
   Cpu,
 } from 'lucide-react';
 
-interface HomeTabProps {
-  onNavigate: (tab: string) => void;
-}
 
-const HomeTab: React.FC<HomeTabProps> = ({ onNavigate }) => {
+const Home = () => {
+  const navigate = useNavigate();
+
+  const handleTabChange = (tab: string) => {
+    if (tab === 'levels') {
+      navigate('/levels');
+    } else if (tab === 'learn') {
+      navigate('/learn');
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-game-background to-game-surface text-white animate-fade-in">
+    <div className="min-h-screen bg-gradient-to-br from-game-background to-game-surface text-white">
+      <GameHeader currentTab="home" onTabChange={handleTabChange} />
+      
+      <div className="py-4">
+      <div className="min-h-screen bg-gradient-to-br from-game-background to-game-surface text-white animate-fade-in">
       <div className="container mx-auto px-4 py-16 flex flex-col items-center">
         <div className="text-center mb-16 max-w-3xl">
           <div className="animate-float mb-6">
@@ -27,14 +40,14 @@ const HomeTab: React.FC<HomeTabProps> = ({ onNavigate }) => {
           <div className="flex flex-wrap justify-center gap-4">
             <Button 
               className="game-btn game-btn-primary text-lg px-8 py-6 font-bold bg-gradient-to-r from-game-primary to-game-tertiary hover:opacity-90"
-              onClick={() => onNavigate('levels')}
+              onClick={() => handleTabChange('levels')}
             >
               <Trophy className="h-5 w-5 mr-2" />
               Iniciar Aventura
             </Button>
             <Button 
               className="game-btn game-btn-primary text-white hover:blue/10 text-lg px-8 py-6 font-bold"
-              onClick={() => onNavigate('learn')}
+              onClick={() => handleTabChange('learn')}
             >
               <Book className="h-5 w-5 mr-2" />
               Aprender Conceitos
@@ -75,7 +88,11 @@ const HomeTab: React.FC<HomeTabProps> = ({ onNavigate }) => {
         </div>
       </div>
     </div>
+      </div>
+
+      <Footer />
+    </div>
   );
 };
 
-export default HomeTab;
+export default Home;

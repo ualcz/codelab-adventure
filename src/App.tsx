@@ -5,14 +5,14 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
-import Index from "./pages/Index";
+import Home from "./pages/home/Home";
 import NotFound from "./pages/NotFound";
-import LevelPage from "./pages/LevelPage";
-import LevelsPage from "./pages/LevelsPage";
-import LearnPage from "./pages/LearnPage";
-import LoginPage from "./pages/LoginPage";
-import RegisterPage from "./pages/RegisterPage";
-import ProfilePage from "./pages/ProfilePage";
+import LevelPage from "./pages/level/LevelPage";
+import LevelsPage from "./pages/game/LevelGame";
+import LearnPage from "./pages/learn/LearnPage";
+import LoginPage from "./pages/auth/LoginPage";
+import RegisterPage from "./pages/auth/RegisterPage";
+import ProfilePage from "./pages/profile/ProfilePage";
 
 const queryClient = new QueryClient();
 
@@ -24,7 +24,7 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Index />} />
+            <Route path="/" element={<Home />} />
             <Route path="/levels" element={<LevelsPage />} />
             <Route path="/learn" element={<LearnPage />} />
             <Route path="/level/:levelId" element={<LevelPage />} />
