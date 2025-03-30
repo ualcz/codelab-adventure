@@ -13,7 +13,6 @@ export interface DraggableBlockProps {
   block: {
     id: string;
     name: string;
-    icon: string;
     type: string;
     description: string;
   };

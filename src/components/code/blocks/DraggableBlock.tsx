@@ -22,23 +22,22 @@ import { DraggableBlockProps } from '@/components/types';
 
 const DraggableBlock: React.FC<DraggableBlockProps> = ({ block, onDragStart, className }) => {
   const getIcon = () => {
-    switch (block.icon) {
-      case 'arrow-up': return ArrowUp;
-      case 'arrow-down': return ArrowDown;
-      case 'rotate-cw': return RotateCw;
-      case 'rotate-ccw': return RotateCcw;
+    switch (block.id) {
+      case 'moveForward': return ArrowUp;
+      case 'moveBackward': return ArrowDown;
+      case 'turnRight': return RotateCw;
+      case 'turnLeft': return RotateCcw;
       case 'repeat': return Repeat;
-      case 'split': return Split;
-      case 'code': return ChevronDown;
-      case 'pause': return Pause;
-      case 'paintbrush': 
-      case 'paint': return PaintBucket;
-      case 'refreshCw': return RefreshCw;
-      case 'shield': return Shield;
-      case 'square': return Square;
-      case 'coins': return Sparkles;
-      case 'target': return Target;
-      case 'circle': return Circle;
+      case 'if': return Split;
+      case 'stop': return Pause;
+      case 'paintGreen': return PaintBucket;
+      case 'while': return RefreshCw;
+      case 'sensor_barrier': return Shield;
+      case 'sensor_border': return Square;
+      case 'sensor_collectible': return Sparkles;
+      case 'sensor_target': return Target;
+      case 'sensor_redCell': return Circle;
+      case 'sensor_greenCell': return Circle;
       default: return  Bug;
     }
   };
