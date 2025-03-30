@@ -12,7 +12,7 @@ import {
   ProgressData,
 } from '@/types/authTypes';
 
-const API_URL = 'https://apicodelab.vercel.app';
+const API_URL = 'http://localhost:3000';
 
 // Helper function to handle responses
 async function handleResponse<T>(response: Response): Promise<T> {
@@ -74,14 +74,44 @@ export async function getUserProfile(): Promise<User> {
   return data.user;
 }
 
-export async function updateUserProfile(data: Partial<User>): Promise<User> {
-  const response = await fetch(`${API_URL}/user/profile`, {
-    method: 'PUT',
-    headers: getAuthHeaders(),
-    body: JSON.stringify(data),
-  });
+export async function updateUserProfile(data: Partial<User>, retryCount = 0): Promise<User> {
+  // Limit the number of retry attempts to prevent infinite recursion
+  const MAX_RETRIES = 1;
   
-  return handleResponse<User>(response);
+  try {
+    const response = await fetch(`${API_URL}/user/profile`, {
+      method: 'PUT',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(data),
+    });
+    
+    if (response.status === 401 && retryCount < MAX_RETRIES) {
+      // Try to refresh the token
+      const refreshTokenValue = localStorage.getItem('refreshToken');
+      if (refreshTokenValue) {
+        try {
+          const refreshResult = await refreshToken({ refreshToken: refreshTokenValue });
+          // Only retry if we successfully got a new token and refresh token
+          if (refreshResult && refreshResult.token && refreshResult.refreshToken) {
+            // Store the new token and refresh token
+            localStorage.setItem('token', refreshResult.token);
+            localStorage.setItem('refreshToken', refreshResult.refreshToken);
+            // Retry the request with the new token (increment retry counter)
+            return updateUserProfile(data, retryCount + 1);
+          }
+        } catch (refreshError) {
+          console.error('Failed to refresh token:', refreshError);
+          throw new Error('Authentication failed. Please login again.');
+        }
+      }
+    }
+    
+    const responseData = await handleResponse<{success: boolean, user: User}>(response);
+    return responseData.user;
+  } catch (error) {
+    console.error('Error updating user profile:', error);
+    throw error;
+  }
 }
 
 // Progress sync endpoints
@@ -95,7 +125,10 @@ export async function syncUserProgress(data: UserProgressSyncRequest): Promise<U
   return handleResponse<UserProgressSyncResponse>(response);
 }
 
-export const getUserProgress = async (): Promise<ProgressData> => {
+export const getUserProgress = async (retryCount = 0): Promise<ProgressData> => {
+  // Limit the number of retry attempts to prevent infinite recursion
+  const MAX_RETRIES = 1;
+  
   const token = localStorage.getItem('token');
   if (!token) throw new Error('No token available');
 
@@ -107,10 +140,25 @@ export const getUserProgress = async (): Promise<ProgressData> => {
       }
     });
 
-    if (response.status === 401) {
+    if (response.status === 401 && retryCount < MAX_RETRIES) {
       // Try to refresh the token
-      await refreshToken({ refreshToken: localStorage.getItem('refreshToken') || '' });
-      return getUserProgress(); // Recursive call after refreshing
+      const refreshTokenValue = localStorage.getItem('refreshToken');
+      if (refreshTokenValue) {
+        try {
+          const refreshResult = await refreshToken({ refreshToken: refreshTokenValue });
+          // Only retry if we successfully got a new token and refresh token
+          if (refreshResult && refreshResult.token && refreshResult.refreshToken) {
+            // Store the new token and refresh token
+            localStorage.setItem('token', refreshResult.token);
+            localStorage.setItem('refreshToken', refreshResult.refreshToken);
+            // Retry the request with the new token (increment retry counter)
+            return getUserProgress(retryCount + 1);
+          }
+        } catch (refreshError) {
+          console.error('Failed to refresh token:', refreshError);
+          throw new Error('Authentication failed. Please login again.');
+        }
+      }
     }
 
     if (!response.ok) {

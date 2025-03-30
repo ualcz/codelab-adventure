@@ -8,6 +8,7 @@ export type { GameObject } from '@/types/GameTypes';
 export type { Level } from '@/types/levelTypes';
 export { getCompletedLevels };
 
+// Initialize by loading progress
 loadProgress();
 
 export const getLevels = (): Level[] => {
@@ -40,6 +41,62 @@ export const completeLevel = (id: number): void => {
     
     saveCompletedLevels();
   }
+};
+
+// Get user stats
+export const getUserStats = () => {
+  const totalLevels = LEVELS.length;
+  const completedLevels = LEVELS.filter(level => level.completed).length;
+  const unlockedLevels = LEVELS.filter(level => level.unlocked).length;
+  
+  const beginnerLevels = LEVELS.filter(level => level.difficulty === 'beginner').length;
+  const completedBeginnerLevels = LEVELS.filter(level => level.difficulty === 'beginner' && level.completed).length;
+  
+  const intermediateLevels = LEVELS.filter(level => level.difficulty === 'intermediate').length;
+  const completedIntermediateLevels = LEVELS.filter(level => level.difficulty === 'intermediate' && level.completed).length;
+  
+  const advancedLevels = LEVELS.filter(level => level.difficulty === 'advanced').length;
+  const completedAdvancedLevels = LEVELS.filter(level => level.difficulty === 'advanced' && level.completed).length;
+  
+  const expertLevels = LEVELS.filter(level => level.difficulty === 'expert').length;
+  const completedExpertLevels = LEVELS.filter(level => level.difficulty === 'expert' && level.completed).length;
+  
+  const masterLevels = LEVELS.filter(level => level.difficulty === 'master').length;
+  const completedMasterLevels = LEVELS.filter(level => level.difficulty === 'master' && level.completed).length;
+  
+  return {
+    total: {
+      levels: totalLevels,
+      completed: completedLevels,
+      unlocked: unlockedLevels,
+      progress: totalLevels > 0 ? Math.round((completedLevels / totalLevels) * 100) : 0
+    },
+    beginner: {
+      levels: beginnerLevels,
+      completed: completedBeginnerLevels,
+      progress: beginnerLevels > 0 ? Math.round((completedBeginnerLevels / beginnerLevels) * 100) : 0
+    },
+    intermediate: {
+      levels: intermediateLevels,
+      completed: completedIntermediateLevels,
+      progress: intermediateLevels > 0 ? Math.round((completedIntermediateLevels / intermediateLevels) * 100) : 0
+    },
+    advanced: {
+      levels: advancedLevels,
+      completed: completedAdvancedLevels,
+      progress: advancedLevels > 0 ? Math.round((completedAdvancedLevels / advancedLevels) * 100) : 0
+    },
+    expert: {
+      levels: expertLevels,
+      completed: completedExpertLevels,
+      progress: expertLevels > 0 ? Math.round((completedExpertLevels / expertLevels) * 100) : 0
+    },
+    master: {
+      levels: masterLevels,
+      completed: completedMasterLevels,
+      progress: masterLevels > 0 ? Math.round((completedMasterLevels / masterLevels) * 100) : 0
+    }
+  };
 };
 
 export function getCommandBlocks() {
@@ -109,8 +166,6 @@ export function getCommandBlocks() {
     },
   ];
 }
-
-
 
 export const sensorObjects = {
   barrier: {

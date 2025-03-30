@@ -11,6 +11,7 @@ interface AuthContextProps {
   login: (data: LoginRequest) => Promise<boolean>;
   register: (data: RegisterRequest) => Promise<boolean>;
   logout: () => void;
+  updateUserData: (userData: Partial<User>) => void;
 }
 
 const AuthContext = createContext<AuthContextProps>({} as AuthContextProps);
@@ -50,8 +51,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           const userData = await getUserProfile();
           setUser(userData);
         } catch (refreshError) {
-          // If refresh fails, log out
-          handleLogout();
+          console.error("Failed to refresh token:", refreshError);
+          // Only log out if we're not on the login or register page
+          const currentPath = window.location.pathname;
+          if (currentPath !== '/login' && currentPath !== '/register') {
+            handleLogout();
+          }
         }
       } finally {
         setIsLoading(false);
@@ -135,6 +140,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
   };
   
+  const updateUserData = (userData: Partial<User>) => {
+    if (user) {
+      setUser({ ...user, ...userData });
+    }
+  };
+  
   return (
     <AuthContext.Provider
       value={{
@@ -144,6 +155,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         login: handleLogin,
         register: handleRegister,
         logout: handleLogout,
+        updateUserData,
       }}
     >
       {children}

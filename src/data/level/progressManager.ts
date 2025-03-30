@@ -1,4 +1,5 @@
 
+import { Level } from '@/types/levelTypes';
 import LEVELS from './levelsData';
 import { syncUserProgress, getUserProgress } from '@/services/api';
 
@@ -110,6 +111,7 @@ export const loadProgress = async (): Promise<void> => {
       completedLevelIds = getLocalCompletedLevels();
     }
 
+    // Fixed: Changed completedIds to completedLevelIds
     updateLevelStates(completedLevelIds);
   } catch (error) {
     console.error('Error loading progress:', error);
