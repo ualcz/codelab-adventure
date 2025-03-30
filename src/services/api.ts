@@ -12,7 +12,7 @@ import {
   ProgressData,
 } from '@/types/authTypes';
 
-const API_URL = 'http://localhost:3000';
+const API_URL = 'https://apicodelab.vercel.app';
 
 // Helper function to handle responses
 async function handleResponse<T>(response: Response): Promise<T> {
