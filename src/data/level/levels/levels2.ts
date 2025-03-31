@@ -63,7 +63,7 @@ const levels_2: Level[] = [
       // Alvo
       { id: 'target1', type: 'target', x: 9, y: 9, width: 1, height: 1 }
     ],
-    availableCommands: ["moveForward", "turnRight", "turnLeft", "if","else", "while", "paintGreen"],
+    availableCommands: ["moveForward", "turnRight", "turnLeft", "if", "while", "paintGreen"],
     availableSensors: ["barrier", "border", "collectible", "target", "redCell", "greenCell"],
     objective: "Navegue pelo labirinto usando condicionais para tomar decisões inteligentes",
     hint: "Use condicionais para verificar a cor das células e ajustar seu caminho",
@@ -102,7 +102,7 @@ const levels_2: Level[] = [
       // Alvo
       { id: 'target1', type: 'target', x: 14, y: 2, width: 1, height: 1 }
     ],
-    availableCommands: ["moveForward", "turnRight", "turnLeft", "if", "while", "stop"],
+    availableCommands: ["moveForward", "turnRight", "turnLeft", "if","else", "while", "stop"],
     availableSensors: ["barrier", "target", "redCell", "greenCell"],
     objective: "Atravesse o corredor sincronizando seus movimentos com as mudanças de cor",
     hint: "Pare e espere quando necessário para que as células vermelhas se tornem verdes",
@@ -137,7 +137,7 @@ const levels_2: Level[] = [
       // Alvo
       { id: 'target1', type: 'target', x: 11, y: 3, width: 1, height: 1 }
     ],
-    availableCommands: ["moveForward", "turnRight", "turnLeft", "if", "while"],
+    availableCommands: ["moveForward", "turnRight", "turnLeft", "if","else", "while"],
     availableSensors: ["barrier", "redCell", "greenCell", "target"],
     objective: "Chegue ao alvo antes que as células verdes se tornem vermelhas",
     hint: "Monitore as mudanças de cor e ajuste seu movimento para evitar ficar preso",
@@ -151,7 +151,7 @@ const levels_2: Level[] = [
     name: 'Labirinto de Cores Alternantes',
     description: 'Supere obstáculos e domine o timing com células que mudam de cor',
     difficulty: 'advanced',
-    availableCommands: ["moveForward", "turnRight", "turnLeft", "if", "stop", "repeat", "while","paintGreen"],
+    availableCommands: ["moveForward", "turnRight", "turnLeft", "if","else", "stop", "repeat", "while","paintGreen"],
     availableSensors: ["redCell", "greenCell", "barrier", "border"],
     unlocked: true,
     completed: false,
