@@ -44,15 +44,60 @@ const CommandList: React.FC<CommandListProps> = ({
 
   // Modifies the onCommandsChange to add the dummy command if needed
   const handleCommandsChange = (newCommands: Command[]) => {
+    // Process else blocks to ensure they're linked to if blocks
+    const processedCommands = linkElseBlocksToIfBlocks(newCommands);
+    
     // Check if there are nested repeats or while loops
-    if (hasNestedRepeats(newCommands)) {
+    if (hasNestedRepeats(processedCommands)) {
       // Add the dummy command only if there are nested repeats/whiles
-      const commandsWithDummy = addDummyCommand(newCommands);
+      const commandsWithDummy = addDummyCommand(processedCommands);
       onCommandsChange(commandsWithDummy);
     } else {
       // Remove any existing dummy command
-      const filteredCommands = newCommands.filter(cmd => !cmd.params?.isDummy);
+      const filteredCommands = processedCommands.filter(cmd => !cmd.params?.isDummy);
       onCommandsChange(filteredCommands);
+    }
+  };
+
+  // Helper function to link else blocks to if blocks
+  const linkElseBlocksToIfBlocks = (cmds: Command[]): Command[] => {
+    // Create a deep copy to avoid modifying the original
+    const newCommands = JSON.parse(JSON.stringify(cmds));
+    
+    // Process the commands at the root level
+    processCommandLevel(newCommands);
+    
+    return newCommands;
+  };
+
+  // Recursively process each level of commands
+  const processCommandLevel = (commands: Command[]) => {
+    for (let i = 0; i < commands.length; i++) {
+      // If we find an else block, link it to the previous if block
+      if (commands[i].id === 'else') {
+        // Look for the nearest previous if block at the same level
+        let foundIf = false;
+        for (let j = i - 1; j >= 0; j--) {
+          if (commands[j].id === 'if') {
+            foundIf = true;
+            break;
+          }
+        }
+        
+        // Set the executionState based on whether we found an if block
+        commands[i].params = commands[i].params || {};
+        commands[i].params.executionState = {
+          shouldExecute: false,
+          counter: 0,
+          childIndex: 0,
+          completed: false
+        };
+      }
+      
+      // Process children recursively
+      if (commands[i].children && commands[i].children.length > 0) {
+        processCommandLevel(commands[i].children);
+      }
     }
   };
 
@@ -74,11 +119,19 @@ const CommandList: React.FC<CommandListProps> = ({
           newCommand.params = { count: 3 };
           newCommand.children = [];
         } else if (block.id === 'if') {
-          // Removido o valor padrão para sensorType - vai ser definido pelo sensor
           newCommand.children = [];
         } else if (block.id === 'while') {
-          // Removido o valor padrão para sensorType - vai ser definido pelo sensor
           newCommand.children = [];
+        } else if (block.id === 'else') {
+          newCommand.children = [];
+          newCommand.params = { 
+            executionState: { 
+              shouldExecute: false,
+              counter: 0,
+              childIndex: 0,
+              completed: false
+            }
+          };
         }
         
         handleCommandsChange([...commands, newCommand]);
@@ -114,11 +167,19 @@ const CommandList: React.FC<CommandListProps> = ({
           newCommand.params = { count: 3 };
           newCommand.children = [];
         } else if (block.id === 'if') {
-          // Removido o valor padrão para sensorType - vai ser definido pelo sensor
           newCommand.children = [];
         } else if (block.id === 'while') {
-          // Removido o valor padrão para sensorType - vai ser definido pelo sensor
           newCommand.children = [];
+        } else if (block.id === 'else') {
+          newCommand.children = [];
+          newCommand.params = { 
+            executionState: { 
+              shouldExecute: false,
+              counter: 0,
+              childIndex: 0,
+              completed: false 
+            } 
+          };
         }
         
         handleCommandsChange([...commands, newCommand]);
@@ -130,8 +191,6 @@ const CommandList: React.FC<CommandListProps> = ({
 
   return (
     <div className="p-4 h-[450px] overflow-y-auto ">
-
-      
       {commands.length === 0 ? (
         <EmptyDropArea onDrop={handleEmptyAreaDrop} />
       ) : (

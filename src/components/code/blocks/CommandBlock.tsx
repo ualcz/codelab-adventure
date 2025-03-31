@@ -15,7 +15,8 @@ import {
   Shield,
   Sparkles,
   Pause,
-  Split
+  Split,
+  Merge
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Command } from '@/types/GameTypes';
@@ -138,9 +139,12 @@ const CommandBlock: React.FC<CommandBlockProps> = ({
           newCommand.params = { condition: 'isGreen' };
           newCommand.children = [];
         }
-        else if (block.id === 'while' ) {
+        else if (block.id === 'while') {
           newCommand.params = { condition: 'untilBarrier' };
           newCommand.children = [];
+        }
+        else if (block.id === 'else') {
+          newCommand.children = []; 
         }
         
         onMoveCommand([], path, position, newCommand);
@@ -174,7 +178,8 @@ const CommandBlock: React.FC<CommandBlockProps> = ({
       case 'if': return Split;
       case 'paintGreen': return PaintBucket;
       case 'stop': return Pause;
-      default: return ArrowUp;
+      case 'else': return Merge;
+      default: return ArrowUp;  
     }
   };
 
@@ -185,15 +190,17 @@ const CommandBlock: React.FC<CommandBlockProps> = ({
     if (command.id === 'repeat') return 'loop-block';
     if (command.id === 'while') return 'loop-block while-block';
     if (command.id === 'if') return 'condition-block';
+    if (command.id === 'else') return 'condition-block';
     if (command.id === 'paintGreen') return 'action-block';
     return 'control-block';
   };
 
-  const canHaveChildren = command.id === 'repeat' || command.id === 'if' || command.id === 'while';
+  const canHaveChildren = command.id === 'repeat' || command.id === 'if' || command.id === 'while'|| command.id === 'else';
   const indent = path.length - 1;
   const Icon = getIcon();
   const blockClass = getBlockClass();
   const isConditionalBlock = command.id === 'if' || command.id === 'while';
+  const needsSensor = isConditionalBlock && !command.params?.condition && !command.children?.some(child => child.id.startsWith('sensor_'));
 
   const handleCommandUpdate = (updatedCommand: Command) => {
     onUpdate(path, updatedCommand);
@@ -233,7 +240,7 @@ const CommandBlock: React.FC<CommandBlockProps> = ({
             <Icon className={`h-3 w-3 flex-shrink-0 ${command.id.includes('red') ? 'text-red-400' : command.id.includes('green') ? 'text-green-400' : ''}`} />
             <span className="text-xs">{command.name}</span>
             
-            {isConditionalBlock && !command.params?.condition && (
+            {needsSensor && (
               <div className="ml-2 px-4 py-1 bg-white/10 rounded text-xs text-white/50 flex items-center">
                 Arraste um sensor aqui
               </div>

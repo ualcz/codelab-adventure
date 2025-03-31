@@ -110,7 +110,7 @@ export class ExecutionManager {
 
       this.executeCommand(command);
 
-      if (command.id !== 'repeat' && command.id !== 'if' && command.id !== 'while') {
+      if (command.id !== 'repeat' && command.id !== 'if' && command.id !== 'while' && command.id !== 'else') {
         const isInsideRepeat = this.isCommandInsideRepeat(this.engine.state.executionPointer);
         if (!isInsideRepeat) {
           console.log("Comando fora de repetição, incrementando ponteiro");

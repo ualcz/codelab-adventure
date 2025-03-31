@@ -63,7 +63,7 @@ const levels_2: Level[] = [
       // Alvo
       { id: 'target1', type: 'target', x: 9, y: 9, width: 1, height: 1 }
     ],
-    availableCommands: ["moveForward", "turnRight", "turnLeft", "if", "while", "paintGreen"],
+    availableCommands: ["moveForward", "turnRight", "turnLeft", "if","else", "while", "paintGreen"],
     availableSensors: ["barrier", "border", "collectible", "target", "redCell", "greenCell"],
     objective: "Navegue pelo labirinto usando condicionais para tomar decisões inteligentes",
     hint: "Use condicionais para verificar a cor das células e ajustar seu caminho",

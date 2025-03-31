@@ -13,6 +13,42 @@ export const moveCommand = (
   if (dragPath.length === 0 && newCommand) {
     const newCommands = cloneCommands(commands);
     
+    // Special handling for else blocks
+    if (newCommand.id === 'else') {
+      // Find the closest if block if we're inserting after a specific command
+      if (position === 'after' && dropPath.length > 0) {
+        const prevCommandPath = [...dropPath];
+        const prevCommandIndex = prevCommandPath[prevCommandPath.length - 1] as number;
+        
+        let current = newCommands;
+        for (let i = 0; i < prevCommandPath.length - 1; i++) {
+          const index = prevCommandPath[i] as number;
+          if (!current[index]) return commands; // Invalid path
+          current = current[index].children || [];
+        }
+        
+        // Check if previous command is an 'if'
+        const prevCommand = current[prevCommandIndex];
+        if (prevCommand && prevCommand.id === 'if') {
+          // Make sure else has proper execution state initialized
+          if (!newCommand.params) {
+            newCommand.params = {};
+          }
+          if (!newCommand.params.executionState) {
+            newCommand.params.executionState = {
+              shouldExecute: false,
+              counter: 0,
+              childIndex: 0,
+              completed: false
+            };
+          }
+          if (!newCommand.children) {
+            newCommand.children = [];
+          }
+        }
+      }
+    }
+    
     // Special handling for sensor blocks
     if (newCommand.id.startsWith('sensor_')) {
       const sensorType = newCommand.id.split('sensor_')[1] as 'barrier' | 'border' | 'collectible' | 'target' | 'redCell' | 'greenCell';
@@ -84,18 +120,19 @@ export const moveCommand = (
     if (position === 'inside' && dropPath.length > 0) {
       // Add as a child of the drop target
       const parent = getCommandByPath(commands, dropPath);
-      if (parent && (parent.id === 'repeat' || parent.id === 'if' || parent.id === 'while')) {
+      if (parent && (parent.id === 'repeat' || parent.id === 'if' || parent.id === 'while' || parent.id === 'else')) {
         // Find the parent in the clone
         let current = newCommands;
         for (let i = 0; i < dropPath.length - 1; i++) {
           const index = dropPath[i] as number;
-          if (current[index].children) {
+          if (current[index] && current[index].children) {
             current = current[index].children;
           }
         }
         const parentIndex = dropPath[dropPath.length - 1] as number;
         if (!current[parentIndex].children) current[parentIndex].children = [];
         current[parentIndex].children.push(newCommand);
+        return newCommands;
       }
     } else {
       // Add before/after the drop target
@@ -121,7 +158,7 @@ export const moveCommand = (
         let current = newCommands;
         for (let i = 0; i < parentPath.length - 1; i++) {
           const index = parentPath[i] as number;
-          if (current[index].children) {
+          if (current[index] && current[index].children) {
             current = current[index].children;
           }
         }
@@ -165,7 +202,7 @@ export const moveCommand = (
       const index = dragPath[i] as number;
       if (i === dragPath.length - 2) {
         parent = current[index];
-      } else if (current[index].children) {
+      } else if (current[index] && current[index].children) {
         current = current[index].children;
       }
     }
@@ -196,13 +233,13 @@ export const moveCommand = (
   // Now, insert the command at the drop location
   if (position === 'inside') {
     // Add as a child of the drop target
-    const parent = getCommandByPath(commands, offsetDropPath);
-    if (parent && (parent.id === 'repeat' || parent.id === 'if' || parent.id === 'while')) {
+    const parent = getCommandByPath(newCommands, offsetDropPath);
+    if (parent && (parent.id === 'repeat' || parent.id === 'if' || parent.id === 'while' || parent.id === 'else')) {
       // Find the parent in the clone
       let current = newCommands;
       for (let i = 0; i < offsetDropPath.length - 1; i++) {
         const index = offsetDropPath[i] as number;
-        if (current[index].children) {
+        if (current[index] && current[index].children) {
           current = current[index].children;
         }
       }
@@ -226,11 +263,11 @@ export const moveCommand = (
       const childIndex = offsetDropPath[offsetDropPath.length - 1] as number;
       
       // Find the parent in the clone
-      let parent = getCommandByPath(commands, parentPath);
+      let parent = getCommandByPath(newCommands, parentPath);
       let current = newCommands;
       for (let i = 0; i < parentPath.length - 1; i++) {
         const index = parentPath[i] as number;
-        if (current[index].children) {
+        if (current[index] && current[index].children) {
           current = current[index].children;
         }
       }

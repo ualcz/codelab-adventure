@@ -16,6 +16,7 @@ import {
   Circle,
   Shield,
   Sparkles,
+  Merge,
   Bug
 } from 'lucide-react';
 import { DraggableBlockProps } from '@/components/types';
@@ -38,6 +39,7 @@ const DraggableBlock: React.FC<DraggableBlockProps> = ({ block, onDragStart, cla
       case 'sensor_target': return Target;
       case 'sensor_redCell': return Circle;
       case 'sensor_greenCell': return Circle;
+      case 'else': return Merge;
       default: return  Bug;
     }
   };

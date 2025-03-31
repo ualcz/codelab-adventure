@@ -75,7 +75,8 @@ export interface Command {
     maxIterations?: number;
     isDummy?: boolean;
     sensorType?: 'barrier' | 'border' | 'collectible' | 'target' | 'redCell' | 'greenCell';
-    sensorBlock?: string; // Add the missing sensorBlock property
+    sensorBlock?: string;
+    ifContext?: number;
   };
   children?: Command[];
 }

@@ -1,7 +1,7 @@
 import { Level } from '@/types/levelTypes';
 import { getCompletedLevels } from '@/data/level/progressManager';
 import { GameState, Command, CommandHandler, IGameEngine, GameObject } from '@/types/GameTypes';
-import { MoveForwardHandler, MoveBackwardHandler, TurnRightHandler, TurnLeftHandler, StopHandler, PaintGreenHandler } from '@/engine/handlers/commandHandlers';
+import { MoveForwardHandler, MoveBackwardHandler, TurnRightHandler, TurnLeftHandler, StopHandler, PaintGreenHandler, ElseHandler } from '@/engine/handlers/commandHandlers';
 import { RepeatHandler } from '@/engine/handlers/repeatHandler';
 import { WhileHandler } from '@/engine/handlers/whileHandler';
 import { IfHandler } from '@/engine/handlers/ifHandler';
@@ -47,6 +47,7 @@ export class GameEngine implements IGameEngine {
     this.commandRegistry.register('repeat', new RepeatHandler());
     this.commandRegistry.register('while', new WhileHandler());
     this.commandRegistry.register('if', new IfHandler());
+    this.commandRegistry.register('else', new ElseHandler());
   }
 
   loadLevel(level: Level): void {

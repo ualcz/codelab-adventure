@@ -150,6 +150,12 @@ export function getCommandBlocks() {
       description: 'Executa comandos se a condição for verdadeira'
     },
     {
+      id: 'else',
+      name: 'Senão',
+      type: 'condition', 
+      description: 'Executa comandos se a condição anterior for falsa'
+    },
+    {
       id: 'paintGreen',
       name: 'Pintar verde',
       type: 'action',
