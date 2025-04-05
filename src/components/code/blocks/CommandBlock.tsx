@@ -200,7 +200,12 @@ const CommandBlock: React.FC<CommandBlockProps> = ({
   const Icon = getIcon();
   const blockClass = getBlockClass();
   const isConditionalBlock = command.id === 'if' || command.id === 'while';
-  const needsSensor = isConditionalBlock && !command.params?.condition && !command.children?.some(child => child.id.startsWith('sensor_'));
+  
+  // Fixed: Check if the block needs a sensor regardless of nesting level
+  const needsSensor = isConditionalBlock && 
+                    !command.params?.condition && 
+                    !command.params?.sensorType && 
+                    !command.children?.some(child => child.id.startsWith('sensor_'));
 
   const handleCommandUpdate = (updatedCommand: Command) => {
     onUpdate(path, updatedCommand);
