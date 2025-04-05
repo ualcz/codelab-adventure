@@ -229,7 +229,86 @@ const levels_2: Level[] = [
     unlocked: false,
     completed: false,
     concepts: ["operadores lógicos", "tomada de decisão complexa"],
-  }
+  },
+  {
+    id: 17,
+    name: "Coletando com Condições",
+    description: "Colete itens usando decisões condicionais",
+    difficulty: "intermediate",
+    gridSize: { width: 8, height: 8 },
+    objects: [
+      { ...defaultRobot, x: 0, y: 0, rotation: 180},
+      
+      // Obstáculos formando um padrão de grade
+      { id: 'obstacle1', type: 'obstacle', x: 2, y: 0, width: 1, height: 2 },
+      { id: 'obstacle2', type: 'obstacle', x: 0, y: 3, width: 1, height: 4 },
+      { id: 'obstacle3', type: 'obstacle', x: 2, y: 7, width: 6, height: 1 },
+      { id: 'obstacle4', type: 'obstacle', x: 5, y: 0, width: 1, height: 6 },
+      { id: 'obstacle5', type: 'obstacle', x: 4, y: 4, width: 1, height: 1 },
+      { id: 'obstacle6', type: 'obstacle', x: 3, y: 0, width: 2, height: 1 },
+      
+      // Coletáveis em diferentes posições
+      { id: 'collectible1', type: 'collectible', x: 0, y: 2, width: 1, height: 1 },
+      { id: 'collectible2', type: 'collectible', x: 3, y: 2, width: 1, height: 1 },
+      { id: 'collectible4', type: 'collectible', x: 2, y: 3, width: 1, height: 1 },
+      { id: 'collectible5', type: 'collectible', x: 2, y: 6, width: 1, height: 1 },
+      
+      // Alvo
+      { id: 'target1', type: 'target', x: 7, y: 6, width: 1, height: 1 }
+    ],
+    availableCommands: ["moveForward", "turnRight", "turnLeft", "if", "else", "while"],
+    availableSensors: ["barrier", "collectible", "target"],
+    objective: "Colete todos os itens usando estruturas condicionais para detectar e navegar até eles",
+    hint: "Use sensores para detectar coletáveis e barreiras, e estruturas if/else para decidir quando virar",
+    unlocked: false,
+    completed: false,
+    concepts: ["detecção de objetos", "estruturas condicionais"],
+  },
+  {
+    id: 18,
+    name: "Desvio de Obstáculos Inteligente",
+    description: "Desvie de obstáculos usando lógica condicional avançada",
+    difficulty: "expert",
+    gridSize: { width: 10, height: 10 },
+    objects: [
+      { ...defaultRobot, x: 0, y: 0, rotation: 90 },
+      
+      // Padrão de obstáculos que requer decisões complexas
+      { id: 'obstacle1', type: 'obstacle', x: 2, y: 1, width: 1, height: 3 },
+      { id: 'obstacle2', type: 'obstacle', x: 2, y: 5, width: 1, height: 3 },
+      { id: 'obstacle3', type: 'obstacle', x: 4, y: 0, width: 1, height: 3 },
+      { id: 'obstacle4', type: 'obstacle', x: 4, y: 4, width: 1, height: 3 },
+      { id: 'obstacle5', type: 'obstacle', x: 4, y: 8, width: 1, height: 2 },
+      { id: 'obstacle6', type: 'obstacle', x: 6, y: 2, width: 1, height: 3 },
+      { id: 'obstacle7', type: 'obstacle', x: 6, y: 6, width: 1, height: 3 },
+      { id: 'obstacle8', type: 'obstacle', x: 8, y: 0, width: 1, height: 3 },
+      { id: 'obstacle9', type: 'obstacle', x: 8, y: 4, width: 1, height: 6 },
+      
+      // Células coloridas que indicam caminhos preferenciais
+      { id: 'color1', type: 'colorCell', x: 1, y: 4, color: 'green', isBlocking: false, width: 1, height: 1 },
+      { id: 'color2', type: 'colorCell', x: 3, y: 3, color: 'green', isBlocking: false, width: 1, height: 1 },
+      { id: 'color3', type: 'colorCell', x: 3, y: 7, color: 'red', isBlocking: false, width: 1, height: 1 },
+      { id: 'color4', type: 'colorCell', x: 5, y: 1, color: 'red', isBlocking: false, width: 1, height: 1 },
+      { id: 'color5', type: 'colorCell', x: 5, y: 5, color: 'green', isBlocking: false, width: 1, height: 1 },
+      { id: 'color6', type: 'colorCell', x: 7, y: 3, color: 'green', isBlocking: false, width: 1, height: 1 },
+      { id: 'color7', type: 'colorCell', x: 7, y: 7, color: 'red', isBlocking: false, width: 1, height: 1 },
+      
+      // Coletáveis em posições estratégicas
+      { id: 'collectible1', type: 'collectible', x: 3, y: 1, width: 1, height: 1 },
+      { id: 'collectible2', type: 'collectible', x: 5, y: 3, width: 1, height: 1 },
+      { id: 'collectible3', type: 'collectible', x: 7, y: 5, width: 1, height: 1 },
+      
+      // Alvo
+      { id: 'target1', type: 'target', x: 9, y: 9, width: 1, height: 1 }
+    ],
+    availableCommands: ["moveForward", "turnRight", "turnLeft", "if", "else", "while", "repeat"],
+    availableSensors: ["barrier", "redCell", "greenCell", "collectible", "target"],
+    objective: "Colete todos os itens e chegue ao alvo usando decisões condicionais complexas",
+    hint: "Combine if/else com while e repeat para criar estratégias avançadas de navegação",
+    unlocked: false,
+    completed: false,
+    concepts: ["estruturas condicionais aninhadas", "loops condicionais", "planejamento de rota"],
+  },
 ];
 
 export default levels_2;
