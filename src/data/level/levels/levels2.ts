@@ -138,7 +138,7 @@ const levels_2: Level[] = [
       { id: 'target1', type: 'target', x: 11, y: 3, width: 1, height: 1 }
     ],
     availableCommands: ["moveForward", "turnRight", "turnLeft", "if","else", "while"],
-    availableSensors: ["barrier", "redCell", "greenCell", "target"],
+    availableSensors: ["border","barrier", "redCell", "greenCell", "target"],
     objective: "Chegue ao alvo antes que as células verdes se tornem vermelhas",
     hint: "Monitore as mudanças de cor e ajuste seu movimento para evitar ficar preso",
     unlocked: false,
