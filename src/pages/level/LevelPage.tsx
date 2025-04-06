@@ -50,15 +50,24 @@ const LevelPage = () => {
     navigate(`/level/${level.id}`);
   };
 
-  const handleResetProgress = () => {
-    clearProgress();
-    toast({
-      title: "Progresso resetado",
-      description: "Todo o seu progresso foi apagado com sucesso.",
-      variant: "default",
-    });
-    // Force a reload of the page to update the UI
-    window.location.reload();
+  const handleResetProgress = async () => {
+    try {
+      await clearProgress();
+      toast({
+        title: "Progresso resetado",
+        description: "Todo o seu progresso foi apagado com sucesso.",
+        variant: "default",
+      });
+      // Force a reload of the page to update the UI
+      window.location.reload();
+    } catch (error) {
+      console.error('Erro ao limpar progresso:', error);
+      toast({
+        title: "Erro",
+        description: "Ocorreu um erro ao limpar o progresso. Tente novamente.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (

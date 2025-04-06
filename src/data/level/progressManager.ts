@@ -50,7 +50,7 @@ export const saveCompletedLevels = async (): Promise<void> => {
   }
 };
 
-export const clearProgress = (): void => {
+export const clearProgress = async (): Promise<void> => {
   try {
     localStorage.removeItem('gameProgress');
     
@@ -67,21 +67,25 @@ export const clearProgress = (): void => {
     const token = localStorage.getItem('token');
     if (token) {
       try {
-        syncUserProgress({
+        await syncUserProgress({
           completedLevels: [],
           lastSaved: new Date().toISOString()
         });
         console.log('Cleared progress synced with server successfully');
       } catch (apiError) {
         console.error('Error syncing cleared progress with server:', apiError);
+        // Rethrow the error to be handled by the caller
+        throw apiError;
       }
     }
     
+    // Dispatch storage event to notify other components
     window.dispatchEvent(new Event('storage'));
     
     console.log('Progress cleared successfully');
   } catch (error) {
     console.error('Error clearing progress:', error);
+    throw error; // Rethrow to allow caller to handle it
   }
 };
 

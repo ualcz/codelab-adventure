@@ -53,10 +53,17 @@ const LevelsTab: React.FC<LevelsTabProps> = ({
     return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
-  const handleResetProgress = () => {
+  const handleResetProgress = async () => {
     if (onResetProgress) {
-      onResetProgress();
-      setIsDialogOpen(false);
+      try {
+        // Fechar o diálogo antes de iniciar a operação
+        setIsDialogOpen(false);
+        // Chamar a função de reset de forma assíncrona
+        await onResetProgress();
+      } catch (error) {
+        console.error('Erro ao resetar progresso:', error);
+        // O erro será tratado no componente pai (LevelPage)
+      }
     }
   };
   
