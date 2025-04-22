@@ -12,7 +12,7 @@ import {
   ProgressData,
 } from '@/types/authTypes';
 
-const API_URL = 'https://apicodelab.vercel.app';
+const API_URL = 'https://codlab-api.vercel.app/api/v1';
 
 // Helper function to handle responses
 async function handleResponse<T>(response: Response): Promise<T> {
@@ -34,10 +34,14 @@ function getAuthHeaders(): HeadersInit {
 
 // Auth endpoints
 export async function login(data: LoginRequest): Promise<LoginResponse> {
+  const formData = new URLSearchParams();
+  formData.append('username', data.email);
+  formData.append('password', data.password);
+
   const response = await fetch(`${API_URL}/auth/login`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data),
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: formData,
   });
   
   return handleResponse<LoginResponse>(response);
