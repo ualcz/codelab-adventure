@@ -12,7 +12,7 @@ import {
   ProgressData,
 } from '@/types/authTypes';
 
-const API_URL = 'http://codlab-api.vercel.app/api/v1';
+const API_URL = 'https://codlab-api.vercel.app/api/v1';
 
 // Helper function to handle responses
 async function handleResponse<T>(response: Response): Promise<T> {
