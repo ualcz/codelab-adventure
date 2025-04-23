@@ -12,7 +12,7 @@ import {
   ProgressData,
 } from '@/types/authTypes';
 
-const API_URL = 'https://codlab-api.vercel.app/api/v1';
+const API_URL = 'http://127.0.0.1:8000/api/v1';
 
 // Helper function to handle responses
 async function handleResponse<T>(response: Response): Promise<T> {
@@ -120,10 +120,16 @@ export async function updateUserProfile(data: Partial<User>, retryCount = 0): Pr
 
 // Progress sync endpoints
 export async function syncUserProgress(data: UserProgressSyncRequest): Promise<UserProgressSyncResponse> {
+  // Format data to match backend schema
+  const formattedData = {
+    completed_levels: data.completedLevels,
+    last_saved: new Date().toISOString()
+  };
+
   const response = await fetch(`${API_URL}/user/progress`, {
     method: 'POST',
     headers: getAuthHeaders(),
-    body: JSON.stringify(data),
+    body: JSON.stringify(formattedData),
   });
   
   return handleResponse<UserProgressSyncResponse>(response);
