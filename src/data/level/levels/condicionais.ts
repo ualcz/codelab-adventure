@@ -1,43 +1,9 @@
 import { Level } from '@/types/levelTypes';
 import { defaultRobot } from '@/data/gameObjects';
 
-const levels_2: Level[] = [
+const condicionais: Level[] = [
   {
-    id: 11,
-    name: "Laços Dentro de Laços",
-    minBlocks: 12,
-    description: "Use laços condicionais aninhados para resolver problemas mais complexos",
-    difficulty: "intermediate",
-    gridSize: { width: 12, height: 12 },
-    objects: [
-      { ...defaultRobot, x: 0, y: 0, rotation: 90 },
-      // Labirinto com múltiplas seções
-      { id: 'maze1', type: 'obstacle', x: 2, y: 1, width: 1, height: 8 },
-      { id: 'maze2', type: 'obstacle', x: 0, y: 2, width: 2, height: 1 },
-      { id: 'maze3', type: 'obstacle', x: 0, y: 9, width: 1, height: 1 },
-      { id: 'maze4', type: 'obstacle', x: 4, y: 2, width: 5, height: 1 },
-      { id: 'maze5', type: 'obstacle', x: 5, y: 3, width: 1, height: 4 },
-      { id: 'maze6', type: 'obstacle', x: 3, y: 5, width: 1, height: 1 },
-      { id: 'maze7', type: 'obstacle', x: 3, y: 8, width: 3, height: 1 },
-      { id: 'maze8', type: 'obstacle', x: 7, y: 5, width: 1, height: 3 },
-      { id: 'maze9', type: 'obstacle', x: 10, y: 0, width: 1, height: 10 },
-      { id: 'maze10', type: 'obstacle', x: 6, y: 10, width: 5, height: 1 },
-      { id: 'maze11', type: 'obstacle', x: 4, y: 0, width: 1, height: 1 },
-
-      {id: 'collectible1', type: 'collectible', x: 9, y: 9, width: 1, height: 1 },
-
-      { id: 'target1', type: 'target', x: 1, y: 3, width: 1, height: 1 }
-    ],
-    availableCommands: ["moveForward", "turnRight", "turnLeft", "while"],
-    availableSensors: ["barrier", "border", "collectible"],
-    objective: "Navegue pelo labirinto complexo usando laços aninhados e diferentes estratégias",
-    hint: "Pense em laços dentro de outros laços para resolver diferentes partes do problema",
-    unlocked: false,
-    completed: false,
-    concepts: ["laços aninhados", "estruturas de controle complexas", "resolução de problemas avançados"],
-  },
-  {
-    id: 12,
+    module: "Condicionais",
     name: "Labirinto de Decisões",
     description: "Use condicionais para tomar decisões complexas",
     difficulty: "intermediate",
@@ -73,7 +39,7 @@ const levels_2: Level[] = [
     colorCycleSpeed: 10000
   },
   {
-    id: 13,
+    module: "Condicionais",
     name: "Corredor de Fogo",
     description: "Atravesse um corredor com células que alternam entre seguras e perigosas",
     difficulty: "intermediate",
@@ -112,7 +78,7 @@ const levels_2: Level[] = [
     colorCycleSpeed: 5000
   },
   {
-    id: 14,
+    module: "Condicionais",
     name: "Corrida Contra o Tempo",
     description: "Complete o percurso antes que as cores mudem",
     difficulty: "intermediate",
@@ -147,7 +113,7 @@ const levels_2: Level[] = [
     colorCycleSpeed: 8000
   },
   {
-    id: 15,
+    module: "Condicionais",
     name: 'Labirinto de Cores Alternantes',
     description: 'Supere obstáculos e domine o timing com células que mudam de cor',
     difficulty: 'advanced',
@@ -188,7 +154,7 @@ const levels_2: Level[] = [
     ]
   },
   {
-    id: 16,
+    module: "Condicionais",
     name: "Algoritimo de Sensores",
     minBlocks: 6,
     description: "Use as condições dos sensores para resolver problemas mais complexos",
@@ -232,6 +198,7 @@ const levels_2: Level[] = [
   },
   {
     id: 17,
+    module: "Condicionais",
     name: "Coletando com Condições",
     description: "Colete itens usando decisões condicionais",
     difficulty: "intermediate",
@@ -266,6 +233,7 @@ const levels_2: Level[] = [
   },
   {
     id: 18,
+    module: "Condicionais",
     name: "Desvio de Obstáculos Inteligente",
     description: "Desvie de obstáculos usando lógica condicional avançada",
     difficulty: "expert",
@@ -311,4 +279,4 @@ const levels_2: Level[] = [
   },
 ];
 
-export default levels_2;
+export default condicionais;

@@ -2,14 +2,15 @@
 import { GameObject } from '@/types/GameTypes';
 
 export interface Level {
-  id: number;
+  id?: number; 
+  module: string;
   name: string;
   description: string;
   difficulty: 'beginner' | 'intermediate' | 'advanced'|'expert'|'master';
   gridSize: { width: number; height: number };
   objects: GameObject[];
   availableCommands: string[];
-  availableSensors?: string[]; // Lista de sensores disponíveis para o nível
+  availableSensors?: string[]; 
   objective: string;
   hint?: string;
   maxMoves?: number;
