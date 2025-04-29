@@ -55,10 +55,12 @@ const LevelGame = () => {
   }, []);
 
   const handleTabChange = (tab: string) => {
+    const currentModule = localStorage.getItem('currentModule') || 'instruction';
     if (tab === 'home') {
       navigate('/');
     } else if (tab === 'levels') {
       navigate('/levels');
+      localStorage.setItem('currentModule', currentModule);
     } else if (tab === 'learn') {
       navigate('/learn');
     }

@@ -12,6 +12,9 @@ const LevelPage = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(true);
+  const [currentModule, setCurrentModule] = useState(() => {
+    return localStorage.getItem('currentModule') || 'instruction';
+  });
 
   // Load progress when the component mounts
   useEffect(() => {
@@ -44,6 +47,8 @@ const LevelPage = () => {
     } else if (tab === 'playground') {
       navigate('/level/1');
     }
+    localStorage.setItem('currentModule', tab);
+    setCurrentModule(tab);
   };
 
   const handleSelectLevel = (level: Level) => {

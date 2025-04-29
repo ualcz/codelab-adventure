@@ -13,18 +13,33 @@ const LevelSelector: React.FC<LevelSelectorProps> = ({ onSelectLevel, currentLev
   const [levels, setLevels] = useState<Level[]>([]);
   const [activeModule, setActiveModule] = useState<string | null>(null);
   
+  // Função para salvar o módulo ativo no localStorage
+  const saveActiveModule = (module: string) => {
+    localStorage.setItem('activeModule', module);
+  };
+  
+  // Função para obter o módulo ativo do localStorage
+  const getActiveModuleFromStorage = (): string | null => {
+    return localStorage.getItem('activeModule');
+  };
+  
   // Update levels when component mounts and when storage changes
   useEffect(() => {
     const updateLevels = () => {
       const currentLevels = getLevels();
       setLevels([...currentLevels]); // Create a new array to ensure state update
       
-      // Set the first module as active if none is selected
-      if (!activeModule && currentLevels.length > 0) {
-        const modules = [...new Set(currentLevels.map(level => level.module))];
-        if (modules.length > 0) {
-          setActiveModule(modules[0]);
-        }
+      // Tenta recuperar o módulo ativo do localStorage
+      const savedModule = getActiveModuleFromStorage();
+      const modules = [...new Set(currentLevels.map(level => level.module))];
+      
+      // Verifica se o módulo salvo existe nos módulos disponíveis
+      if (savedModule && modules.includes(savedModule)) {
+        setActiveModule(savedModule);
+      }
+      // Se não houver módulo salvo ou o módulo salvo não existir mais, e não houver módulo ativo
+      else if (!activeModule && modules.length > 0) {
+        setActiveModule(modules[0]);
       }
     };
     
@@ -74,7 +89,10 @@ const LevelSelector: React.FC<LevelSelectorProps> = ({ onSelectLevel, currentLev
             className={`px-4 py-2 rounded-md transition-colors ${activeModule === module 
               ? 'bg-game-primary text-white' 
               : 'bg-game-background-light text-white/70 hover:bg-game-background-lighter'}`}
-            onClick={() => setActiveModule(module)}
+            onClick={() => {
+              setActiveModule(module);
+              saveActiveModule(module);
+            }}
           >
             {module}
           </button>
