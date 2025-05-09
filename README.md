@@ -229,7 +229,7 @@ O progresso do usuário é salvo no localStorage do navegador:
 ### Instalação
 ```bash
 # Clone o repositório
-git clone https://github.com/seu-usuario/CodeLab.git
+git clone https://github.com/ualcz/CodeLab.git
 
 # Entre no diretório
 cd CodeLab
@@ -301,39 +301,6 @@ Para adicionar um novo nível, adicione um objeto ao array em `levelsData.ts`:
   concepts: ["sequência", "loops"]
 }
 ```
-
-## 🚀 Solução
-
-- **1**
-<img src="./public/img/1.png" alt="resposta" style="width:50%; height:auto;">
-
-- **2**
-<img src="./public/img/2.png" alt="resposta" style="width:50%; height:auto;">
-
-- **3**
-<img src="./public/img/3.png" alt="resposta" style="width:50%; height:auto;">
-
-- **4**
-<img src="./public/img/4.png" alt="resposta" style="width:50%; height:auto;">
-
-- **5**
-<img src="./public/img/5.png" alt="resposta" style="width:50%; height:auto;">
-
-- **6**
-<img src="./public/img/6.png" alt="resposta" style="width:50%; height:auto;">
-
-- **7**
-<img src="./public/img/7.png" alt="resposta" style="width:50%; height:auto;">
-
-- **8**
-<img src="./public/img/8.png" alt="resposta" style="width:50%; height:auto;">
-
-- **9**
-<img src="./public/img/9.png" alt="resposta" style="width:50%; height:auto;">
-
-- **10**
-<img src="./public/img/10.png" alt="resposta" style="width:50%; height:auto;">
-
 
 
 ## 🔌 Extensibilidade

@@ -48,8 +48,8 @@ const introduction: Level[] = [
         gridSize: { width: 5, height: 5 },
         objects: [
           { ...defaultRobot, x: 0, y: 0, rotation: 90 },
-          { id: 'obstacle1', type: 'obstacle', x: 1, y: 1, width: 3, height: 1 },
-          { id: 'obstacle2', type: 'obstacle', x: 1, y: 3, width: 3, height: 1 },
+          { id: 'obstacle1', type: 'obstacle', x: 0, y: 1, width: 4, height: 1 },
+          { id: 'obstacle2', type: 'obstacle', x: 1, y: 3, width: 4, height: 1 },
           { id: 'target1', type: 'target', x: 4, y: 4, width: 1, height: 1 }
         ],
         availableCommands: ["moveForward", "turnRight", "turnLeft", "stop"],
