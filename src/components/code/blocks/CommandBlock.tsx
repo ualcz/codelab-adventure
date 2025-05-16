@@ -136,12 +136,10 @@ const CommandBlock: React.FC<CommandBlockProps> = ({
           newCommand.params = { count: 3 };
           newCommand.children = [];
         } else if (block.id === 'if') {
-          // Remova a condição padrão para blocos if aninhados
           newCommand.params = path.length > 0 ? {} : { condition: 'isGreen' };
           newCommand.children = [];
         }
         else if (block.id === 'while') {
-          // Remova a condição padrão para blocos while aninhados
           newCommand.params = path.length > 0 ? {} : { condition: 'untilBarrier' };
           newCommand.children = [];
         }
@@ -203,17 +201,13 @@ const CommandBlock: React.FC<CommandBlockProps> = ({
   const blockClass = getBlockClass();
   const isConditionalBlock = command.id === 'if' || command.id === 'while';
   
-  // Verificação mais completa para detectar sensores
   const hasSensorChild = command.children?.some(child => child.id.startsWith('sensor_')) || false;
   const hasSensorParam = command.params?.sensorType || false;
   const hasConditionParam = !!command.params?.condition;
   
-  // Mostrar o texto para blocos condicionais sem sensores e sem condições definidas
-  // Removendo qualquer restrição relacionada ao aninhamento (path.length)
+ 
   const needsSensor = isConditionalBlock && !hasSensorChild && !hasSensorParam && !hasConditionParam;
-  
-  // Adicione um console.log para depuração
-  console.log(`Block ${command.id} at path ${JSON.stringify(path)}: needsSensor=${needsSensor}, hasCondition=${hasConditionParam}, hasSensor=${hasSensorChild || hasSensorParam}`);
+
 
   const handleCommandUpdate = (updatedCommand: Command) => {
     onUpdate(path, updatedCommand);

@@ -65,7 +65,6 @@ export class ConditionEvaluator {
         }
       }
     } else if (params.condition === 'untilTarget') {
-      // Verifica se o robô chegou ao alvo
       const { robot, objects } = engine.state;
       const onTarget = objects.some(obj => 
         obj.type === 'target' && obj.x === robot.x && obj.y === robot.y
@@ -79,10 +78,8 @@ export class ConditionEvaluator {
       
       return true;
     } else if (params.condition === 'isGreen') {
-      // Verifica se há uma célula verde à frente do robô
       return engine.isCellInFrontOfRobot('green');
     } else if (params.condition === 'isRed') {
-      // Verifica se há uma célula vermelha à frente do robô
       return engine.isCellInFrontOfRobot('red');
     }
     

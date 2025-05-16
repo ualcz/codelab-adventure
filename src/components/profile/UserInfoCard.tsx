@@ -23,7 +23,6 @@ const UserInfoCard: React.FC<UserInfoCardProps> = ({ user }) => {
     });
   };
   
-  // Format date to a friendly format
   const formatDate = (dateString: string) => {
     if (!dateString) return '-';
     

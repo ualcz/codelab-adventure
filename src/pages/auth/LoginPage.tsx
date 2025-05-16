@@ -39,7 +39,6 @@ const LoginPage = () => {
   });
   
   const onSubmit = async (data: LoginFormValues) => {
-    // Ensure all required fields are present in the LoginRequest
     const loginData: LoginRequest = {
       email: data.email,
       password: data.password,

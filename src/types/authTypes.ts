@@ -50,7 +50,7 @@ export interface UserProgressSyncResponse {
   completedLevels: number[];
 }
 
-// Definindo os tipos de dados
+
 export interface Level {
   id: number;
   completed: boolean;
@@ -59,7 +59,7 @@ export interface Level {
 
 export interface ProgressData {
   completedLevels: number[];
-  lastSaved: string; // ISO date string
+  lastSaved: string; 
 }
 
 export interface UserProfile {

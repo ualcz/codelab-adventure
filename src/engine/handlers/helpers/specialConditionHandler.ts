@@ -23,7 +23,6 @@ export class SpecialConditionHandler {
   
   static checkTargetCondition(engine: IGameEngine, command: Command, state: ExecutionState): boolean {
     if (command.params.condition === 'untilTarget') {
-      // Verifica se o robô está no alvo
       const { robot, objects } = engine.state;
       const onTarget = objects.some(obj => 
         obj.type === 'target' && obj.x === robot.x && obj.y === robot.y

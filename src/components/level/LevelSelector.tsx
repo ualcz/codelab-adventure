@@ -13,40 +13,33 @@ const LevelSelector: React.FC<LevelSelectorProps> = ({ onSelectLevel, currentLev
   const [levels, setLevels] = useState<Level[]>([]);
   const [activeModule, setActiveModule] = useState<string | null>(null);
   
-  // Função para salvar o módulo ativo no localStorage
   const saveActiveModule = (module: string) => {
     localStorage.setItem('activeModule', module);
   };
   
-  // Função para obter o módulo ativo do localStorage
   const getActiveModuleFromStorage = (): string | null => {
     return localStorage.getItem('activeModule');
   };
   
-  // Update levels when component mounts and when storage changes
   useEffect(() => {
     const updateLevels = () => {
       const currentLevels = getLevels();
-      setLevels([...currentLevels]); // Create a new array to ensure state update
+      setLevels([...currentLevels]); 
       
-      // Tenta recuperar o módulo ativo do localStorage
       const savedModule = getActiveModuleFromStorage();
       const modules = [...new Set(currentLevels.map(level => level.module))];
       
-      // Verifica se o módulo salvo existe nos módulos disponíveis
       if (savedModule && modules.includes(savedModule)) {
         setActiveModule(savedModule);
       }
-      // Se não houver módulo salvo ou o módulo salvo não existir mais, e não houver módulo ativo
+     
       else if (!activeModule && modules.length > 0) {
         setActiveModule(modules[0]);
       }
     };
     
-    // Initial load
     updateLevels();
     
-    // Listen for storage events which happen when progress is updated
     window.addEventListener('storage', updateLevels);
     
     return () => window.removeEventListener('storage', updateLevels);
@@ -59,7 +52,7 @@ const LevelSelector: React.FC<LevelSelectorProps> = ({ onSelectLevel, currentLev
     if (difficulty === 'expert') stars = 4;
     if (difficulty === 'master') stars = 5;
     
-    const maxStars = 5; // Maximum number of stars to display
+    const maxStars = 5; 
     
     return (
       <div className="flex">
@@ -73,15 +66,12 @@ const LevelSelector: React.FC<LevelSelectorProps> = ({ onSelectLevel, currentLev
     );
   };
   
-  // Get unique modules from levels
   const modules = [...new Set(levels.map(level => level.module))];
   
-  // Filter levels by active module
   const filteredLevels = levels.filter(level => level.module === activeModule);
   
   return (
     <div className="flex flex-col space-y-4 p-4">
-      {/* Module Selector */}
       <div className="flex flex-wrap gap-2 mb-4">
         {modules.map((module) => (
           <button
@@ -99,7 +89,6 @@ const LevelSelector: React.FC<LevelSelectorProps> = ({ onSelectLevel, currentLev
         ))}
       </div>
       
-      {/* Level Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredLevels.map((level) => (
           <div 

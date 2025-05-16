@@ -48,7 +48,6 @@ const RegisterPage = () => {
   const onSubmit = async (data: RegisterFormValues) => {
     const { confirmPassword, ...registerData } = data;
     
-    // Ensure all required fields are present in the RegisterRequest
     const registerRequestData: RegisterRequest = {
       username: registerData.username,
       email: registerData.email,

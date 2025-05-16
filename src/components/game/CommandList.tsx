@@ -42,40 +42,29 @@ const CommandList: React.FC<CommandListProps> = ({
     handleCommandsChange(newCommands);
   };
 
-  // Modifies the onCommandsChange to add the dummy command if needed
   const handleCommandsChange = (newCommands: Command[]) => {
-    // Process else blocks to ensure they're linked to if blocks
     const processedCommands = linkElseBlocksToIfBlocks(newCommands);
     
-    // Check if there are nested repeats or while loops
     if (hasNestedRepeats(processedCommands)) {
-      // Add the dummy command only if there are nested repeats/whiles
       const commandsWithDummy = addDummyCommand(processedCommands);
       onCommandsChange(commandsWithDummy);
     } else {
-      // Remove any existing dummy command
       const filteredCommands = processedCommands.filter(cmd => !cmd.params?.isDummy);
       onCommandsChange(filteredCommands);
     }
   };
 
-  // Helper function to link else blocks to if blocks
   const linkElseBlocksToIfBlocks = (cmds: Command[]): Command[] => {
-    // Create a deep copy to avoid modifying the original
     const newCommands = JSON.parse(JSON.stringify(cmds));
     
-    // Process the commands at the root level
     processCommandLevel(newCommands);
     
     return newCommands;
   };
 
-  // Recursively process each level of commands
   const processCommandLevel = (commands: Command[]) => {
     for (let i = 0; i < commands.length; i++) {
-      // If we find an else block, link it to the previous if block
       if (commands[i].id === 'else') {
-        // Look for the nearest previous if block at the same level
         let foundIf = false;
         for (let j = i - 1; j >= 0; j--) {
           if (commands[j].id === 'if') {
@@ -84,7 +73,6 @@ const CommandList: React.FC<CommandListProps> = ({
           }
         }
         
-        // Set the executionState based on whether we found an if block
         commands[i].params = commands[i].params || {};
         commands[i].params.executionState = {
           shouldExecute: false,
@@ -94,7 +82,6 @@ const CommandList: React.FC<CommandListProps> = ({
         };
       }
       
-      // Process children recursively
       if (commands[i].children && commands[i].children.length > 0) {
         processCommandLevel(commands[i].children);
       }

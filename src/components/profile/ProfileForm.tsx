@@ -31,7 +31,6 @@ interface ProfileFormProps {
 }
 
 const ProfileForm: React.FC<ProfileFormProps> = ({ user, isLoading, onSubmit }) => {
-  // Initialize form with empty default values
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
@@ -40,7 +39,6 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ user, isLoading, onSubmit }) 
     },
   });
   
-  // Update form values when user data is available
   React.useEffect(() => {
     if (user) {
       form.reset({

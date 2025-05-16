@@ -1,11 +1,11 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Command, GameState } from '@/types/GameTypes';
 import CommandPalette from '../code/CommandPalette';
 import CommandList from './CommandList';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
-import { Play, Trash, RefreshCw, Blocks } from 'lucide-react';
+import { Play, Trash, RefreshCw} from 'lucide-react';
 
 interface SensorAwareCodeBlocksProps {
   availableCommands: string[];
@@ -22,11 +22,9 @@ const SensorAwareCodeBlocks: React.FC<SensorAwareCodeBlocksProps> = ({
   availableCommands,
   availableSensors = [],
   onRun,
-  onStop,
   onReset,
   isRunning,
   onCommandsChange,
-  gameState
 }) => {
   const [commands, setCommands] = useState<Command[]>([]);
   const { toast } = useToast();
@@ -41,7 +39,6 @@ const SensorAwareCodeBlocks: React.FC<SensorAwareCodeBlocksProps> = ({
   const handleCommandsChange = (newCommands: Command[]) => {
     setCommands(newCommands);
     
-    // Call parent's onCommandsChange if provided
     if (onCommandsChange) {
       onCommandsChange(newCommands);
     }
@@ -62,7 +59,6 @@ const SensorAwareCodeBlocks: React.FC<SensorAwareCodeBlocksProps> = ({
   const handleClearCommands = () => {
     setCommands([]);
     
-    // Call parent's onCommandsChange with empty array if provided
     if (onCommandsChange) {
       onCommandsChange([]);
     }

@@ -33,18 +33,15 @@ const LevelsTab: React.FC<LevelsTabProps> = ({
   const [completedLevels, setCompletedLevels] = useState<number[]>([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   
-  // Function to update completed levels
   const updateCompletedLevels = () => {
     const levels = getCompletedLevels();
     setCompletedLevels(levels);
     console.log("Updated completed levels:", levels);
   };
   
-  // Load completed levels from localStorage on mount
   useEffect(() => {
     updateCompletedLevels();
     
-    // Listen for storage events from other tabs or custom events
     const handleStorageChange = () => {
       updateCompletedLevels();
     };
@@ -56,13 +53,10 @@ const LevelsTab: React.FC<LevelsTabProps> = ({
   const handleResetProgress = async () => {
     if (onResetProgress) {
       try {
-        // Fechar o diálogo antes de iniciar a operação
         setIsDialogOpen(false);
-        // Chamar a função de reset de forma assíncrona
-        await onResetProgress();
+       await onResetProgress();
       } catch (error) {
         console.error('Erro ao resetar progresso:', error);
-        // O erro será tratado no componente pai (LevelPage)
       }
     }
   };

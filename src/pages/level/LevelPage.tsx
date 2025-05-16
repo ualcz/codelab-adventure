@@ -16,7 +16,6 @@ const LevelPage = () => {
     return localStorage.getItem('currentModule') || 'instruction';
   });
 
-  // Load progress when the component mounts
   useEffect(() => {
     const initializeLevels = async () => {
       try {
@@ -30,7 +29,6 @@ const LevelPage = () => {
     
     initializeLevels();
     
-    // Listen for storage events to update UI when progress changes
     const handleStorageChange = () => {
       loadProgress();
     };
@@ -63,7 +61,6 @@ const LevelPage = () => {
         description: "Todo o seu progresso foi apagado com sucesso.",
         variant: "default",
       });
-      // Force a reload of the page to update the UI
       window.location.reload();
     } catch (error) {
       console.error('Erro ao limpar progresso:', error);

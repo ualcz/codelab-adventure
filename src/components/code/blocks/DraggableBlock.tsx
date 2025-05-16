@@ -4,7 +4,6 @@ import {
   ArrowUp, 
   ArrowDown, 
   RefreshCw, 
-  ChevronDown, 
   RotateCw, 
   RotateCcw,
   Pause,

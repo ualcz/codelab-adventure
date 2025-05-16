@@ -5,20 +5,19 @@ import DraggableBlock from './blocks/DraggableBlock';
 
 interface CommandPaletteProps {
   availableCommands: string[];
-  availableSensors?: string[]; // Adicionado novo prop para sensores disponíveis
+  availableSensors?: string[]; 
   onDragStart: (e: React.DragEvent, block: any) => void;
 }
 
 const CommandPalette: React.FC<CommandPaletteProps> = ({ 
   availableCommands, 
-  availableSensors = ['barrier', 'border', 'collectible', 'target', 'redCell', 'greenCell'], // Valor padrão
+  availableSensors = ['barrier', 'border', 'collectible', 'target', 'redCell', 'greenCell'],
   onDragStart 
 }) => {
   const commandBlocks = getCommandBlocks().filter(
     block => availableCommands.includes(block.id)
   );
   
-  // Filtra sensores disponíveis
   const sensorBlocks = Object.values(sensorObjects)
     .filter(sensor => availableSensors.includes(sensor.sensorType))
     .map(sensor => ({

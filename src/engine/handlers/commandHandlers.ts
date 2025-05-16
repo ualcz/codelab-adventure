@@ -56,11 +56,8 @@ export class ElseHandler implements CommandHandler {
       params = command.params = {};
     }
 
-    // Encontrar o bloco 'if' anterior e seu estado de execução
     const prevIfExecutionState = this.getPreviousIfExecutionState(engine, command);
-    
-    // Só executar o bloco 'else' se a condição do 'if' anterior for falsa
-    // Se não encontrarmos um if anterior válido, não executamos o else
+  
     const shouldExecute = prevIfExecutionState ? !prevIfExecutionState.shouldExecute : false;
     
     console.log("DEBUG ELSE: Previous If execution state:", prevIfExecutionState, 
@@ -75,7 +72,6 @@ export class ElseHandler implements CommandHandler {
         counter: 0
       };
     } else {
-      // Atualizar shouldExecute com base na condição do if anterior
       params.executionState.shouldExecute = shouldExecute;
     }
 
@@ -92,7 +88,6 @@ export class ElseHandler implements CommandHandler {
 
           engine.executeCommand(currentChild);
 
-          // Check if the child command is a control block that hasn't finished yet
           if ((currentChild.id === 'repeat' || currentChild.id === 'if' || currentChild.id === 'while' || currentChild.id === 'else') && 
               currentChild.params?.executionState?.completed !== true) {
             engine.state.executionPointer = state.parentPointer;
@@ -118,13 +113,11 @@ export class ElseHandler implements CommandHandler {
     }
   }
 
-  // Método melhorado para encontrar o estado de execução do bloco if anterior
   private getPreviousIfExecutionState(engine: IGameEngine, elseCommand: Command) {
     const commands = engine.state.commands;
     const currentIndex = engine.state.executionPointer;
     
-    // Caso 1: Verificar se o else está dentro de um bloco de controle
-    // e tem um irmão "if" anterior
+  
     if (elseCommand.params?.ifContext) {
       const ifCommand = commands[elseCommand.params.ifContext];
       if (ifCommand && ifCommand.id === 'if' && ifCommand.params?.executionState) {
@@ -133,8 +126,6 @@ export class ElseHandler implements CommandHandler {
       }
     }
 
-    // Caso 2: Verificar se estamos dentro de um loop ou estrutura de controle
-    // Procurar o comando pai atual na árvore de comandos
     const findParentCommand = (cmdList: Command[], targetCmd: Command, path: number[] = []): number[] | null => {
       for (let i = 0; i < cmdList.length; i++) {
         const cmd = cmdList[i];
@@ -155,13 +146,11 @@ export class ElseHandler implements CommandHandler {
     if (commandPath && commandPath.length > 1) {
       console.log("Found command path:", commandPath);
       
-      // Navegar até o comando pai
       let parentCommand = commands[commandPath[0]];
       for (let i = 1; i < commandPath.length - 1; i++) {
         parentCommand = parentCommand.children![commandPath[i]];
       }
       
-      // Verificar se há um irmão 'if' antes deste 'else'
       if (parentCommand.children) {
         const elseIndex = commandPath[commandPath.length - 1];
         for (let i = 0; i < elseIndex; i++) {
@@ -174,7 +163,6 @@ export class ElseHandler implements CommandHandler {
       }
     }
 
-    // Caso 3: Procurar por um 'if' anterior no mesmo nível dos comandos principais
     for (let i = currentIndex - 1; i >= 0; i--) {
       const cmd = commands[i];
       if (cmd.id === 'if' && cmd.params?.executionState) {
@@ -182,7 +170,6 @@ export class ElseHandler implements CommandHandler {
         return cmd.params.executionState;
       }
       
-      // Se encontrarmos outro bloco de controle, paramos
       if (i !== currentIndex - 1 && 
           (cmd.id === 'repeat' || cmd.id === 'while' || cmd.id === 'else')) {
         break;

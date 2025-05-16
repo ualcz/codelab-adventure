@@ -19,7 +19,6 @@ export class IfHandler implements CommandHandler {
       if (command.condition) {
         params.condition = command.condition;
       } else {
-        // Use the sensorType to determine the condition
         if (params.sensorType) {
           switch (params.sensorType) {
             case 'greenCell':
@@ -78,13 +77,11 @@ export class IfHandler implements CommandHandler {
       } else if (params.condition === 'isRed') {
         conditionMet = engine.isCellInFrontOfRobot('red');
       } else if (params.condition === 'collectibleCollected') {
-        // Check if a collectible was collected in the current move
         const currentCount = engine.state.collectiblesGathered;
         conditionMet = currentCount > (params.count ?? currentCount - 1);
         params.count = currentCount;
         console.log(`DEBUG IF: Checking if coin was collected: ${conditionMet}`);
       } else if (params.condition === 'targetReached') {
-        // Verificar se o robô chegou ao alvo
         const { robot, objects } = engine.state;
         conditionMet = objects.some(obj => 
           obj.type === 'target' && obj.x === robot.x && obj.y === robot.y
@@ -108,7 +105,6 @@ export class IfHandler implements CommandHandler {
         counter: 0
       };
       
-      // Update the next else block (if it exists) with the condition result
       this.updateNextElseBlock(engine, command, conditionMet);
     }
 
@@ -150,12 +146,10 @@ export class IfHandler implements CommandHandler {
     }
   }
   
-  // Helper method to update the next else block with the condition result
   private updateNextElseBlock(engine: IGameEngine, ifCommand: Command, conditionMet: boolean) {
     const commands = engine.state.commands;
     const currentIndex = engine.state.executionPointer;
     
-    // Caso 1: Verificar se o próprio comando if tem um else como filho
     const findDirectElse = (ifCmd: Command) => {
       if (ifCmd.children) {
         const elseIndex = ifCmd.children.findIndex(child => child.id === 'else');
@@ -163,7 +157,7 @@ export class IfHandler implements CommandHandler {
           console.log("Found 'else' block as child, updating condition result:", !conditionMet);
           const elseBlock = ifCmd.children[elseIndex];
           if (!elseBlock.params) elseBlock.params = {};
-          elseBlock.params.ifContext = currentIndex; // Referência direta para o if
+          elseBlock.params.ifContext = currentIndex;
           
           if (!elseBlock.params.executionState) {
             elseBlock.params.executionState = {
@@ -182,15 +176,11 @@ export class IfHandler implements CommandHandler {
       return false;
     };
     
-    // Procurar nos filhos diretos
     if (findDirectElse(ifCommand)) {
-      return; // Encontrou e atualizou um else nos filhos
+      return;
     }
     
-    // Caso 2: Procurar se estamos em uma estrutura de controle
-    // e se há um else irmão do if
     const findParentAndUpdateSiblingElse = () => {
-      // Função para encontrar o caminho do comando na árvore
       const findCommandPath = (cmdList: Command[], targetCmd: Command, path: number[] = []): number[] | null => {
         for (let i = 0; i < cmdList.length; i++) {
           const cmd = cmdList[i];
@@ -211,13 +201,11 @@ export class IfHandler implements CommandHandler {
       if (ifPath && ifPath.length > 1) {
         console.log("Found if command path:", ifPath);
         
-        // Navegar até o comando pai
         let parentCommand = commands[ifPath[0]];
         for (let i = 1; i < ifPath.length - 1; i++) {
           parentCommand = parentCommand.children![ifPath[i]];
         }
         
-        // Verificar se há um irmão 'else' após este 'if'
         if (parentCommand.children) {
           const ifIndex = ifPath[ifPath.length - 1];
           for (let i = ifIndex + 1; i < parentCommand.children.length; i++) {
@@ -226,13 +214,12 @@ export class IfHandler implements CommandHandler {
               console.log("Found sibling else block, updating condition result:", !conditionMet);
               if (!sibling.params) sibling.params = {};
               
-              // Link direto para o if atual
               sibling.params.ifContext = currentIndex;
               
               if (!sibling.params.executionState) {
                 sibling.params.executionState = {
                   childIndex: 0,
-                  parentPointer: i, // Índice relativo ao parent
+                  parentPointer: i,
                   completed: false,
                   counter: 0,
                   shouldExecute: !conditionMet
@@ -248,28 +235,24 @@ export class IfHandler implements CommandHandler {
       return false;
     };
     
-    // Tentar encontrar e atualizar um else irmão
     if (findParentAndUpdateSiblingElse()) {
       return;
     }
     
-    // Caso 3: Find the next else block at the same level (para comandos em sequência)
     for (let i = currentIndex + 1; i < commands.length; i++) {
       if (commands[i].id === 'else') {
         console.log(`Found 'else' block at index ${i}, updating with condition result: ${!conditionMet}`);
         
-        // Update the else block's execution state and link it to this if
         if (!commands[i].params) {
           commands[i].params = {};
         }
         
-        // Guardar uma referência direta para o if
         commands[i].params.ifContext = currentIndex;
         
         if (!commands[i].params.executionState) {
           commands[i].params.executionState = {
             childIndex: 0,
-            parentPointer: i, // Mantenha o próprio índice como parentPointer
+            parentPointer: i, 
             completed: false,
             counter: 0,
             shouldExecute: !conditionMet
@@ -278,11 +261,9 @@ export class IfHandler implements CommandHandler {
           commands[i].params.executionState.shouldExecute = !conditionMet;
         }
         
-        // Only update the first else block found
         break;
       }
       
-      // Stop searching if we find another if block or control structure
       if (commands[i].id === 'if' || commands[i].id === 'repeat' || commands[i].id === 'while') {
         break;
       }

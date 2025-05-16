@@ -77,16 +77,12 @@ export class StateManager {
   
   countBlocksUsed(commands: Command[]): number {
     return commands.reduce((total, cmd) => {
-      // Don't count dummy commands
       if (cmd.params?.isDummy) return total;
       
-      // Don't count sensor blocks
       if (cmd.id.startsWith('sensor_')) return total;
       
-      // Add 1 for the current command
       let count = 1;
       
-      // Recursively count child blocks
       if (cmd.children && cmd.children.length > 0) {
         count += this.countBlocksUsed(cmd.children);
       }

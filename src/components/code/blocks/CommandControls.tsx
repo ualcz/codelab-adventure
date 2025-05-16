@@ -51,13 +51,11 @@ const CommandControls: React.FC<CommandControlsProps> = ({ command, isRunning, o
   }
 
   if (command.id === 'while') {
-    // Removido o select para usar apenas os blocos de sensor
     return null;
   }
   
   // If Controls
   if (command.id === 'if') {
-    // Removido o select para usar apenas os blocos de sensor
     return null;
   }
   

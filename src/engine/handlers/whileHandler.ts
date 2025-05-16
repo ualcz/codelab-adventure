@@ -39,7 +39,6 @@ export class WhileHandler implements CommandHandler {
   
   private initializeCondition(command: Command): void {
     if (!command.params.condition) {
-      // Use sensorType to determine condition if available
       if (command.params.sensorType) {
         switch (command.params.sensorType) {
           case 'barrier':
@@ -118,7 +117,6 @@ export class WhileHandler implements CommandHandler {
     if (currentChild.id === 'while' && !currentChild.params?.condition) {
       if (!currentChild.params) currentChild.params = {};
       
-      // Use sensorType to determine condition if available
       if (currentChild.params.sensorType) {
         switch (currentChild.params.sensorType) {
           case 'barrier':

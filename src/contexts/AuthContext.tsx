@@ -23,7 +23,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
   
-  // Check if user is logged in on mount and setup interval to check token
   useEffect(() => {
     const checkAuth = async () => {
       setIsLoading(true);
@@ -37,22 +36,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
       
       try {
-        // If token exists, try to get user profile
         const userData = await getUserProfile();
         setUser(userData);
       } catch (error) {
-        // If token is expired, try to refresh
         try {
           const tokens = await refreshToken({ refreshToken: refreshTokenValue });
           localStorage.setItem('token', tokens.token);
           localStorage.setItem('refreshToken', tokens.refreshToken);
           
-          // Try again with the new token
           const userData = await getUserProfile();
           setUser(userData);
         } catch (refreshError) {
           console.error("Failed to refresh token:", refreshError);
-          // Only log out if we're not on the login or register page
           const currentPath = window.location.pathname;
           if (currentPath !== '/login' && currentPath !== '/register') {
             handleLogout();
@@ -63,13 +58,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     };
     
-    // Initial check
     checkAuth();
     
-    // Setup interval to periodically check auth status
-    const interval = setInterval(checkAuth, 5 * 60 * 1000); // Check every 5 minutes
+    const interval = setInterval(checkAuth, 5 * 60 * 1000); 
     
-    // Cleanup interval on unmount
     return () => clearInterval(interval);
   }, []);
   

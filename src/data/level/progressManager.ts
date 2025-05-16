@@ -27,10 +27,8 @@ export const saveCompletedLevels = async (): Promise<void> => {
       lastSaved: new Date().toISOString()
     };
     
-    // Always save to localStorage
     localStorage.setItem('gameProgress', JSON.stringify(progressData));
     
-    // Try to sync with the API if user is logged in
     const token = localStorage.getItem('token');
     if (token) {
       try {
@@ -38,7 +36,6 @@ export const saveCompletedLevels = async (): Promise<void> => {
         console.log('Progress synced with server successfully');
       } catch (apiError) {
         console.error('Error syncing progress with server:', apiError);
-        // Continue with local save even if API sync fails
       }
     }
     
@@ -63,7 +60,6 @@ export const clearProgress = async (): Promise<void> => {
       }
     });
     
-    // Try to sync cleared progress with the API if user is logged in
     const token = localStorage.getItem('token');
     if (token) {
       try {
@@ -74,18 +70,16 @@ export const clearProgress = async (): Promise<void> => {
         console.log('Cleared progress synced with server successfully');
       } catch (apiError) {
         console.error('Error syncing cleared progress with server:', apiError);
-        // Rethrow the error to be handled by the caller
         throw apiError;
       }
     }
     
-    // Dispatch storage event to notify other components
     window.dispatchEvent(new Event('storage'));
     
     console.log('Progress cleared successfully');
   } catch (error) {
     console.error('Error clearing progress:', error);
-    throw error; // Rethrow to allow caller to handle it
+    throw error;
   }
 };
 
@@ -96,11 +90,9 @@ export const loadProgress = async (): Promise<void> => {
 
     if (token) {
       try {
-        // Try to load from API first
         const apiProgress = await getUserProgress();
         completedLevelIds = apiProgress.completedLevels || [];
         
-        // Update localStorage
         localStorage.setItem('gameProgress', JSON.stringify({
           completedLevels: completedLevelIds,
           lastSaved: new Date().toISOString()
@@ -113,16 +105,14 @@ export const loadProgress = async (): Promise<void> => {
       completedLevelIds = getLocalCompletedLevels();
     }
 
-    // Fixed: Changed completedIds to completedLevelIds
     updateLevelStates(completedLevelIds);
   } catch (error) {
     console.error('Error loading progress:', error);
-    // Reset to safe initial state
     resetLevelsToInitialState();
   }
 };
 
-// Helper functions
+
 const getLocalCompletedLevels = (): number[] => {
   const saved = localStorage.getItem('gameProgress');
   return saved ? JSON.parse(saved).completedLevels : [];
